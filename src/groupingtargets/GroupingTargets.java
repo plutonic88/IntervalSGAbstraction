@@ -432,6 +432,9 @@ public class GroupingTargets {
 	{
 
 
+
+		// We will work tomorrow on the main alorithm
+
 		int base = 0;
 		int dest = 0;
 		int k = 5;
