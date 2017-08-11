@@ -1,0 +1,45 @@
+java -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars/libcplex1263.so -jar app.jar 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/sunny/newjars
+
+
+java -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar gc25.jar
+
+
+java -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar gc100.jar
+
+
+nohup java -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar seq-ins100.jar > out.txt &
+
+
+nohup java -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar test.jar > out.txt &
+
+nohup java -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar gc50.jar > out.txt &
+
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar si50.jar > out.txt &
+
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar so.jar > out.txt &
+
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar so1.jar > out.txt &
+
+
+
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar test1.jar > out.txt &
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar test2.jar > out.txt &
+
+
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 1.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 2.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 3.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 4.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 5.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 6.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 7.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 8.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 9.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 10.jar > out.txt
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 11.jar > out.txt 
+nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 12.jar > out.txt 
+
+
+
+

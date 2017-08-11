@@ -1,0 +1,2349 @@
+ Sorted Targets : 
+Target 0, u = 90
+Target 1, u = 90
+Target 10, u = 90
+Target 11, u = 90
+Target 2, u = 83
+Target 3, u = 83
+Target 12, u = 83
+Target 13, u = 83
+Target 4, u = 80
+Target 5, u = 80
+Target 14, u = 80
+Target 15, u = 80
+Target 44, u = 80
+Target 45, u = 80
+Target 54, u = 80
+Target 55, u = 80
+Target 22, u = 78
+Target 23, u = 78
+Target 32, u = 78
+Target 33, u = 78
+Target 24, u = 75
+Target 25, u = 75
+Target 34, u = 75
+Target 35, u = 75
+Target 6, u = 73
+Target 7, u = 73
+Target 16, u = 73
+Target 17, u = 73
+Target 84, u = 73
+Target 85, u = 73
+Target 20, u = 72
+Target 21, u = 72
+Target 26, u = 72
+Target 27, u = 72
+Target 30, u = 72
+Target 31, u = 72
+Target 36, u = 72
+Target 37, u = 72
+Target 64, u = 72
+Target 65, u = 72
+Target 74, u = 72
+Target 75, u = 72
+Target 46, u = 71
+Target 47, u = 71
+Target 56, u = 71
+Target 57, u = 71
+Target 94, u = 69
+Target 95, u = 69
+Target 62, u = 67
+Target 63, u = 67
+Target 72, u = 67
+Target 73, u = 67
+Target 42, u = 66
+Target 43, u = 66
+Target 52, u = 66
+Target 53, u = 66
+Target 40, u = 53
+Target 41, u = 53
+Target 50, u = 53
+Target 51, u = 53
+Target 60, u = 53
+Target 61, u = 53
+Target 66, u = 53
+Target 67, u = 53
+Target 70, u = 53
+Target 71, u = 53
+Target 76, u = 53
+Target 77, u = 53
+Target 80, u = 53
+Target 81, u = 53
+Target 82, u = 53
+Target 83, u = 53
+Target 86, u = 53
+Target 87, u = 53
+Target 90, u = 49
+Target 91, u = 49
+Target 92, u = 49
+Target 93, u = 49
+Target 96, u = 49
+Target 97, u = 49
+Target 8, u = 18
+Target 9, u = 18
+Target 18, u = 18
+Target 19, u = 18
+Target 28, u = 10
+Target 29, u = 10
+Target 38, u = 10
+Target 39, u = 10
+Target 48, u = 0
+Target 49, u = 0
+Target 58, u = 0
+Target 59, u = 0
+Target 68, u = 0
+Target 69, u = 0
+Target 78, u = 0
+Target 79, u = 0
+Target 88, u = 0
+Target 89, u = 0
+Target 98, u = 0
+Target 99, u = 0
+
+Current place : 45
+Current target list : 0,1,10,11,2,3,12,13,4,5,14,15,44,45,54,55,22,23,32,33,24,25,34,35,6,7,16,17,84,85,20,21,26,27,30,31,36,37,64,65,74,75,46,47,56,57,
+Dom targets : 94 95 62 63 72 73 42 43 52 53 40 41 50 51 60 61 66 67 70 71 76 77 80 81 82 83 86 87 90 91 92 93 96 97 8 9 18 19 28 29 38 39 48 49 58 59 68 69 78 79 88 89 98 99 
+Dominated nodes : 
+Pathnodes from node 84 to node 54, dist 528.0
+84->63->73->54
+Pathnodes from node 84 to node 64, dist 352.0
+84->73->64
+Pathnodes from node 84 to node 31, dist 839.0
+84->40->51->62->73->31
+Pathnodes from node 84 to node 32, dist 849.0
+84->41->51->62->73->32
+Pathnodes from node 84 to node 33, dist 858.0
+84->42->51->62->73->33
+Pathnodes from node 84 to node 34, dist 870.0
+84->43->52->62->73->34
+Pathnodes from node 84 to node 44, dist 699.0
+84->53->62->73->44
+Pathnodes from node 84 to node 30, dist 835.0
+84->40->51->62->73->30
+Pathnodes from node 84 to node 55, dist 896.0
+84->66->77->86->95->55
+Pathnodes from node 84 to node 56, dist 894.0
+84->67->77->86->95->56
+Pathnodes from node 84 to node 57, dist 888.0
+84->68->77->86->95->57
+Pathnodes from node 84 to node 65, dist 718.0
+84->76->86->95->65
+Pathnodes from node 84 to node 7, dist 1733.0
+84->18->29->39->49->59->68->77->86->95->7
+Pathnodes from node 84 to node 17, dist 1567.0
+84->28->39->49->59->68->77->86->95->17
+Pathnodes from node 84 to node 27, dist 1399.0
+84->38->49->59->68->77->86->95->27
+Pathnodes from node 84 to node 37, dist 1229.0
+84->48->59->68->77->86->95->37
+Pathnodes from node 84 to node 47, dist 1061.0
+84->58->68->77->86->95->47
+Pathnodes from node 85 to node 54, dist 875.0
+85->63->72->83->94->54
+Pathnodes from node 85 to node 64, dist 704.0
+85->73->83->94->64
+Pathnodes from node 85 to node 31, dist 1175.0
+85->40->50->61->72->83->94->31
+Pathnodes from node 85 to node 32, dist 1185.0
+85->41->50->61->72->83->94->32
+Pathnodes from node 85 to node 33, dist 1199.0
+85->42->51->61->72->83->94->33
+Pathnodes from node 85 to node 34, dist 1211.0
+85->43->52->61->72->83->94->34
+Pathnodes from node 85 to node 44, dist 1046.0
+85->53->62->72->83->94->44
+Pathnodes from node 85 to node 30, dist 1171.0
+85->40->50->61->72->83->94->30
+Pathnodes from node 85 to node 55, dist 537.0
+85->66->76->55
+Pathnodes from node 85 to node 56, dist 535.0
+85->67->76->56
+Pathnodes from node 85 to node 57, dist 533.0
+85->67->76->57
+Pathnodes from node 85 to node 65, dist 358.0
+85->76->65
+Pathnodes from node 85 to node 7, dist 1383.0
+85->18->29->39->49->58->67->76->7
+Pathnodes from node 85 to node 17, dist 1217.0
+85->28->39->49->58->67->76->17
+Pathnodes from node 85 to node 27, dist 1049.0
+85->38->49->58->67->76->27
+Pathnodes from node 85 to node 37, dist 879.0
+85->48->58->67->76->37
+Pathnodes from node 85 to node 47, dist 706.0
+85->58->67->76->47
+Pathnodes from node 54 to node 74, dist 352.0
+54->63->74
+Pathnodes from node 54 to node 31, dist 515.0
+54->42->43->31
+Pathnodes from node 54 to node 32, dist 348.0
+54->43->32
+Pathnodes from node 54 to node 33, dist 352.0
+54->43->33
+Pathnodes from node 54 to node 34, dist 355.0
+54->43->34
+Pathnodes from node 54 to node 30, dist 676.0
+54->41->52->63->30
+Pathnodes from node 54 to node 56, dist 1590.0
+54->67->77->86->95->94->83->72->63->56
+Pathnodes from node 54 to node 57, dist 1584.0
+54->68->77->86->95->94->83->72->63->57
+Pathnodes from node 54 to node 75, dist 1235.0
+54->86->95->94->83->72->63->75
+Pathnodes from node 54 to node 7, dist 2429.0
+54->18->29->39->49->59->68->77->86->95->94->83->72->63->7
+Pathnodes from node 54 to node 17, dist 2263.0
+54->28->39->49->59->68->77->86->95->94->83->72->63->17
+Pathnodes from node 54 to node 27, dist 2095.0
+54->38->49->59->68->77->86->95->94->83->72->63->27
+Pathnodes from node 54 to node 37, dist 1925.0
+54->48->59->68->77->86->95->94->83->72->63->37
+Pathnodes from node 54 to node 47, dist 1757.0
+54->58->68->77->86->95->94->83->72->63->47
+Pathnodes from node 64 to node 31, dist 515.0
+64->42->53->31
+Pathnodes from node 64 to node 32, dist 520.0
+64->42->53->32
+Pathnodes from node 64 to node 33, dist 524.0
+64->42->53->33
+Pathnodes from node 64 to node 34, dist 531.0
+64->43->53->34
+Pathnodes from node 64 to node 44, dist 355.0
+64->53->44
+Pathnodes from node 64 to node 30, dist 676.0
+64->41->52->63->30
+Pathnodes from node 64 to node 56, dist 1420.0
+64->67->77->86->95->94->83->73->56
+Pathnodes from node 64 to node 57, dist 1414.0
+64->68->77->86->95->94->83->73->57
+Pathnodes from node 64 to node 7, dist 2259.0
+64->18->29->39->49->59->68->77->86->95->94->83->73->7
+Pathnodes from node 64 to node 17, dist 2093.0
+64->28->39->49->59->68->77->86->95->94->83->73->17
+Pathnodes from node 64 to node 27, dist 1925.0
+64->38->49->59->68->77->86->95->94->83->73->27
+Pathnodes from node 64 to node 37, dist 1755.0
+64->48->59->68->77->86->95->94->83->73->37
+Pathnodes from node 64 to node 47, dist 1587.0
+64->58->68->77->86->95->94->83->73->47
+Pathnodes from node 74 to node 31, dist 680.0
+74->41->52->63->31
+Pathnodes from node 74 to node 32, dist 685.0
+74->41->52->63->32
+Pathnodes from node 74 to node 33, dist 694.0
+74->42->52->63->33
+Pathnodes from node 74 to node 34, dist 701.0
+74->43->52->63->34
+Pathnodes from node 74 to node 44, dist 530.0
+74->53->63->44
+Pathnodes from node 74 to node 30, dist 676.0
+74->41->52->63->30
+Pathnodes from node 74 to node 55, dist 1248.0
+74->66->77->86->95->94->83->55
+Pathnodes from node 74 to node 56, dist 1246.0
+74->67->77->86->95->94->83->56
+Pathnodes from node 74 to node 57, dist 1240.0
+74->68->77->86->95->94->83->57
+Pathnodes from node 74 to node 7, dist 2085.0
+74->18->29->39->49->59->68->77->86->95->94->83->7
+Pathnodes from node 74 to node 17, dist 1919.0
+74->28->39->49->59->68->77->86->95->94->83->17
+Pathnodes from node 74 to node 27, dist 1751.0
+74->38->49->59->68->77->86->95->94->83->27
+Pathnodes from node 74 to node 37, dist 1581.0
+74->48->59->68->77->86->95->94->83->37
+Pathnodes from node 74 to node 47, dist 1413.0
+74->58->68->77->86->95->94->83->47
+Pathnodes from node 31 to node 33, dist 348.0
+31->42->33
+Pathnodes from node 31 to node 34, dist 527.0
+31->43->42->34
+Pathnodes from node 31 to node 44, dist 527.0
+31->43->42->44
+Pathnodes from node 31 to node 55, dist 1904.0
+31->66->77->86->95->94->83->72->61->50->40->55
+Pathnodes from node 31 to node 56, dist 1902.0
+31->67->77->86->95->94->83->72->61->50->40->56
+Pathnodes from node 31 to node 57, dist 1896.0
+31->68->77->86->95->94->83->72->61->50->40->57
+Pathnodes from node 31 to node 65, dist 1726.0
+31->76->86->95->94->83->72->61->50->40->65
+Pathnodes from node 31 to node 75, dist 1547.0
+31->86->95->94->83->72->61->50->40->75
+Pathnodes from node 31 to node 7, dist 2741.0
+31->18->29->39->49->59->68->77->86->95->94->83->72->61->50->40->7
+Pathnodes from node 31 to node 17, dist 2575.0
+31->28->39->49->59->68->77->86->95->94->83->72->61->50->40->17
+Pathnodes from node 31 to node 27, dist 2407.0
+31->38->49->59->68->77->86->95->94->83->72->61->50->40->27
+Pathnodes from node 31 to node 37, dist 2237.0
+31->48->59->68->77->86->95->94->83->72->61->50->40->37
+Pathnodes from node 31 to node 47, dist 2069.0
+31->58->68->77->86->95->94->83->72->61->50->40->47
+Pathnodes from node 32 to node 34, dist 355.0
+32->43->34
+Pathnodes from node 32 to node 44, dist 355.0
+32->43->44
+Pathnodes from node 32 to node 30, dist 330.0
+32->41->30
+Pathnodes from node 32 to node 55, dist 1909.0
+32->66->77->86->95->94->83->72->61->50->41->55
+Pathnodes from node 32 to node 56, dist 1907.0
+32->67->77->86->95->94->83->72->61->50->41->56
+Pathnodes from node 32 to node 57, dist 1901.0
+32->68->77->86->95->94->83->72->61->50->41->57
+Pathnodes from node 32 to node 65, dist 1731.0
+32->76->86->95->94->83->72->61->50->41->65
+Pathnodes from node 32 to node 75, dist 1552.0
+32->86->95->94->83->72->61->50->41->75
+Pathnodes from node 32 to node 7, dist 2746.0
+32->18->29->39->49->59->68->77->86->95->94->83->72->61->50->41->7
+Pathnodes from node 32 to node 17, dist 2580.0
+32->28->39->49->59->68->77->86->95->94->83->72->61->50->41->17
+Pathnodes from node 32 to node 27, dist 2412.0
+32->38->49->59->68->77->86->95->94->83->72->61->50->41->27
+Pathnodes from node 32 to node 37, dist 2242.0
+32->48->59->68->77->86->95->94->83->72->61->50->41->37
+Pathnodes from node 32 to node 47, dist 2074.0
+32->58->68->77->86->95->94->83->72->61->50->41->47
+Pathnodes from node 33 to node 30, dist 502.0
+33->41->42->30
+Pathnodes from node 33 to node 55, dist 1919.0
+33->66->77->86->95->94->83->72->61->51->42->55
+Pathnodes from node 33 to node 56, dist 1917.0
+33->67->77->86->95->94->83->72->61->51->42->56
+Pathnodes from node 33 to node 57, dist 1911.0
+33->68->77->86->95->94->83->72->61->51->42->57
+Pathnodes from node 33 to node 65, dist 1741.0
+33->76->86->95->94->83->72->61->51->42->65
+Pathnodes from node 33 to node 75, dist 1562.0
+33->86->95->94->83->72->61->51->42->75
+Pathnodes from node 33 to node 7, dist 2756.0
+33->18->29->39->49->59->68->77->86->95->94->83->72->61->51->42->7
+Pathnodes from node 33 to node 17, dist 2590.0
+33->28->39->49->59->68->77->86->95->94->83->72->61->51->42->17
+Pathnodes from node 33 to node 27, dist 2422.0
+33->38->49->59->68->77->86->95->94->83->72->61->51->42->27
+Pathnodes from node 33 to node 37, dist 2252.0
+33->48->59->68->77->86->95->94->83->72->61->51->42->37
+Pathnodes from node 33 to node 47, dist 2084.0
+33->58->68->77->86->95->94->83->72->61->51->42->47
+Pathnodes from node 34 to node 30, dist 677.0
+34->41->52->43->30
+Pathnodes from node 34 to node 55, dist 1928.0
+34->66->77->86->95->94->83->72->61->52->43->55
+Pathnodes from node 34 to node 56, dist 1926.0
+34->67->77->86->95->94->83->72->61->52->43->56
+Pathnodes from node 34 to node 57, dist 1920.0
+34->68->77->86->95->94->83->72->61->52->43->57
+Pathnodes from node 34 to node 65, dist 1750.0
+34->76->86->95->94->83->72->61->52->43->65
+Pathnodes from node 34 to node 75, dist 1571.0
+34->86->95->94->83->72->61->52->43->75
+Pathnodes from node 34 to node 7, dist 2765.0
+34->18->29->39->49->59->68->77->86->95->94->83->72->61->52->43->7
+Pathnodes from node 34 to node 17, dist 2599.0
+34->28->39->49->59->68->77->86->95->94->83->72->61->52->43->17
+Pathnodes from node 34 to node 27, dist 2431.0
+34->38->49->59->68->77->86->95->94->83->72->61->52->43->27
+Pathnodes from node 34 to node 37, dist 2261.0
+34->48->59->68->77->86->95->94->83->72->61->52->43->37
+Pathnodes from node 34 to node 47, dist 2093.0
+34->58->68->77->86->95->94->83->72->61->52->43->47
+Pathnodes from node 44 to node 30, dist 677.0
+44->41->52->43->30
+Pathnodes from node 44 to node 56, dist 1761.0
+44->67->77->86->95->94->83->72->62->53->56
+Pathnodes from node 44 to node 57, dist 1755.0
+44->68->77->86->95->94->83->72->62->53->57
+Pathnodes from node 44 to node 65, dist 1585.0
+44->76->86->95->94->83->72->62->53->65
+Pathnodes from node 44 to node 75, dist 1406.0
+44->86->95->94->83->72->62->53->75
+Pathnodes from node 44 to node 7, dist 2600.0
+44->18->29->39->49->59->68->77->86->95->94->83->72->62->53->7
+Pathnodes from node 44 to node 17, dist 2434.0
+44->28->39->49->59->68->77->86->95->94->83->72->62->53->17
+Pathnodes from node 44 to node 27, dist 2266.0
+44->38->49->59->68->77->86->95->94->83->72->62->53->27
+Pathnodes from node 44 to node 37, dist 2096.0
+44->48->59->68->77->86->95->94->83->72->62->53->37
+Pathnodes from node 44 to node 47, dist 1928.0
+44->58->68->77->86->95->94->83->72->62->53->47
+Pathnodes from node 30 to node 55, dist 1904.0
+30->66->77->86->95->94->83->72->61->50->40->55
+Pathnodes from node 30 to node 56, dist 1902.0
+30->67->77->86->95->94->83->72->61->50->40->56
+Pathnodes from node 30 to node 57, dist 1896.0
+30->68->77->86->95->94->83->72->61->50->40->57
+Pathnodes from node 30 to node 65, dist 1726.0
+30->76->86->95->94->83->72->61->50->40->65
+Pathnodes from node 30 to node 75, dist 1547.0
+30->86->95->94->83->72->61->50->40->75
+Pathnodes from node 30 to node 7, dist 2741.0
+30->18->29->39->49->59->68->77->86->95->94->83->72->61->50->40->7
+Pathnodes from node 30 to node 17, dist 2575.0
+30->28->39->49->59->68->77->86->95->94->83->72->61->50->40->17
+Pathnodes from node 30 to node 27, dist 2407.0
+30->38->49->59->68->77->86->95->94->83->72->61->50->40->27
+Pathnodes from node 30 to node 37, dist 2237.0
+30->48->59->68->77->86->95->94->83->72->61->50->40->37
+Pathnodes from node 30 to node 47, dist 2069.0
+30->58->68->77->86->95->94->83->72->61->50->40->47
+Pathnodes from node 55 to node 57, dist 356.0
+55->66->57
+Pathnodes from node 55 to node 75, dist 358.0
+55->66->75
+Pathnodes from node 55 to node 7, dist 1383.0
+55->18->29->39->49->58->67->66->7
+Pathnodes from node 55 to node 17, dist 1217.0
+55->28->39->49->58->67->66->17
+Pathnodes from node 55 to node 27, dist 1049.0
+55->38->49->58->67->66->27
+Pathnodes from node 55 to node 37, dist 879.0
+55->48->58->67->66->37
+Pathnodes from node 55 to node 47, dist 706.0
+55->58->67->66->47
+Pathnodes from node 56 to node 75, dist 358.0
+56->66->75
+Pathnodes from node 56 to node 7, dist 1204.0
+56->18->29->39->49->58->67->7
+Pathnodes from node 56 to node 17, dist 1038.0
+56->28->39->49->58->67->17
+Pathnodes from node 56 to node 27, dist 870.0
+56->38->49->58->67->27
+Pathnodes from node 56 to node 37, dist 700.0
+56->48->58->67->37
+Pathnodes from node 57 to node 65, dist 358.0
+57->66->65
+Pathnodes from node 57 to node 75, dist 358.0
+57->66->75
+Pathnodes from node 57 to node 7, dist 858.0
+57->18->29->39->48->7
+Pathnodes from node 57 to node 17, dist 692.0
+57->28->39->48->17
+Pathnodes from node 57 to node 27, dist 524.0
+57->38->48->27
+Pathnodes from node 57 to node 37, dist 350.0
+57->48->37
+Pathnodes from node 65 to node 7, dist 1383.0
+65->18->29->39->49->58->67->66->7
+Pathnodes from node 65 to node 17, dist 1217.0
+65->28->39->49->58->67->66->17
+Pathnodes from node 65 to node 27, dist 1049.0
+65->38->49->58->67->66->27
+Pathnodes from node 65 to node 37, dist 879.0
+65->48->58->67->66->37
+Pathnodes from node 65 to node 47, dist 706.0
+65->58->67->66->47
+Pathnodes from node 75 to node 7, dist 1383.0
+75->18->29->39->49->58->67->66->7
+Pathnodes from node 75 to node 17, dist 1217.0
+75->28->39->49->58->67->66->17
+Pathnodes from node 75 to node 27, dist 1049.0
+75->38->49->58->67->66->27
+Pathnodes from node 75 to node 37, dist 879.0
+75->48->58->67->66->37
+Pathnodes from node 75 to node 47, dist 706.0
+75->58->67->66->47
+Pathnodes from node 7 to node 27, dist 350.0
+7->18->27
+Pathnodes from node 7 to node 37, dist 524.0
+7->28->18->37
+Pathnodes from node 7 to node 47, dist 694.0
+7->38->29->18->47
+Pathnodes from node 17 to node 37, dist 351.0
+17->28->37
+Pathnodes from node 17 to node 47, dist 525.0
+17->38->28->47
+Pathnodes from node 27 to node 47, dist 351.0
+27->38->47
+tmpgraph size 46
+dom size 54
+
+complete path : 
+0->1->0->
+dist covered 332.0
+
+complete path : 
+0->1->2->1->0->
+dist covered 501.0
+
+complete path : 
+0->1->2->3->2->1->0->
+dist covered 672.0
+
+complete path : 
+0->1->2->3->4->3->2->1->0->
+dist covered 844.0
+
+complete path : 
+0->1->2->3->4->5->4->3->2->1->0->
+dist covered 1016.0
+
+complete path : 
+0->1->2->3->4->5->6->5->4->3->2->1->0->
+dist covered 1188.0
+
+complete path : 
+0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+
+complete path : 
+0->10->0->
+
+complete path : 
+0->11->0->
+dist covered 335.0
+
+complete path : 
+0->1->12->1->0->
+dist covered 505.0
+
+complete path : 
+0->1->2->13->2->1->0->
+dist covered 676.0
+
+complete path : 
+0->1->2->3->14->3->2->1->0->
+dist covered 848.0
+
+complete path : 
+0->1->2->3->4->15->4->3->2->1->0->
+dist covered 1020.0
+
+complete path : 
+0->1->2->3->4->5->16->5->4->3->2->1->0->
+dist covered 1191.0
+
+complete path : 
+0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+dist covered 326.0
+
+complete path : 
+0->10->20->10->0->
+dist covered 330.0
+
+complete path : 
+0->10->21->10->0->
+dist covered 339.0
+
+complete path : 
+0->11->22->11->0->
+dist covered 510.0
+
+complete path : 
+0->1->12->23->12->1->0->
+dist covered 683.0
+
+complete path : 
+0->1->2->13->24->13->2->1->0->
+dist covered 855.0
+
+complete path : 
+0->1->2->3->14->25->14->3->2->1->0->
+dist covered 1026.0
+
+complete path : 
+0->1->2->3->4->15->26->15->4->3->2->1->0->
+dist covered 1197.0
+
+complete path : 
+0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+dist covered 489.0
+
+complete path : 
+0->10->20->30->20->10->0->
+dist covered 493.0
+
+complete path : 
+0->10->20->31->20->10->0->
+dist covered 502.0
+
+complete path : 
+0->10->21->32->21->10->0->
+dist covered 515.0
+
+complete path : 
+0->11->22->33->22->11->0->
+dist covered 689.0
+
+complete path : 
+0->1->12->23->34->23->12->1->0->
+dist covered 862.0
+
+complete path : 
+0->1->2->13->24->35->24->13->2->1->0->
+dist covered 1034.0
+
+complete path : 
+0->1->2->3->14->25->36->25->14->3->2->1->0->
+dist covered 1203.0
+
+complete path : 
+0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+dist covered 694.0
+
+complete path : 
+0->11->22->33->44->33->22->11->0->
+dist covered 869.0
+
+complete path : 
+0->1->12->23->34->45->34->23->12->1->0->
+dist covered 1041.0
+
+complete path : 
+0->1->2->13->24->35->46->35->24->13->2->1->0->
+dist covered 1211.0
+
+complete path : 
+0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+dist covered 850.0
+
+complete path : 
+0->10->21->32->54->32->21->10->0->
+dist covered 873.0
+
+complete path : 
+0->11->22->33->44->55->44->33->22->11->0->
+dist covered 1048.0
+
+complete path : 
+0->1->12->23->34->45->56->45->34->23->12->1->0->
+dist covered 1218.0
+
+complete path : 
+0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+dist covered 1008.0
+
+complete path : 
+0->10->20->31->64->31->20->10->0->
+dist covered 1029.0
+
+complete path : 
+0->10->21->32->54->65->54->32->21->10->0->
+dist covered 1165.0
+
+complete path : 
+0->10->20->30->74->30->20->10->0->
+dist covered 1187.0
+
+complete path : 
+0->10->20->31->64->75->64->31->20->10->0->
+dist covered 1324.0
+
+complete path : 
+0->10->20->30->84->30->20->10->0->
+dist covered 1344.0
+
+complete path : 
+0->10->20->30->74->85->74->30->20->10->0->
+Paths 
+0 : 0->1->0->
+1 : 0->1->2->1->0->
+2 : 0->1->2->3->2->1->0->
+3 : 0->1->2->3->4->3->2->1->0->
+4 : 0->1->2->3->4->5->4->3->2->1->0->
+5 : 0->1->2->3->4->5->6->5->4->3->2->1->0->
+6 : 0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+7 : 0->10->0->
+8 : 0->11->0->
+9 : 0->1->12->1->0->
+10 : 0->1->2->13->2->1->0->
+11 : 0->1->2->3->14->3->2->1->0->
+12 : 0->1->2->3->4->15->4->3->2->1->0->
+13 : 0->1->2->3->4->5->16->5->4->3->2->1->0->
+14 : 0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+15 : 0->10->20->10->0->
+16 : 0->10->21->10->0->
+17 : 0->11->22->11->0->
+18 : 0->1->12->23->12->1->0->
+19 : 0->1->2->13->24->13->2->1->0->
+20 : 0->1->2->3->14->25->14->3->2->1->0->
+21 : 0->1->2->3->4->15->26->15->4->3->2->1->0->
+22 : 0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+23 : 0->10->20->30->20->10->0->
+24 : 0->10->20->31->20->10->0->
+25 : 0->10->21->32->21->10->0->
+26 : 0->11->22->33->22->11->0->
+27 : 0->1->12->23->34->23->12->1->0->
+28 : 0->1->2->13->24->35->24->13->2->1->0->
+29 : 0->1->2->3->14->25->36->25->14->3->2->1->0->
+30 : 0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+31 : 0->11->22->33->44->33->22->11->0->
+32 : 0->1->12->23->34->45->34->23->12->1->0->
+33 : 0->1->2->13->24->35->46->35->24->13->2->1->0->
+34 : 0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+35 : 0->10->21->32->54->32->21->10->0->
+36 : 0->11->22->33->44->55->44->33->22->11->0->
+37 : 0->1->12->23->34->45->56->45->34->23->12->1->0->
+38 : 0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+39 : 0->10->20->31->64->31->20->10->0->
+40 : 0->10->21->32->54->65->54->32->21->10->0->
+41 : 0->10->20->30->74->30->20->10->0->
+42 : 0->10->20->31->64->75->64->31->20->10->0->
+43 : 0->10->20->30->84->30->20->10->0->
+44 : 0->10->20->30->74->85->74->30->20->10->0->
+Total path with duplicates 45
+Total path without duplicates 45
+
+Paths 
+0 : 0->1->0->
+1 : 0->1->2->1->0->
+2 : 0->1->2->3->2->1->0->
+3 : 0->1->2->3->4->3->2->1->0->
+4 : 0->1->2->3->4->5->4->3->2->1->0->
+5 : 0->1->2->3->4->5->6->5->4->3->2->1->0->
+6 : 0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+7 : 0->10->0->
+8 : 0->11->0->
+9 : 0->1->12->1->0->
+10 : 0->1->2->13->2->1->0->
+11 : 0->1->2->3->14->3->2->1->0->
+12 : 0->1->2->3->4->15->4->3->2->1->0->
+13 : 0->1->2->3->4->5->16->5->4->3->2->1->0->
+14 : 0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+15 : 0->10->20->10->0->
+16 : 0->10->21->10->0->
+17 : 0->11->22->11->0->
+18 : 0->1->12->23->12->1->0->
+19 : 0->1->2->13->24->13->2->1->0->
+20 : 0->1->2->3->14->25->14->3->2->1->0->
+21 : 0->1->2->3->4->15->26->15->4->3->2->1->0->
+22 : 0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+23 : 0->10->20->30->20->10->0->
+24 : 0->10->20->31->20->10->0->
+25 : 0->10->21->32->21->10->0->
+26 : 0->11->22->33->22->11->0->
+27 : 0->1->12->23->34->23->12->1->0->
+28 : 0->1->2->13->24->35->24->13->2->1->0->
+29 : 0->1->2->3->14->25->36->25->14->3->2->1->0->
+30 : 0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+31 : 0->11->22->33->44->33->22->11->0->
+32 : 0->1->12->23->34->45->34->23->12->1->0->
+33 : 0->1->2->13->24->35->46->35->24->13->2->1->0->
+34 : 0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+35 : 0->10->21->32->54->32->21->10->0->
+36 : 0->11->22->33->44->55->44->33->22->11->0->
+37 : 0->1->12->23->34->45->56->45->34->23->12->1->0->
+38 : 0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+39 : 0->10->20->31->64->31->20->10->0->
+40 : 0->10->21->32->54->65->54->32->21->10->0->
+41 : 0->10->20->30->74->30->20->10->0->
+42 : 0->10->20->31->64->75->64->31->20->10->0->
+43 : 0->10->20->30->84->30->20->10->0->
+44 : 0->10->20->30->74->85->74->30->20->10->0->
+Solving LP
+
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 106 columns.
+Reduced LP has 47 rows, 885 columns, and 8793 nonzeros.
+Presolve time = 0.00 sec. (1.26 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Scaled dual infeas =            64.000000
+Iteration:    12   Dual objective     =            24.986514
+Iteration:    73   Dual objective     =            64.478883
+obj: 64.47888260724976
+x[11]=0.05222998189409894 x[12]=0.05222998189409894 x[18]=0.0033447880870561227 x[21]=0.13693677714961366 x[32]=0.08620921553412414 x[40]=0.007452980083508809 x[45]=0.09700698370468908 x[54]=0.06449765362302767 x[299]=0.08022613900897932 x[319]=0.009327864612200809 x[352]=0.029132025274359985 x[382]=0.024384584118538027 x[392]=0.09234305139858859 x[493]=0.012267671728928753 x[558]=0.05373240217270818 x[659]=0.012116912389609269 x[712]=0.08955400362118045 x[955]=0.09700698370468885 
+
+
+ constraint 0 dual -0.0
+ constraint 1 dual -0.0
+ constraint 2 dual -0.0
+ constraint 3 dual -0.0
+ constraint 4 dual -0.0
+ constraint 5 dual -0.0
+ constraint 6 dual -0.0
+ constraint 7 dual 0.08832723644828733
+ constraint 10 dual -0.0
+ constraint 11 dual 0.07164320289694404
+ constraint 12 dual 0.07768540073162608
+ constraint 13 dual 0.07768540073162619
+ constraint 14 dual 0.0805986032590621
+ constraint 15 dual 0.0805986032590622
+ constraint 16 dual 0.08832723644828722
+ constraint 17 dual 0.08832723644828733
+ constraint 20 dual -0.0
+ constraint 21 dual -0.0
+ constraint 22 dual -0.0
+ constraint 23 dual -0.0
+ constraint 24 dual -0.0
+ constraint 25 dual 1.1102230246251565E-16
+ constraint 26 dual -0.0
+ constraint 27 dual 1.1102230246251565E-16
+ constraint 30 dual -0.0
+ constraint 31 dual 0.0895540036211802
+ constraint 32 dual -0.0
+ constraint 33 dual -0.0
+ constraint 34 dual -0.0
+ constraint 35 dual -0.0
+ constraint 36 dual -0.0
+ constraint 37 dual 1.1102230246251565E-16
+ constraint 44 dual -0.0
+ constraint 45 dual 1.249000902703301E-16
+ constraint 46 dual -0.0
+ constraint 47 dual -0.0
+ constraint 54 dual 0.08059860325906221
+ constraint 55 dual 1.5265566588595902E-16
+ constraint 56 dual -0.0
+ constraint 57 dual -0.0
+ constraint 64 dual -0.0
+ constraint 65 dual -4.163336342344337E-17
+ constraint 74 dual -0.0
+ constraint 75 dual -1.696174065399546E-17
+ constraint 84 dual 0.08832723644828736
+ constraint 85 dual 0.0883272364482873
+attack target before rev map 7
+attacker u= 64.48
+attack target after rev map94
+attacker v= 69.0
+inner loop ....breaking.%%%%%%%%%%..attacker u<=v=64.48
+attacked target 94, adding all target w u >= 69.0
+addcount : 2
+currentplace  : 47
+
+Current place : 50
+Current target list : 0,1,10,11,2,3,12,13,4,5,14,15,44,45,54,55,22,23,32,33,24,25,34,35,6,7,16,17,84,85,20,21,26,27,30,31,36,37,64,65,74,75,46,47,56,57,94,95,62,63,72,
+Dom targets : 73 42 43 52 53 40 41 50 51 60 61 66 67 70 71 76 77 80 81 82 83 86 87 90 91 92 93 96 97 8 9 18 19 28 29 38 39 48 49 58 59 68 69 78 79 88 89 98 99 
+Dominated nodes : 
+Pathnodes from node 62 to node 64, dist 352.0
+62->73->64
+Pathnodes from node 62 to node 74, dist 351.0
+62->73->74
+Pathnodes from node 62 to node 84, dist 351.0
+62->73->84
+Pathnodes from node 62 to node 31, dist 495.0
+62->40->51->31
+Pathnodes from node 62 to node 32, dist 505.0
+62->41->51->32
+Pathnodes from node 62 to node 33, dist 514.0
+62->42->51->33
+Pathnodes from node 62 to node 34, dist 526.0
+62->43->52->34
+Pathnodes from node 62 to node 44, dist 355.0
+62->53->44
+Pathnodes from node 62 to node 54, dist 355.0
+62->53->54
+Pathnodes from node 62 to node 30, dist 491.0
+62->40->51->30
+Pathnodes from node 62 to node 94, dist 526.0
+62->83->73->94
+Pathnodes from node 63 to node 84, dist 351.0
+63->73->84
+Pathnodes from node 63 to node 31, dist 505.0
+63->41->52->31
+Pathnodes from node 63 to node 32, dist 510.0
+63->41->52->32
+Pathnodes from node 63 to node 33, dist 519.0
+63->42->52->33
+Pathnodes from node 63 to node 34, dist 526.0
+63->43->52->34
+Pathnodes from node 63 to node 44, dist 355.0
+63->53->44
+Pathnodes from node 63 to node 30, dist 501.0
+63->41->52->30
+Pathnodes from node 63 to node 94, dist 526.0
+63->83->73->94
+Pathnodes from node 64 to node 72, dist 343.0
+64->73->72
+Pathnodes from node 64 to node 84, dist 351.0
+64->73->84
+Pathnodes from node 64 to node 31, dist 515.0
+64->42->53->31
+Pathnodes from node 64 to node 32, dist 520.0
+64->42->53->32
+Pathnodes from node 64 to node 33, dist 524.0
+64->42->53->33
+Pathnodes from node 64 to node 34, dist 531.0
+64->43->53->34
+Pathnodes from node 64 to node 44, dist 355.0
+64->53->44
+Pathnodes from node 64 to node 30, dist 677.0
+64->41->52->53->30
+Pathnodes from node 64 to node 94, dist 526.0
+64->83->73->94
+Pathnodes from node 72 to node 74, dist 351.0
+72->73->74
+Pathnodes from node 72 to node 84, dist 351.0
+72->73->84
+Pathnodes from node 72 to node 31, dist 654.0
+72->40->50->61->31
+Pathnodes from node 72 to node 32, dist 664.0
+72->41->50->61->32
+Pathnodes from node 72 to node 33, dist 678.0
+72->42->51->61->33
+Pathnodes from node 72 to node 34, dist 690.0
+72->43->52->61->34
+Pathnodes from node 72 to node 44, dist 690.0
+72->43->52->61->44
+Pathnodes from node 72 to node 54, dist 690.0
+72->43->52->61->54
+Pathnodes from node 72 to node 30, dist 650.0
+72->40->50->61->30
+Pathnodes from node 72 to node 94, dist 352.0
+72->83->94
+Pathnodes from node 74 to node 31, dist 1155.0
+74->40->50->60->71->82->73->31
+Pathnodes from node 74 to node 32, dist 1165.0
+74->41->50->60->71->82->73->32
+Pathnodes from node 74 to node 33, dist 1179.0
+74->42->51->60->71->82->73->33
+Pathnodes from node 74 to node 34, dist 1195.0
+74->43->52->61->71->82->73->34
+Pathnodes from node 74 to node 44, dist 1195.0
+74->43->52->61->71->82->73->44
+Pathnodes from node 74 to node 54, dist 1195.0
+74->43->52->61->71->82->73->54
+Pathnodes from node 74 to node 30, dist 1151.0
+74->40->50->60->71->82->73->30
+Pathnodes from node 74 to node 94, dist 352.0
+74->83->94
+Pathnodes from node 84 to node 31, dist 1155.0
+84->40->50->60->71->82->73->31
+Pathnodes from node 84 to node 32, dist 1165.0
+84->41->50->60->71->82->73->32
+Pathnodes from node 84 to node 33, dist 1179.0
+84->42->51->60->71->82->73->33
+Pathnodes from node 84 to node 34, dist 1195.0
+84->43->52->61->71->82->73->34
+Pathnodes from node 84 to node 44, dist 1195.0
+84->43->52->61->71->82->73->44
+Pathnodes from node 84 to node 54, dist 1195.0
+84->43->52->61->71->82->73->54
+Pathnodes from node 84 to node 30, dist 1151.0
+84->40->50->60->71->82->73->30
+Pathnodes from node 31 to node 33, dist 348.0
+31->42->33
+Pathnodes from node 31 to node 34, dist 527.0
+31->43->42->34
+Pathnodes from node 31 to node 44, dist 527.0
+31->43->42->44
+Pathnodes from node 31 to node 54, dist 527.0
+31->43->42->54
+Pathnodes from node 31 to node 94, dist 1166.0
+31->83->82->71->60->50->40->94
+Pathnodes from node 32 to node 34, dist 355.0
+32->43->34
+Pathnodes from node 32 to node 44, dist 355.0
+32->43->44
+Pathnodes from node 32 to node 54, dist 355.0
+32->43->54
+Pathnodes from node 32 to node 30, dist 330.0
+32->41->30
+Pathnodes from node 32 to node 94, dist 1171.0
+32->83->82->71->60->50->41->94
+Pathnodes from node 33 to node 54, dist 355.0
+33->43->54
+Pathnodes from node 33 to node 30, dist 502.0
+33->41->42->30
+Pathnodes from node 33 to node 94, dist 1181.0
+33->83->82->71->60->51->42->94
+Pathnodes from node 34 to node 54, dist 355.0
+34->43->54
+Pathnodes from node 34 to node 30, dist 677.0
+34->41->52->43->30
+Pathnodes from node 34 to node 94, dist 1194.0
+34->83->82->71->61->52->43->94
+Pathnodes from node 44 to node 30, dist 677.0
+44->41->52->43->30
+Pathnodes from node 44 to node 94, dist 1194.0
+44->83->82->71->61->52->43->94
+Pathnodes from node 54 to node 30, dist 677.0
+54->41->52->43->30
+Pathnodes from node 54 to node 94, dist 1194.0
+54->83->82->71->61->52->43->94
+Pathnodes from node 30 to node 94, dist 1166.0
+30->83->82->71->60->50->40->94
+Pathnodes from node 55 to node 57, dist 356.0
+55->66->57
+Pathnodes from node 55 to node 75, dist 358.0
+55->66->75
+Pathnodes from node 55 to node 85, dist 537.0
+55->76->66->85
+Pathnodes from node 55 to node 95, dist 717.0
+55->86->77->66->95
+Pathnodes from node 55 to node 7, dist 1383.0
+55->18->29->39->49->58->67->66->7
+Pathnodes from node 55 to node 17, dist 1217.0
+55->28->39->49->58->67->66->17
+Pathnodes from node 55 to node 27, dist 1049.0
+55->38->49->58->67->66->27
+Pathnodes from node 55 to node 37, dist 879.0
+55->48->58->67->66->37
+Pathnodes from node 55 to node 47, dist 706.0
+55->58->67->66->47
+Pathnodes from node 56 to node 75, dist 358.0
+56->66->75
+Pathnodes from node 56 to node 85, dist 535.0
+56->76->67->85
+Pathnodes from node 56 to node 95, dist 715.0
+56->86->77->67->95
+Pathnodes from node 56 to node 7, dist 1204.0
+56->18->29->39->49->58->67->7
+Pathnodes from node 56 to node 17, dist 1038.0
+56->28->39->49->58->67->17
+Pathnodes from node 56 to node 27, dist 870.0
+56->38->49->58->67->27
+Pathnodes from node 56 to node 37, dist 700.0
+56->48->58->67->37
+Pathnodes from node 57 to node 65, dist 358.0
+57->66->65
+Pathnodes from node 57 to node 75, dist 358.0
+57->66->75
+Pathnodes from node 57 to node 85, dist 535.0
+57->76->67->85
+Pathnodes from node 57 to node 95, dist 711.0
+57->86->77->68->95
+Pathnodes from node 57 to node 7, dist 858.0
+57->18->29->39->48->7
+Pathnodes from node 57 to node 17, dist 692.0
+57->28->39->48->17
+Pathnodes from node 57 to node 27, dist 524.0
+57->38->48->27
+Pathnodes from node 57 to node 37, dist 350.0
+57->48->37
+Pathnodes from node 65 to node 85, dist 358.0
+65->76->85
+Pathnodes from node 65 to node 95, dist 539.0
+65->86->76->95
+Pathnodes from node 65 to node 7, dist 1383.0
+65->18->29->39->49->58->67->66->7
+Pathnodes from node 65 to node 17, dist 1217.0
+65->28->39->49->58->67->66->17
+Pathnodes from node 65 to node 27, dist 1049.0
+65->38->49->58->67->66->27
+Pathnodes from node 65 to node 37, dist 879.0
+65->48->58->67->66->37
+Pathnodes from node 65 to node 47, dist 706.0
+65->58->67->66->47
+Pathnodes from node 75 to node 95, dist 360.0
+75->86->95
+Pathnodes from node 75 to node 7, dist 1383.0
+75->18->29->39->49->58->67->66->7
+Pathnodes from node 75 to node 17, dist 1217.0
+75->28->39->49->58->67->66->17
+Pathnodes from node 75 to node 27, dist 1049.0
+75->38->49->58->67->66->27
+Pathnodes from node 75 to node 37, dist 879.0
+75->48->58->67->66->37
+Pathnodes from node 75 to node 47, dist 706.0
+75->58->67->66->47
+Pathnodes from node 85 to node 7, dist 1383.0
+85->18->29->39->49->58->67->76->7
+Pathnodes from node 85 to node 17, dist 1217.0
+85->28->39->49->58->67->76->17
+Pathnodes from node 85 to node 27, dist 1049.0
+85->38->49->58->67->76->27
+Pathnodes from node 85 to node 37, dist 879.0
+85->48->58->67->76->37
+Pathnodes from node 85 to node 47, dist 706.0
+85->58->67->76->47
+Pathnodes from node 95 to node 7, dist 1553.0
+95->18->29->39->49->59->68->77->86->7
+Pathnodes from node 95 to node 17, dist 1387.0
+95->28->39->49->59->68->77->86->17
+Pathnodes from node 95 to node 27, dist 1219.0
+95->38->49->59->68->77->86->27
+Pathnodes from node 95 to node 37, dist 1049.0
+95->48->59->68->77->86->37
+Pathnodes from node 95 to node 47, dist 881.0
+95->58->68->77->86->47
+Pathnodes from node 7 to node 27, dist 350.0
+7->18->27
+Pathnodes from node 7 to node 37, dist 524.0
+7->28->18->37
+Pathnodes from node 7 to node 47, dist 694.0
+7->38->29->18->47
+Pathnodes from node 17 to node 37, dist 351.0
+17->28->37
+Pathnodes from node 17 to node 47, dist 525.0
+17->38->28->47
+Pathnodes from node 27 to node 47, dist 351.0
+27->38->47
+tmpgraph size 51
+dom size 49
+
+complete path : 
+0->1->0->
+dist covered 332.0
+
+complete path : 
+0->1->2->1->0->
+dist covered 501.0
+
+complete path : 
+0->1->2->3->2->1->0->
+dist covered 672.0
+
+complete path : 
+0->1->2->3->4->3->2->1->0->
+dist covered 844.0
+
+complete path : 
+0->1->2->3->4->5->4->3->2->1->0->
+dist covered 1016.0
+
+complete path : 
+0->1->2->3->4->5->6->5->4->3->2->1->0->
+dist covered 1188.0
+
+complete path : 
+0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+
+complete path : 
+0->10->0->
+
+complete path : 
+0->11->0->
+dist covered 335.0
+
+complete path : 
+0->1->12->1->0->
+dist covered 505.0
+
+complete path : 
+0->1->2->13->2->1->0->
+dist covered 676.0
+
+complete path : 
+0->1->2->3->14->3->2->1->0->
+dist covered 848.0
+
+complete path : 
+0->1->2->3->4->15->4->3->2->1->0->
+dist covered 1020.0
+
+complete path : 
+0->1->2->3->4->5->16->5->4->3->2->1->0->
+dist covered 1191.0
+
+complete path : 
+0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+dist covered 326.0
+
+complete path : 
+0->10->20->10->0->
+dist covered 330.0
+
+complete path : 
+0->10->21->10->0->
+dist covered 339.0
+
+complete path : 
+0->11->22->11->0->
+dist covered 510.0
+
+complete path : 
+0->1->12->23->12->1->0->
+dist covered 683.0
+
+complete path : 
+0->1->2->13->24->13->2->1->0->
+dist covered 855.0
+
+complete path : 
+0->1->2->3->14->25->14->3->2->1->0->
+dist covered 1026.0
+
+complete path : 
+0->1->2->3->4->15->26->15->4->3->2->1->0->
+dist covered 1197.0
+
+complete path : 
+0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+dist covered 489.0
+
+complete path : 
+0->10->20->30->20->10->0->
+dist covered 493.0
+
+complete path : 
+0->10->20->31->20->10->0->
+dist covered 502.0
+
+complete path : 
+0->10->21->32->21->10->0->
+dist covered 515.0
+
+complete path : 
+0->11->22->33->22->11->0->
+dist covered 689.0
+
+complete path : 
+0->1->12->23->34->23->12->1->0->
+dist covered 862.0
+
+complete path : 
+0->1->2->13->24->35->24->13->2->1->0->
+dist covered 1034.0
+
+complete path : 
+0->1->2->3->14->25->36->25->14->3->2->1->0->
+dist covered 1203.0
+
+complete path : 
+0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+dist covered 694.0
+
+complete path : 
+0->11->22->33->44->33->22->11->0->
+dist covered 869.0
+
+complete path : 
+0->1->12->23->34->45->34->23->12->1->0->
+dist covered 1041.0
+
+complete path : 
+0->1->2->13->24->35->46->35->24->13->2->1->0->
+dist covered 1211.0
+
+complete path : 
+0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+dist covered 857.0
+
+complete path : 
+0->10->21->32->54->32->21->10->0->
+dist covered 873.0
+
+complete path : 
+0->11->22->33->44->55->44->33->22->11->0->
+dist covered 1048.0
+
+complete path : 
+0->1->12->23->34->45->56->45->34->23->12->1->0->
+dist covered 1218.0
+
+complete path : 
+0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+dist covered 980.0
+
+complete path : 
+0->10->20->30->62->30->20->10->0->
+dist covered 990.0
+
+complete path : 
+0->10->20->30->63->30->20->10->0->
+dist covered 1008.0
+
+complete path : 
+0->10->20->31->64->31->20->10->0->
+dist covered 1036.0
+
+complete path : 
+0->10->21->32->54->65->54->32->21->10->0->
+dist covered 1139.0
+
+complete path : 
+0->10->20->30->72->30->20->10->0->
+dist covered 1167.0
+
+complete path : 
+0->10->20->30->63->74->63->30->20->10->0->
+dist covered 1187.0
+
+complete path : 
+0->10->20->31->64->75->64->31->20->10->0->
+dist covered 1331.0
+
+complete path : 
+0->10->20->30->62->84->62->30->20->10->0->
+dist covered 1346.0
+
+complete path : 
+0->10->20->30->63->74->85->74->63->30->20->10->0->
+dist covered 1491.0
+
+complete path : 
+0->10->20->30->72->94->72->30->20->10->0->
+dist covered 1511.0
+
+complete path : 
+0->10->20->30->62->84->95->84->62->30->20->10->0->
+Paths 
+0 : 0->1->0->
+1 : 0->1->2->1->0->
+2 : 0->1->2->3->2->1->0->
+3 : 0->1->2->3->4->3->2->1->0->
+4 : 0->1->2->3->4->5->4->3->2->1->0->
+5 : 0->1->2->3->4->5->6->5->4->3->2->1->0->
+6 : 0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+7 : 0->10->0->
+8 : 0->11->0->
+9 : 0->1->12->1->0->
+10 : 0->1->2->13->2->1->0->
+11 : 0->1->2->3->14->3->2->1->0->
+12 : 0->1->2->3->4->15->4->3->2->1->0->
+13 : 0->1->2->3->4->5->16->5->4->3->2->1->0->
+14 : 0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+15 : 0->10->20->10->0->
+16 : 0->10->21->10->0->
+17 : 0->11->22->11->0->
+18 : 0->1->12->23->12->1->0->
+19 : 0->1->2->13->24->13->2->1->0->
+20 : 0->1->2->3->14->25->14->3->2->1->0->
+21 : 0->1->2->3->4->15->26->15->4->3->2->1->0->
+22 : 0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+23 : 0->10->20->30->20->10->0->
+24 : 0->10->20->31->20->10->0->
+25 : 0->10->21->32->21->10->0->
+26 : 0->11->22->33->22->11->0->
+27 : 0->1->12->23->34->23->12->1->0->
+28 : 0->1->2->13->24->35->24->13->2->1->0->
+29 : 0->1->2->3->14->25->36->25->14->3->2->1->0->
+30 : 0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+31 : 0->11->22->33->44->33->22->11->0->
+32 : 0->1->12->23->34->45->34->23->12->1->0->
+33 : 0->1->2->13->24->35->46->35->24->13->2->1->0->
+34 : 0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+35 : 0->10->21->32->54->32->21->10->0->
+36 : 0->11->22->33->44->55->44->33->22->11->0->
+37 : 0->1->12->23->34->45->56->45->34->23->12->1->0->
+38 : 0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+39 : 0->10->20->30->62->30->20->10->0->
+40 : 0->10->20->30->63->30->20->10->0->
+41 : 0->10->20->31->64->31->20->10->0->
+42 : 0->10->21->32->54->65->54->32->21->10->0->
+43 : 0->10->20->30->72->30->20->10->0->
+44 : 0->10->20->30->63->74->63->30->20->10->0->
+45 : 0->10->20->31->64->75->64->31->20->10->0->
+46 : 0->10->20->30->62->84->62->30->20->10->0->
+47 : 0->10->20->30->63->74->85->74->63->30->20->10->0->
+48 : 0->10->20->30->72->94->72->30->20->10->0->
+49 : 0->10->20->30->62->84->95->84->62->30->20->10->0->
+Total path with duplicates 50
+Total path without duplicates 50
+
+Paths 
+0 : 0->1->0->
+1 : 0->1->2->1->0->
+2 : 0->1->2->3->2->1->0->
+3 : 0->1->2->3->4->3->2->1->0->
+4 : 0->1->2->3->4->5->4->3->2->1->0->
+5 : 0->1->2->3->4->5->6->5->4->3->2->1->0->
+6 : 0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+7 : 0->10->0->
+8 : 0->11->0->
+9 : 0->1->12->1->0->
+10 : 0->1->2->13->2->1->0->
+11 : 0->1->2->3->14->3->2->1->0->
+12 : 0->1->2->3->4->15->4->3->2->1->0->
+13 : 0->1->2->3->4->5->16->5->4->3->2->1->0->
+14 : 0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+15 : 0->10->20->10->0->
+16 : 0->10->21->10->0->
+17 : 0->11->22->11->0->
+18 : 0->1->12->23->12->1->0->
+19 : 0->1->2->13->24->13->2->1->0->
+20 : 0->1->2->3->14->25->14->3->2->1->0->
+21 : 0->1->2->3->4->15->26->15->4->3->2->1->0->
+22 : 0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+23 : 0->10->20->30->20->10->0->
+24 : 0->10->20->31->20->10->0->
+25 : 0->10->21->32->21->10->0->
+26 : 0->11->22->33->22->11->0->
+27 : 0->1->12->23->34->23->12->1->0->
+28 : 0->1->2->13->24->35->24->13->2->1->0->
+29 : 0->1->2->3->14->25->36->25->14->3->2->1->0->
+30 : 0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+31 : 0->11->22->33->44->33->22->11->0->
+32 : 0->1->12->23->34->45->34->23->12->1->0->
+33 : 0->1->2->13->24->35->46->35->24->13->2->1->0->
+34 : 0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+35 : 0->10->21->32->54->32->21->10->0->
+36 : 0->11->22->33->44->55->44->33->22->11->0->
+37 : 0->1->12->23->34->45->56->45->34->23->12->1->0->
+38 : 0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+39 : 0->10->20->30->62->30->20->10->0->
+40 : 0->10->20->30->63->30->20->10->0->
+41 : 0->10->20->31->64->31->20->10->0->
+42 : 0->10->21->32->54->65->54->32->21->10->0->
+43 : 0->10->20->30->72->30->20->10->0->
+44 : 0->10->20->30->63->74->63->30->20->10->0->
+45 : 0->10->20->31->64->75->64->31->20->10->0->
+46 : 0->10->20->30->62->84->62->30->20->10->0->
+47 : 0->10->20->30->63->74->85->74->63->30->20->10->0->
+48 : 0->10->20->30->72->94->72->30->20->10->0->
+49 : 0->10->20->30->62->84->95->84->62->30->20->10->0->
+Solving LP
+
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 122 columns.
+Reduced LP has 52 rows, 1104 columns, and 11226 nonzeros.
+Presolve time = 0.00 sec. (1.60 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Scaled dual infeas =            64.000000
+Iteration:     9   Dual objective     =           -76.339869
+Iteration:    70   Dual objective     =            63.244284
+obj: 64.86526399490813
+x[40]=0.08207709636697594 x[84]=0.04770382182749308 x[93]=0.05151102957705631 x[95]=0.029961855109361345 x[96]=0.029961855109361345 x[97]=0.029961855109361325 x[102]=0.09909355562627598 x[421]=0.03870091063858952 x[422]=0.05138973379878284 x[460]=0.029306595178422337 x[482]=0.016842639763954892 x[496]=0.09009064443737236 x[505]=0.0045014555944518225 x[604]=0.004327636099106746 x[779]=0.09459210003182415 x[880]=0.012688823160193301 x[916]=0.0774018212771791 x[1050]=0.1071071036966724 x[1086]=0.012688823160193291 x[1179]=0.09009064443737246 
+
+
+ constraint 0 dual -0.0
+ constraint 1 dual -0.0
+ constraint 2 dual -0.0
+ constraint 3 dual -0.0
+ constraint 4 dual -0.0
+ constraint 5 dual -0.0
+ constraint 6 dual -0.0
+ constraint 7 dual 0.08077866001856554
+ constraint 10 dual -0.0
+ constraint 11 dual 0.0655204686817254
+ constraint 12 dual 0.07104629134162994
+ constraint 13 dual 0.07104629134162994
+ constraint 14 dual 0.07371052726694106
+ constraint 15 dual 0.07371052726694106
+ constraint 16 dual 0.08077866001856554
+ constraint 17 dual 0.08077866001856554
+ constraint 20 dual -0.0
+ constraint 21 dual -0.0
+ constraint 22 dual -0.0
+ constraint 23 dual -0.0
+ constraint 24 dual -0.0
+ constraint 25 dual -0.0
+ constraint 26 dual -0.0
+ constraint 27 dual -0.0
+ constraint 30 dual -0.0
+ constraint 31 dual 0.08190058585215675
+ constraint 32 dual -0.0
+ constraint 33 dual -0.0
+ constraint 34 dual -0.0
+ constraint 35 dual -0.0
+ constraint 36 dual 0.0
+ constraint 37 dual 0.0
+ constraint 44 dual 0.0
+ constraint 45 dual 1.3877787807814457E-17
+ constraint 46 dual -0.0
+ constraint 47 dual -0.0
+ constraint 54 dual 0.07371052726694102
+ constraint 55 dual -0.0
+ constraint 56 dual -1.5636944008805022E-17
+ constraint 57 dual -0.0
+ constraint 62 dual -0.0
+ constraint 63 dual -0.0
+ constraint 64 dual -0.0
+ constraint 65 dual 2.7755575615628914E-17
+ constraint 72 dual -0.0
+ constraint 74 dual -0.0
+ constraint 75 dual -0.0
+ constraint 84 dual 0.08077866001856554
+ constraint 85 dual 0.08077866001856554
+ constraint 94 dual 0.08546148088920705
+ constraint 95 dual -0.0
+attack target before rev map 7
+attacker u= 64.87
+attack target after rev map7
+attacker v= 64.87
+inner loop ....breaking.%%%%%%%%%%..attacker u<=v=64.87
+attacked target 7, adding all target w u >= 73.0
+addcount : 0
+currentplace  : 50
+
+Current place : 55
+Current target list : 0,1,10,11,2,3,12,13,4,5,14,15,44,45,54,55,22,23,32,33,24,25,34,35,6,7,16,17,84,85,20,21,26,27,30,31,36,37,64,65,74,75,46,47,56,57,94,95,62,63,72,73,42,43,52,53,
+Dom targets : 40 41 50 51 60 61 66 67 70 71 76 77 80 81 82 83 86 87 90 91 92 93 96 97 8 9 18 19 28 29 38 39 48 49 58 59 68 69 78 79 88 89 98 99 
+Dominated nodes : 
+Pathnodes from node 30 to node 32, dist 339.0
+30->41->32
+Pathnodes from node 30 to node 42, dist 339.0
+30->41->42
+Pathnodes from node 30 to node 52, dist 338.0
+30->41->52
+Pathnodes from node 30 to node 62, dist 498.0
+30->51->40->62
+Pathnodes from node 30 to node 72, dist 656.0
+30->61->50->40->72
+Pathnodes from node 30 to node 73, dist 988.0
+30->82->71->60->50->40->73
+Pathnodes from node 30 to node 74, dist 1165.0
+30->83->82->71->60->50->40->74
+Pathnodes from node 30 to node 84, dist 1165.0
+30->83->82->71->60->50->40->84
+Pathnodes from node 30 to node 94, dist 1166.0
+30->83->82->71->60->50->40->94
+Pathnodes from node 31 to node 52, dist 338.0
+31->41->52
+Pathnodes from node 31 to node 62, dist 498.0
+31->51->40->62
+Pathnodes from node 31 to node 72, dist 656.0
+31->61->50->40->72
+Pathnodes from node 31 to node 73, dist 988.0
+31->82->71->60->50->40->73
+Pathnodes from node 31 to node 74, dist 1165.0
+31->83->82->71->60->50->40->74
+Pathnodes from node 31 to node 84, dist 1165.0
+31->83->82->71->60->50->40->84
+Pathnodes from node 31 to node 94, dist 1166.0
+31->83->82->71->60->50->40->94
+Pathnodes from node 32 to node 52, dist 338.0
+32->41->52
+Pathnodes from node 32 to node 62, dist 503.0
+32->51->41->62
+Pathnodes from node 32 to node 72, dist 661.0
+32->61->50->41->72
+Pathnodes from node 32 to node 73, dist 993.0
+32->82->71->60->50->41->73
+Pathnodes from node 32 to node 74, dist 1170.0
+32->83->82->71->60->50->41->74
+Pathnodes from node 32 to node 84, dist 1170.0
+32->83->82->71->60->50->41->84
+Pathnodes from node 32 to node 94, dist 1171.0
+32->83->82->71->60->50->41->94
+Pathnodes from node 42 to node 62, dist 336.0
+42->51->62
+Pathnodes from node 42 to node 72, dist 499.0
+42->61->51->72
+Pathnodes from node 42 to node 73, dist 831.0
+42->82->71->60->51->73
+Pathnodes from node 42 to node 74, dist 1008.0
+42->83->82->71->60->51->74
+Pathnodes from node 42 to node 84, dist 1008.0
+42->83->82->71->60->51->84
+Pathnodes from node 42 to node 94, dist 1009.0
+42->83->82->71->60->51->94
+Pathnodes from node 52 to node 72, dist 333.0
+52->61->72
+Pathnodes from node 52 to node 73, dist 669.0
+52->82->71->61->73
+Pathnodes from node 52 to node 74, dist 846.0
+52->83->82->71->61->74
+Pathnodes from node 52 to node 84, dist 846.0
+52->83->82->71->61->84
+Pathnodes from node 52 to node 94, dist 847.0
+52->83->82->71->61->94
+Pathnodes from node 62 to node 74, dist 682.0
+62->83->82->71->74
+Pathnodes from node 62 to node 84, dist 682.0
+62->83->82->71->84
+Pathnodes from node 62 to node 94, dist 683.0
+62->83->82->71->94
+Pathnodes from node 72 to node 74, dist 351.0
+72->83->74
+Pathnodes from node 72 to node 84, dist 351.0
+72->83->84
+Pathnodes from node 72 to node 94, dist 352.0
+72->83->94
+Pathnodes from node 55 to node 57, dist 356.0
+55->66->57
+Pathnodes from node 55 to node 75, dist 358.0
+55->66->75
+Pathnodes from node 55 to node 85, dist 537.0
+55->76->66->85
+Pathnodes from node 55 to node 95, dist 717.0
+55->86->77->66->95
+Pathnodes from node 55 to node 7, dist 1383.0
+55->18->29->39->49->58->67->66->7
+Pathnodes from node 55 to node 17, dist 1217.0
+55->28->39->49->58->67->66->17
+Pathnodes from node 55 to node 27, dist 1049.0
+55->38->49->58->67->66->27
+Pathnodes from node 55 to node 37, dist 879.0
+55->48->58->67->66->37
+Pathnodes from node 55 to node 47, dist 706.0
+55->58->67->66->47
+Pathnodes from node 56 to node 75, dist 358.0
+56->66->75
+Pathnodes from node 56 to node 85, dist 535.0
+56->76->67->85
+Pathnodes from node 56 to node 95, dist 715.0
+56->86->77->67->95
+Pathnodes from node 56 to node 7, dist 1204.0
+56->18->29->39->49->58->67->7
+Pathnodes from node 56 to node 17, dist 1038.0
+56->28->39->49->58->67->17
+Pathnodes from node 56 to node 27, dist 870.0
+56->38->49->58->67->27
+Pathnodes from node 56 to node 37, dist 700.0
+56->48->58->67->37
+Pathnodes from node 57 to node 65, dist 358.0
+57->66->65
+Pathnodes from node 57 to node 75, dist 358.0
+57->66->75
+Pathnodes from node 57 to node 85, dist 535.0
+57->76->67->85
+Pathnodes from node 57 to node 95, dist 711.0
+57->86->77->68->95
+Pathnodes from node 57 to node 7, dist 858.0
+57->18->29->39->48->7
+Pathnodes from node 57 to node 17, dist 692.0
+57->28->39->48->17
+Pathnodes from node 57 to node 27, dist 524.0
+57->38->48->27
+Pathnodes from node 57 to node 37, dist 350.0
+57->48->37
+Pathnodes from node 65 to node 85, dist 358.0
+65->76->85
+Pathnodes from node 65 to node 95, dist 539.0
+65->86->76->95
+Pathnodes from node 65 to node 7, dist 1383.0
+65->18->29->39->49->58->67->66->7
+Pathnodes from node 65 to node 17, dist 1217.0
+65->28->39->49->58->67->66->17
+Pathnodes from node 65 to node 27, dist 1049.0
+65->38->49->58->67->66->27
+Pathnodes from node 65 to node 37, dist 879.0
+65->48->58->67->66->37
+Pathnodes from node 65 to node 47, dist 706.0
+65->58->67->66->47
+Pathnodes from node 75 to node 95, dist 360.0
+75->86->95
+Pathnodes from node 75 to node 7, dist 1383.0
+75->18->29->39->49->58->67->66->7
+Pathnodes from node 75 to node 17, dist 1217.0
+75->28->39->49->58->67->66->17
+Pathnodes from node 75 to node 27, dist 1049.0
+75->38->49->58->67->66->27
+Pathnodes from node 75 to node 37, dist 879.0
+75->48->58->67->66->37
+Pathnodes from node 75 to node 47, dist 706.0
+75->58->67->66->47
+Pathnodes from node 85 to node 7, dist 1383.0
+85->18->29->39->49->58->67->76->7
+Pathnodes from node 85 to node 17, dist 1217.0
+85->28->39->49->58->67->76->17
+Pathnodes from node 85 to node 27, dist 1049.0
+85->38->49->58->67->76->27
+Pathnodes from node 85 to node 37, dist 879.0
+85->48->58->67->76->37
+Pathnodes from node 85 to node 47, dist 706.0
+85->58->67->76->47
+Pathnodes from node 73 to node 94, dist 352.0
+73->83->94
+Pathnodes from node 74 to node 94, dist 352.0
+74->83->94
+Pathnodes from node 95 to node 7, dist 1553.0
+95->18->29->39->49->59->68->77->86->7
+Pathnodes from node 95 to node 17, dist 1387.0
+95->28->39->49->59->68->77->86->17
+Pathnodes from node 95 to node 27, dist 1219.0
+95->38->49->59->68->77->86->27
+Pathnodes from node 95 to node 37, dist 1049.0
+95->48->59->68->77->86->37
+Pathnodes from node 95 to node 47, dist 881.0
+95->58->68->77->86->47
+Pathnodes from node 7 to node 27, dist 350.0
+7->18->27
+Pathnodes from node 7 to node 37, dist 524.0
+7->28->18->37
+Pathnodes from node 7 to node 47, dist 694.0
+7->38->29->18->47
+Pathnodes from node 17 to node 37, dist 351.0
+17->28->37
+Pathnodes from node 17 to node 47, dist 525.0
+17->38->28->47
+Pathnodes from node 27 to node 47, dist 351.0
+27->38->47
+tmpgraph size 56
+dom size 44
+
+complete path : 
+0->1->0->
+dist covered 332.0
+
+complete path : 
+0->1->2->1->0->
+dist covered 501.0
+
+complete path : 
+0->1->2->3->2->1->0->
+dist covered 672.0
+
+complete path : 
+0->1->2->3->4->3->2->1->0->
+dist covered 844.0
+
+complete path : 
+0->1->2->3->4->5->4->3->2->1->0->
+dist covered 1016.0
+
+complete path : 
+0->1->2->3->4->5->6->5->4->3->2->1->0->
+dist covered 1188.0
+
+complete path : 
+0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+
+complete path : 
+0->10->0->
+
+complete path : 
+0->11->0->
+dist covered 335.0
+
+complete path : 
+0->1->12->1->0->
+dist covered 505.0
+
+complete path : 
+0->1->2->13->2->1->0->
+dist covered 676.0
+
+complete path : 
+0->1->2->3->14->3->2->1->0->
+dist covered 848.0
+
+complete path : 
+0->1->2->3->4->15->4->3->2->1->0->
+dist covered 1020.0
+
+complete path : 
+0->1->2->3->4->5->16->5->4->3->2->1->0->
+dist covered 1191.0
+
+complete path : 
+0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+dist covered 326.0
+
+complete path : 
+0->10->20->10->0->
+dist covered 330.0
+
+complete path : 
+0->10->21->10->0->
+dist covered 339.0
+
+complete path : 
+0->11->22->11->0->
+dist covered 510.0
+
+complete path : 
+0->1->12->23->12->1->0->
+dist covered 683.0
+
+complete path : 
+0->1->2->13->24->13->2->1->0->
+dist covered 855.0
+
+complete path : 
+0->1->2->3->14->25->14->3->2->1->0->
+dist covered 1026.0
+
+complete path : 
+0->1->2->3->4->15->26->15->4->3->2->1->0->
+dist covered 1197.0
+
+complete path : 
+0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+dist covered 489.0
+
+complete path : 
+0->10->20->30->20->10->0->
+dist covered 493.0
+
+complete path : 
+0->10->20->31->20->10->0->
+dist covered 502.0
+
+complete path : 
+0->10->21->32->21->10->0->
+dist covered 515.0
+
+complete path : 
+0->11->22->33->22->11->0->
+dist covered 689.0
+
+complete path : 
+0->1->12->23->34->23->12->1->0->
+dist covered 862.0
+
+complete path : 
+0->1->2->13->24->35->24->13->2->1->0->
+dist covered 1034.0
+
+complete path : 
+0->1->2->3->14->25->36->25->14->3->2->1->0->
+dist covered 1203.0
+
+complete path : 
+0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+dist covered 665.0
+
+complete path : 
+0->10->20->31->42->31->20->10->0->
+dist covered 678.0
+
+complete path : 
+0->10->21->32->43->32->21->10->0->
+dist covered 694.0
+
+complete path : 
+0->11->22->33->44->33->22->11->0->
+dist covered 869.0
+
+complete path : 
+0->1->12->23->34->45->34->23->12->1->0->
+dist covered 1041.0
+
+complete path : 
+0->1->2->13->24->35->46->35->24->13->2->1->0->
+dist covered 1211.0
+
+complete path : 
+0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+dist covered 827.0
+
+complete path : 
+0->10->20->30->52->30->20->10->0->
+dist covered 841.0
+
+complete path : 
+0->10->20->31->42->53->42->31->20->10->0->
+dist covered 857.0
+
+complete path : 
+0->10->21->32->43->54->43->32->21->10->0->
+dist covered 873.0
+
+complete path : 
+0->11->22->33->44->55->44->33->22->11->0->
+dist covered 1048.0
+
+complete path : 
+0->1->12->23->34->45->56->45->34->23->12->1->0->
+dist covered 1218.0
+
+complete path : 
+0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+dist covered 987.0
+
+complete path : 
+0->10->20->30->62->30->20->10->0->
+dist covered 1002.0
+
+complete path : 
+0->10->20->30->52->63->52->30->20->10->0->
+dist covered 1019.0
+
+complete path : 
+0->10->20->31->42->53->64->53->42->31->20->10->0->
+dist covered 1036.0
+
+complete path : 
+0->10->21->32->43->54->65->54->43->32->21->10->0->
+dist covered 1145.0
+
+complete path : 
+0->10->20->30->72->30->20->10->0->
+dist covered 1161.0
+
+complete path : 
+0->10->20->30->62->73->62->30->20->10->0->
+dist covered 1179.0
+
+complete path : 
+0->10->20->30->52->63->74->63->52->30->20->10->0->
+dist covered 1198.0
+
+complete path : 
+0->10->20->31->42->53->64->75->64->53->42->31->20->10->0->
+dist covered 1338.0
+
+complete path : 
+0->10->20->30->62->73->84->73->62->30->20->10->0->
+dist covered 1358.0
+
+complete path : 
+0->10->20->30->52->63->74->85->74->63->52->30->20->10->0->
+dist covered 1497.0
+
+complete path : 
+0->10->20->30->72->94->72->30->20->10->0->
+dist covered 1518.0
+
+complete path : 
+0->10->20->30->62->73->84->95->84->73->62->30->20->10->0->
+Paths 
+0 : 0->1->0->
+1 : 0->1->2->1->0->
+2 : 0->1->2->3->2->1->0->
+3 : 0->1->2->3->4->3->2->1->0->
+4 : 0->1->2->3->4->5->4->3->2->1->0->
+5 : 0->1->2->3->4->5->6->5->4->3->2->1->0->
+6 : 0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+7 : 0->10->0->
+8 : 0->11->0->
+9 : 0->1->12->1->0->
+10 : 0->1->2->13->2->1->0->
+11 : 0->1->2->3->14->3->2->1->0->
+12 : 0->1->2->3->4->15->4->3->2->1->0->
+13 : 0->1->2->3->4->5->16->5->4->3->2->1->0->
+14 : 0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+15 : 0->10->20->10->0->
+16 : 0->10->21->10->0->
+17 : 0->11->22->11->0->
+18 : 0->1->12->23->12->1->0->
+19 : 0->1->2->13->24->13->2->1->0->
+20 : 0->1->2->3->14->25->14->3->2->1->0->
+21 : 0->1->2->3->4->15->26->15->4->3->2->1->0->
+22 : 0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+23 : 0->10->20->30->20->10->0->
+24 : 0->10->20->31->20->10->0->
+25 : 0->10->21->32->21->10->0->
+26 : 0->11->22->33->22->11->0->
+27 : 0->1->12->23->34->23->12->1->0->
+28 : 0->1->2->13->24->35->24->13->2->1->0->
+29 : 0->1->2->3->14->25->36->25->14->3->2->1->0->
+30 : 0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+31 : 0->10->20->31->42->31->20->10->0->
+32 : 0->10->21->32->43->32->21->10->0->
+33 : 0->11->22->33->44->33->22->11->0->
+34 : 0->1->12->23->34->45->34->23->12->1->0->
+35 : 0->1->2->13->24->35->46->35->24->13->2->1->0->
+36 : 0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+37 : 0->10->20->30->52->30->20->10->0->
+38 : 0->10->20->31->42->53->42->31->20->10->0->
+39 : 0->10->21->32->43->54->43->32->21->10->0->
+40 : 0->11->22->33->44->55->44->33->22->11->0->
+41 : 0->1->12->23->34->45->56->45->34->23->12->1->0->
+42 : 0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+43 : 0->10->20->30->62->30->20->10->0->
+44 : 0->10->20->30->52->63->52->30->20->10->0->
+45 : 0->10->20->31->42->53->64->53->42->31->20->10->0->
+46 : 0->10->21->32->43->54->65->54->43->32->21->10->0->
+47 : 0->10->20->30->72->30->20->10->0->
+48 : 0->10->20->30->62->73->62->30->20->10->0->
+49 : 0->10->20->30->52->63->74->63->52->30->20->10->0->
+50 : 0->10->20->31->42->53->64->75->64->53->42->31->20->10->0->
+51 : 0->10->20->30->62->73->84->73->62->30->20->10->0->
+52 : 0->10->20->30->52->63->74->85->74->63->52->30->20->10->0->
+53 : 0->10->20->30->72->94->72->30->20->10->0->
+54 : 0->10->20->30->62->73->84->95->84->73->62->30->20->10->0->
+Total path with duplicates 55
+Total path without duplicates 55
+
+Paths 
+0 : 0->1->0->
+1 : 0->1->2->1->0->
+2 : 0->1->2->3->2->1->0->
+3 : 0->1->2->3->4->3->2->1->0->
+4 : 0->1->2->3->4->5->4->3->2->1->0->
+5 : 0->1->2->3->4->5->6->5->4->3->2->1->0->
+6 : 0->1->2->3->4->5->6->7->6->5->4->3->2->1->0->
+7 : 0->10->0->
+8 : 0->11->0->
+9 : 0->1->12->1->0->
+10 : 0->1->2->13->2->1->0->
+11 : 0->1->2->3->14->3->2->1->0->
+12 : 0->1->2->3->4->15->4->3->2->1->0->
+13 : 0->1->2->3->4->5->16->5->4->3->2->1->0->
+14 : 0->1->2->3->4->5->6->17->6->5->4->3->2->1->0->
+15 : 0->10->20->10->0->
+16 : 0->10->21->10->0->
+17 : 0->11->22->11->0->
+18 : 0->1->12->23->12->1->0->
+19 : 0->1->2->13->24->13->2->1->0->
+20 : 0->1->2->3->14->25->14->3->2->1->0->
+21 : 0->1->2->3->4->15->26->15->4->3->2->1->0->
+22 : 0->1->2->3->4->5->16->27->16->5->4->3->2->1->0->
+23 : 0->10->20->30->20->10->0->
+24 : 0->10->20->31->20->10->0->
+25 : 0->10->21->32->21->10->0->
+26 : 0->11->22->33->22->11->0->
+27 : 0->1->12->23->34->23->12->1->0->
+28 : 0->1->2->13->24->35->24->13->2->1->0->
+29 : 0->1->2->3->14->25->36->25->14->3->2->1->0->
+30 : 0->1->2->3->4->15->26->37->26->15->4->3->2->1->0->
+31 : 0->10->20->31->42->31->20->10->0->
+32 : 0->10->21->32->43->32->21->10->0->
+33 : 0->11->22->33->44->33->22->11->0->
+34 : 0->1->12->23->34->45->34->23->12->1->0->
+35 : 0->1->2->13->24->35->46->35->24->13->2->1->0->
+36 : 0->1->2->3->14->25->36->47->36->25->14->3->2->1->0->
+37 : 0->10->20->30->52->30->20->10->0->
+38 : 0->10->20->31->42->53->42->31->20->10->0->
+39 : 0->10->21->32->43->54->43->32->21->10->0->
+40 : 0->11->22->33->44->55->44->33->22->11->0->
+41 : 0->1->12->23->34->45->56->45->34->23->12->1->0->
+42 : 0->1->2->13->24->35->46->57->46->35->24->13->2->1->0->
+43 : 0->10->20->30->62->30->20->10->0->
+44 : 0->10->20->30->52->63->52->30->20->10->0->
+45 : 0->10->20->31->42->53->64->53->42->31->20->10->0->
+46 : 0->10->21->32->43->54->65->54->43->32->21->10->0->
+47 : 0->10->20->30->72->30->20->10->0->
+48 : 0->10->20->30->62->73->62->30->20->10->0->
+49 : 0->10->20->30->52->63->74->63->52->30->20->10->0->
+50 : 0->10->20->31->42->53->64->75->64->53->42->31->20->10->0->
+51 : 0->10->20->30->62->73->84->73->62->30->20->10->0->
+52 : 0->10->20->30->52->63->74->85->74->63->52->30->20->10->0->
+53 : 0->10->20->30->72->94->72->30->20->10->0->
+54 : 0->10->20->30->62->73->84->95->84->73->62->30->20->10->0->
+Solving LP
+
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 145 columns.
+Reduced LP has 57 rows, 1341 columns, and 14214 nonzeros.
+Presolve time = 0.00 sec. (2.01 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Scaled dual infeas =            64.000000
+Iteration:    14   Dual objective     =            24.671230
+Iteration:    75   Dual objective     =            61.995602
+obj: 64.86526399490813
+x[26]=0.09009064443737236 x[41]=0.09909355562627609 x[49]=0.0833609818408458 x[57]=0.13512981340122499 x[201]=0.05151102957705621 x[208]=0.05992371021872288 x[505]=0.028041069890572257 x[561]=0.05992371021872289 x[603]=0.08891515531385277 x[619]=0.02251958448192646 x[789]=0.06762840805541548 x[857]=0.05405438666242348 x[944]=0.02933928324278351 x[1064]=0.01573257378543036 x[1066]=0.0011754891235193354 x[1267]=0.11143473979577923 x[1474]=0.0021258643280774314 
+
+
+ constraint 0 dual -0.0
+ constraint 1 dual -0.0
+ constraint 2 dual -0.0
+ constraint 3 dual -0.0
+ constraint 4 dual -0.0
+ constraint 5 dual -0.0
+ constraint 6 dual -0.0
+ constraint 7 dual 0.08077866001856553
+ constraint 10 dual -0.0
+ constraint 11 dual 0.06552046868172538
+ constraint 12 dual 0.07104629134162993
+ constraint 13 dual 0.07104629134162993
+ constraint 14 dual 0.07371052726694104
+ constraint 15 dual 0.07371052726694105
+ constraint 16 dual 0.08077866001856553
+ constraint 17 dual 0.08077866001856554
+ constraint 20 dual -0.0
+ constraint 21 dual -0.0
+ constraint 22 dual -0.0
+ constraint 23 dual -0.0
+ constraint 24 dual -0.0
+ constraint 25 dual 1.3877787807814457E-17
+ constraint 26 dual -0.0
+ constraint 27 dual -0.0
+ constraint 30 dual -0.0
+ constraint 31 dual -0.0
+ constraint 32 dual -0.0
+ constraint 33 dual -0.0
+ constraint 34 dual -0.0
+ constraint 35 dual -0.0
+ constraint 36 dual -0.0
+ constraint 37 dual -1.3877787807814457E-17
+ constraint 42 dual -0.0
+ constraint 43 dual -0.0
+ constraint 44 dual -0.0
+ constraint 45 dual -0.0
+ constraint 46 dual -0.0
+ constraint 47 dual -0.0
+ constraint 52 dual -0.0
+ constraint 53 dual -0.0
+ constraint 54 dual 0.07371052726694105
+ constraint 55 dual -0.0
+ constraint 56 dual -0.0
+ constraint 57 dual -0.0
+ constraint 62 dual -0.0
+ constraint 63 dual -0.0
+ constraint 64 dual 0.08190058585215672
+ constraint 65 dual -1.3877787807814457E-17
+ constraint 72 dual -0.0
+ constraint 73 dual -0.0
+ constraint 74 dual -0.0
+ constraint 75 dual -0.0
+ constraint 84 dual 0.0807786600185655
+ constraint 85 dual 0.08077866001856553
+ constraint 94 dual 0.08546148088920703
+ constraint 95 dual 4.163336342344337E-17
+attack target before rev map 7
+attacker u= 64.87
+attack target after rev map7
+attacker v= 64.87
+attacked target after rev map 7
+Paths 
+0 : 0->11->21->31->42->53->52->62->72->94->74->73->30->20->10->1->0->
+1 : 0->10->1->2->11->0->
+2 : 0->10->1->12->21->11->0->
+3 : 0->1->2->11->20->30->52->84->73->63->72->31->22->21->10->0->
+4 : 0->10->1->11->0->
+5 : 0->10->11->1->0->
+6 : 0->1->11->10->0->
+7 : 0->1->10->20->11->0->
+8 : 0->11->10->1->0->
+9 : 0->10->20->11->22->12->2->1->0->
+Old path seq size 55
+new paths added by slave *************, attacked target 7
+New path seq size 60
+haa 
+iter1
+Solving LP
+
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 193 columns.
+Reduced LP has 57 rows, 1578 columns, and 17500 nonzeros.
+Presolve time = 0.00 sec. (2.49 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Scaled dual infeas =            64.000000
+Iteration:    50   Dual objective     =          -192.940126
+Iteration:   111   Dual objective     =            61.184447
+obj: 64.33832930859585
+x[59]=0.09788544182127595 x[118]=0.04832926145246641 x[137]=0.09788544182127595 x[183]=0.10641209293616882 x[285]=0.023600663229583395 x[317]=0.0566978169963277 x[318]=0.045624719318565043 x[319]=0.010862627806631003 x[321]=0.005467859048396655 x[749]=0.041654267447893134 x[757]=0.012240930233751068 x[773]=0.039931150084611566 x[775]=0.024826675403664192 x[921]=0.04942764062177174 x[996]=0.05361527442382985 x[1038]=0.04102952925391676 x[1134]=0.10641209293616882 x[1270]=0.035743516282553275 x[1515]=0.09382634776625565 x[1559]=0.008526651114892814 
+
+
+ constraint 0 dual -0.0
+ constraint 1 dual -0.0
+ constraint 2 dual -0.0
+ constraint 3 dual -0.0
+ constraint 4 dual -0.0
+ constraint 5 dual -0.0
+ constraint 6 dual -0.0
+ constraint 7 dual 0.08012245243909828
+ constraint 10 dual -0.0
+ constraint 11 dual 2.7755575615628914E-17
+ constraint 12 dual 0.07046914491631528
+ constraint 13 dual 0.07046914491631519
+ constraint 14 dual 0.07311173785067708
+ constraint 15 dual 0.07311173785067698
+ constraint 16 dual 0.08012245243909806
+ constraint 17 dual 0.08012245243909806
+ constraint 20 dual -0.0
+ constraint 21 dual -0.0
+ constraint 22 dual -0.0
+ constraint 23 dual -0.0
+ constraint 24 dual 0.0
+ constraint 25 dual 1.850371707708594E-18
+ constraint 26 dual -0.0
+ constraint 27 dual -0.0
+ constraint 30 dual -0.0
+ constraint 31 dual -0.0
+ constraint 32 dual -0.0
+ constraint 33 dual -0.0
+ constraint 34 dual -0.0
+ constraint 35 dual -0.0
+ constraint 36 dual 1.1564823173178735E-18
+ constraint 37 dual 2.220446049250313E-16
+ constraint 42 dual -0.0
+ constraint 43 dual -0.0
+ constraint 44 dual 0.07311173785067705
+ constraint 45 dual -2.7755575615628914E-17
+ constraint 46 dual -0.0
+ constraint 47 dual -0.0
+ constraint 52 dual -0.0
+ constraint 53 dual -0.0
+ constraint 54 dual 0.07311173785067715
+ constraint 55 dual -0.0
+ constraint 56 dual -0.0
+ constraint 57 dual 2.220446049250313E-16
+ constraint 62 dual -0.0
+ constraint 63 dual -0.0
+ constraint 64 dual 0.08123526427853
+ constraint 65 dual -0.0
+ constraint 72 dual -0.0
+ constraint 73 dual -0.0
+ constraint 74 dual -0.0
+ constraint 75 dual -0.0
+ constraint 84 dual 0.08012245243909824
+ constraint 85 dual 0.0801224524390981
+ constraint 94 dual 0.08476723229064016
+ constraint 95 dual -0.0
+attack target before rev map 7
+attacker u= 64.34
+attack target after rev map7
+attacker v= 64.34
+attacked target after rev map 7
+Paths 
+0 : 0->11->21->31->42->53->52->62->72->94->74->73->30->20->10->1->0->
+1 : 0->1->2->11->20->10->0->
+2 : 0->10->1->2->13->12->21->22->11->0->
+3 : 0->11->1->10->0->
+4 : 0->1->10->11->0->
+5 : 0->1->11->21->10->0->
+6 : 0->11->1->10->0->
+7 : 0->1->10->20->11->0->
+8 : 0->11->1->10->0->
+9 : 0->10->1->12->2->11->0->
+Old path seq size 60
+new paths added by slave *************, attacked target 7
+New path seq size 61
+haa 
+iter3
+Solving LP
+
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 203 columns.
+Reduced LP has 57 rows, 1628 columns, and 18176 nonzeros.
+Presolve time = 0.00 sec. (2.58 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Scaled dual infeas =            64.000000
+Iteration:    37   Dual objective     =           -24.592094
+Iteration:    99   Dual objective     =            63.309642
+obj: 64.16875740367412
+x[37]=0.08567497525446827 x[59]=0.11221555719960513 x[62]=0.07346630755970535 x[95]=0.0387492496398998 x[134]=0.07001800864240404 x[318]=0.02331127044504172 x[327]=0.027646646889621096 x[328]=0.08112061139268284 x[341]=0.016544044139342295 x[790]=0.042491355088056126 x[820]=0.048201883495717524 x[824]=0.030282687393293206 x[885]=0.008219667319252897 x[898]=0.028991908465515488 x[915]=0.08090360685251691 x[932]=0.024482056037546357 x[935]=0.01220866769476292 x[1063]=0.0534739645030617 x[1176]=0.07848457088901073 x[1344]=0.03564930966870782 x[1566]=0.02786365142978702 
+
+
+ constraint 0 dual -0.0
+ constraint 1 dual -0.0
+ constraint 2 dual -0.0
+ constraint 3 dual -0.0
+ constraint 4 dual -0.0
+ constraint 5 dual -0.0
+ constraint 6 dual -0.0
+ constraint 7 dual 0.07991127945663026
+ constraint 10 dual -0.0
+ constraint 11 dual -0.0
+ constraint 12 dual 2.7755575615628914E-17
+ constraint 13 dual 0.07028341446185554
+ constraint 14 dual 0.07291904250417512
+ constraint 15 dual 0.07291904250417514
+ constraint 16 dual 0.07991127945663028
+ constraint 17 dual 0.07991127945663029
+ constraint 20 dual -0.0
+ constraint 21 dual -0.0
+ constraint 22 dual -0.0
+ constraint 23 dual -0.0
+ constraint 24 dual -0.0
+ constraint 25 dual 2.7755575615628914E-17
+ constraint 26 dual -1.5034270125132324E-17
+ constraint 27 dual -0.0
+ constraint 30 dual -0.0
+ constraint 31 dual -0.0
+ constraint 32 dual -0.0
+ constraint 33 dual -0.0
+ constraint 34 dual -0.0
+ constraint 35 dual 2.7755575615628914E-17
+ constraint 36 dual -1.5034270125132324E-17
+ constraint 37 dual 2.3129646346357346E-18
+ constraint 42 dual -0.0
+ constraint 43 dual -0.0
+ constraint 44 dual -0.0
+ constraint 45 dual 0.07291904250417511
+ constraint 46 dual -0.0
+ constraint 47 dual -0.0
+ constraint 52 dual -0.0
+ constraint 53 dual -0.0
+ constraint 54 dual 0.07291904250417514
+ constraint 55 dual 0.07291904250417514
+ constraint 56 dual -0.0
+ constraint 57 dual -1.5441482208694957E-17
+ constraint 62 dual -0.0
+ constraint 63 dual -0.0
+ constraint 64 dual 0.08102115833797237
+ constraint 65 dual -0.0
+ constraint 72 dual -0.0
+ constraint 73 dual -0.0
+ constraint 74 dual -0.0
+ constraint 75 dual 1.3877787807814457E-17
+ constraint 84 dual 0.07991127945663028
+ constraint 85 dual 0.07991127945663028
+ constraint 94 dual 0.08454381739614508
+ constraint 95 dual -0.0
+attack target before rev map 7
+attacker u= 64.17
+attack target after rev map7
+attacker v= 64.17
+attacked target after rev map 7
+Paths 
+0 : 0->11->21->31->42->53->52->62->72->94->74->73->30->20->10->1->0->
+1 : 0->1->10->21->30->20->11->0->
+2 : 0->11->20->10->1->0->
+3 : 0->10->11->22->21->12->23->24->13->3->2->1->0->
+4 : 0->11->22->23->12->21->20->10->1->0->
+5 : 0->1->10->11->0->
+6 : 0->10->1->2->13->3->12->21->20->11->0->
+7 : 0->10->20->11->2->1->0->
+8 : 0->10->21->12->3->2->11->1->0->
+9 : 0->11->21->20->10->1->0->
+Old path seq size 61
+new paths added by slave *************, attacked target 7
+New path seq size 64
+haa 
+iter5
+Solving LP
+
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 243 columns.
+Reduced LP has 57 rows, 1774 columns, and 20301 nonzeros.
+Presolve time = 0.00 sec. (2.90 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Scaled dual infeas =            64.000000
+Iteration:    76   Dual objective     =            -0.000000
+Iteration:   137   Dual objective     =            62.889326
+obj: 64.1687574036741
+x[461]=0.07645647540883427 x[523]=0.04451945056823281 x[563]=0.08912327417176964 x[596]=0.053473964503062035 x[618]=0.012208667694762754 x[935]=0.04451945056823281 x[1279]=0.017902066632406954 x[1282]=0.042663308154179624 x[1284]=0.04820188349571758 x[1342]=0.07001800864240426 x[1563]=0.06610395012812453 x[1623]=0.05529329377924212 x[1651]=0.007091410283524488 x[1674]=0.09621468445529424 x[1695]=0.10167584799877943 x[1789]=0.05355833753836621 x[1941]=0.07001800864240426 x[1991]=0.0509579173346628 
+
+
+ constraint 0 dual -0.0
+ constraint 1 dual -0.0
+ constraint 2 dual -0.0
+ constraint 3 dual -0.0
+ constraint 4 dual -0.0
+ constraint 5 dual -0.0
+ constraint 6 dual -0.0
+ constraint 7 dual 0.07991127945663028
+ constraint 10 dual -0.0
+ constraint 11 dual -0.0
+ constraint 12 dual -0.0
+ constraint 13 dual 0.07028341446185556
+ constraint 14 dual 0.07291904250417514
+ constraint 15 dual 0.07291904250417514
+ constraint 16 dual 0.07991127945663028
+ constraint 17 dual 0.07991127945663028
+ constraint 20 dual -0.0
+ constraint 21 dual -0.0
+ constraint 22 dual -0.0
+ constraint 23 dual -0.0
+ constraint 24 dual -0.0
+ constraint 25 dual -1.3877787807814457E-17
+ constraint 26 dual -0.0
+ constraint 27 dual 1.445602896647339E-17
+ constraint 30 dual -0.0
+ constraint 31 dual -0.0
+ constraint 32 dual -0.0
+ constraint 33 dual -0.0
+ constraint 34 dual -0.0
+ constraint 35 dual -0.0
+ constraint 36 dual -0.0
+ constraint 37 dual -1.445602896647339E-17
+ constraint 42 dual -0.0
+ constraint 43 dual -0.0
+ constraint 44 dual -0.0
+ constraint 45 dual 0.07291904250417514
+ constraint 46 dual -0.0
+ constraint 47 dual 2.8537422816069164E-17
+ constraint 52 dual -0.0
+ constraint 53 dual -0.0
+ constraint 54 dual 0.07291904250417514
+ constraint 55 dual 0.07291904250417514
+ constraint 56 dual -0.0
+ constraint 57 dual -0.0
+ constraint 62 dual -0.0
+ constraint 63 dual -0.0
+ constraint 64 dual 0.08102115833797235
+ constraint 65 dual -0.0
+ constraint 72 dual -0.0
+ constraint 73 dual -0.0
+ constraint 74 dual -0.0
+ constraint 75 dual -0.0
+ constraint 84 dual 0.07991127945663028
+ constraint 85 dual 0.07991127945663028
+ constraint 94 dual 0.08454381739614508
+ constraint 95 dual -0.0
+attack target before rev map 7
+attacker u= 64.17
+attack target after rev map7
+attacker v= 64.17
+attacked target after rev map 7
+Paths 
+0 : 0->11->21->31->42->53->52->62->72->94->74->73->30->20->10->1->0->
+1 : 0->11->1->10->0->
+2 : 0->10->1->2->11->0->
+3 : 0->10->11->1->0->
+4 : 0->10->21->12->11->1->0->
+5 : 0->11->1->10->0->
+6 : 0->10->1->12->2->11->0->
+7 : 0->1->12->21->11->10->0->
+8 : 0->1->11->20->10->0->
+9 : 0->11->1->10->0->
+Old path seq size 64
+new paths added by slave *************, attacked target 7
+New path seq size 64
+haa 
+Slave can't add any new path ###############
+outer loop ....breaking.@@@@@@@@@@@@@@@..attacker u>=v=64.17
+Final target list size : 56
+0,1,10,11,2,3,12,13,4,5,14,15,44,45,54,55,22,23,32,33,24,25,34,35,6,7,16,17,84,85,20,21,26,27,30,31,36,37,64,65,74,75,46,47,56,57,94,95,62,63,72,73,42,43,52,53,
+Def exp utility : -64.17
+
+Def avg exp utility : -64.17

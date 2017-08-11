@@ -1,0 +1,11 @@
+./run.sh: line 9: 51133 Killed                  nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 5.jar 10 20 45 10 > out5.txt
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at cs.Interval.contraction.TargetNode.<init>(TargetNode.java:76)
+	at cs.Interval.contraction.TargetNode.<init>(TargetNode.java:91)
+	at cs.Interval.contraction.SecurityGameContraction.Expand(SecurityGameContraction.java:9622)
+	at cs.Interval.contraction.SecurityGameContraction.getPathsByBFSSlaveGreedy2(SecurityGameContraction.java:9381)
+	at cs.Interval.contraction.SecurityGameContraction.generatePathsSlave(SecurityGameContraction.java:9068)
+	at cs.Interval.contraction.SecurityGameContraction.doubleOracleGCMultiGPMultiLPSamplePath(SecurityGameContraction.java:19312)
+	at cs.Interval.contraction.SecurityGameContraction.doubleOracleGCMultiGPMultiLPSamplePathTest(SecurityGameContraction.java:14556)
+	at cs.Ingerval.Main.Main.main(Main.java:78)
+./run.sh: line 15: 53473 Killed                  nohup java -Xmx16000m -classpath /usr/local/sunny/newjars/cplex.jar -Djava.library.path=/usr/local/sunny/newjars -jar 8.jar 10 20 45 10 > out8.txt
