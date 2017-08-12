@@ -29,6 +29,7 @@ import cs.Interval.ILP.MIPSolver4;
 import cs.com.allpair.AllPairShortestPath;
 import cs.com.realworld.ReadData;
 import groupingtargets.GroupingTargets;
+import groupingtargets.SuperTarget;
 
 public class SecurityGameContraction 
 {
@@ -299,6 +300,88 @@ public class SecurityGameContraction
 	}
 	
 	
+	private static void purifyAPSPSTMatrixZero(int[][] adjacencymatrix,
+			HashMap<Integer, SuperTarget> sts, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		/*int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(TargetNode nei: n.getNeighbors())
+			{
+				System.out.print("["+n.getTargetid()+"]["+nei.getTargetid()+"] ---> ");
+				System.out.println("["+map.get(n.getTargetid())+"]["+map.get(nei.getTargetid())+"]=1");
+
+
+
+				adjacencymatrix[map.get(n.getTargetid())][map.get(nei.getTargetid())]=  n.getDistance(nei).intValue();
+			}
+			i++;
+		}*/
+
+
+		for (int source = 1; source <=nTargets; source++)
+		{
+			for (int destination = 1; destination <= nTargets; destination++)
+			{
+				//adjacencymatrix[source][destination] = scan.nextInt();
+
+
+
+
+				if (source == destination)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+					continue;
+				}
+				if (adjacencymatrix[source][destination] == 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+				else if(adjacencymatrix[source][destination] < 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+			}
+		}
+
+
+
+		/*//int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(int j=1; j<= nTargets; j++)
+			{
+				int target = mapback.get(j);
+				TargetNode tmp = getTargetNode(target, targets);
+				if(!n.getNeighbors().contains(tmp))
+				{
+
+					if(n.getTargetid() != target)
+					{
+
+						//System.out.print("["+n.getTargetid()+"]["+target+"] ---> ");
+						//System.out.println("["+map.get(n.getTargetid())+"]["+map.get(target)+"]=1");
+						adjacencymatrix[map.get(n.getTargetid())][map.get(target)]=  INFINITY;
+					}
+
+				}
+
+
+			}
+			//i++;
+		}
+*/
+
+
+
+
+
+	}
+	
+	
 	
 	private static void purifyAPSPMatrixZero(int[][] adjacencymatrix,
 			ArrayList<TargetNode> targets, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
@@ -383,6 +466,52 @@ public class SecurityGameContraction
 
 
 
+	
+	
+
+	private static void makeAdjacencyMatrixST(int[][] adjacencymatrix,
+			HashMap<Integer, SuperTarget> supertargets, int nSTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		int i=1; 
+		for(SuperTarget n: supertargets.values())
+		{
+			//int j=1;
+			for(SuperTarget nei: n.neighbors.values())
+			{
+				//System.out.print("["+n.getTargetid()+"]["+nei.getTargetid()+"] ---> ");
+				//System.out.println("["+map.get(n.getTargetid())+"]["+map.get(nei.getTargetid())+"]=1");
+
+
+
+				adjacencymatrix[map.get(n.stid)][map.get(nei.stid)]= (int)GroupingTargets.minimumDist(n, nei);
+			}
+			i++;
+		}
+
+
+		for (int source = 1; source <=nSTargets; source++)
+		{
+			for (int destination = 1; destination <= nSTargets; destination++)
+			{
+				//adjacencymatrix[source][destination] = scan.nextInt();
+				if (source == destination)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+					continue;
+				}
+				if (adjacencymatrix[source][destination] == 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+			}
+		}
+
+
+
+
+
+	}
 
 
 	private static void makeAdjacencyMatrix(int[][] adjacencymatrix,
@@ -6875,9 +7004,12 @@ public class SecurityGameContraction
 	}
 
 
+	
+	
+	
 
 
-	private static ArrayList<TargetNode> getDuplicateGraph(
+	public static ArrayList<TargetNode> getDuplicateGraph(
 			ArrayList<TargetNode> src) {
 
 
@@ -8386,7 +8518,7 @@ public class SecurityGameContraction
 
 	}
 
-	private static void printPaths(ArrayList<ArrayList<Integer>> pathseq) {
+	public static void printPaths(ArrayList<ArrayList<Integer>> pathseq) {
 
 
 		System.out.println("Paths ");
@@ -10178,6 +10310,150 @@ public class SecurityGameContraction
 		}
 		return paths;
 			}
+	
+	
+	
+	public static ArrayList<ArrayList<Integer>> generatePathsForSuperTargetsAPSP(double dmax, HashMap<Integer, SuperTarget> sts,
+			HashMap<Integer,TargetNode> targetmaps, ArrayList<Integer> currenttargets, int nRes) throws Exception
+			{
+
+
+		SuperTarget base = sts.get(0);
+		ArrayList<ArrayList<Integer>> paths = new ArrayList<ArrayList<Integer>>();
+		
+		
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+		//ArrayList<Integer> graphint = new ArrayList<Integer>();
+		
+		
+		int i = 1;
+		for(Integer stid: sts.keySet())
+		{
+			map.put(stid, i);
+			mapback.put(i, stid);
+			//graphint.add(map.get(targets.get(i-1).getTargetid()));
+			i++;
+		}
+		
+		
+		
+		int[][] adjacencymatrix = new int[sts.size()+1][sts.size()+1];
+		makeAdjacencyMatrixST(adjacencymatrix , sts, sts.size(), map, mapback);
+		
+		
+		AllPairShortestPath allPairShortestPath= new AllPairShortestPath(sts.size());
+		int[][] apsp = allPairShortestPath.allPairShortestPath(adjacencymatrix);
+        //ArrayList<Integer> path = AllPairShortestPath.getPath(1, 2, allPairShortestPath.next);
+        
+        
+        purifyAPSPSTMatrixZero(apsp, sts, sts.size(), map, mapback);
+		
+       // System.out.println("FInding  "+ apsp[map.get(11)][map.get(82)]);
+     //   System.out.println("FInding  "+ apsp[map.get(82)][map.get(11)]);
+		
+		
+		
+
+
+        for(SuperTarget dest: sts.values())
+        {
+        	if(dest.stid!=0)
+        	{
+
+        		System.out.println("FInding shortest dist for target "+ dest.stid);
+        		ArrayList<Integer>  pathnodes = new ArrayList<Integer>();
+        		ArrayList<SuperTarget>  pnodes = new ArrayList<SuperTarget>();
+        		if(base.neighbors.containsKey(dest.stid))
+				{
+					//pnodes = base.getPath(dest);
+        			int src = base.stid;
+            		int des = dest.stid;
+
+
+
+            		double distcovered = apsp[map.get(src)][map.get(des)];
+            		
+            		if(distcovered > dmax/2)
+            			continue;
+					/*for(int k=0; k<pnodes.size(); k++)
+					{
+
+						//System.out.print(pnodes.get(pnodes.size()-k-1).getTargetid()+"->");
+						//pathnodes.add(pnodes.get(pnodes.size()-k-1).getTargetid());
+
+					}*/
+
+				}
+        		else
+        		{
+
+        			
+        		//double distcovered1 = findShortestPathThrougGraphWDlimit(base, dest, targets, pathnodes, dmax/2);
+        		//System.out.print("dist covered "+ distcovered1+"\n");
+
+
+        		int src = base.stid;
+        		int des = dest.stid;
+
+
+
+        		double distcovered = apsp[map.get(src)][map.get(des)];
+        		System.out.print("dist covered "+ distcovered+"\n");
+
+        		if(distcovered<=dmax/2)
+        		{
+        			ArrayList<Integer>	tmppathnodes = allPairShortestPath.getPath(src, des, map, mapback);
+
+        			for(int k=0; k<tmppathnodes.size(); k++)
+        			{
+        				pathnodes.add(tmppathnodes.get(tmppathnodes.size()-k-1));
+        			}
+        		}
+        		else
+        			continue;
+        		
+        		
+        		throw new Exception("Base to not neighbor for initial set of paths **********8");
+
+        		}
+
+        		ArrayList<Integer> tmppath = new ArrayList<Integer>();
+        		//System.out.print("\n0->");
+        		tmppath.add(base.stid);
+        		for(int k=0; k<pathnodes.size(); k++)
+        		{
+        			tmppath.add(pathnodes.get(pathnodes.size()-k-1));
+        			//System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
+        		}
+        		//	System.out.print(dest.getTargetid()+"\n");
+        		tmppath.add(dest.stid);
+        		System.out.print("\n");
+        		/**
+        		 * make rev path
+        		 */
+        		for(int j=tmppath.size()-2; j>=0; j--)
+        		{
+        			tmppath.add(tmppath.get(j));
+        		}
+        		System.out.print("complete path : \n");
+        		for(int k=0; k<tmppath.size(); k++)
+        		{
+
+        			System.out.print(tmppath.get(k)+"->");
+        		}
+        		paths.add(tmppath);
+        		System.out.print("\n");
+        	}
+
+
+
+        }
+		return paths;
+			}
+	
+	
 	
 	
 	
@@ -14752,7 +15028,7 @@ public class SecurityGameContraction
 
 
 
-	private static ArrayList<Integer> buildGreedyCoverMultRes(
+	public static ArrayList<Integer> buildGreedyCoverMultRes(
 			ArrayList<TargetNode> targets, double dmax, int nTargets, int base, int nRes) {
 
 
@@ -25276,6 +25552,7 @@ public class SecurityGameContraction
 		double attackeru= -999;
 		double attackerv = -999;
 
+		
 
 
 		long contractiontime=0;
@@ -31466,7 +31743,7 @@ public class SecurityGameContraction
 		return dom;
 	}
 
-	private static void printSortedTargets(int[][] targetssorted) {
+	public static void printSortedTargets(int[][] targetssorted) {
 
 		System.out.println(" Sorted Targets : ");
 
@@ -31480,7 +31757,7 @@ public class SecurityGameContraction
 
 	}
 
-	private static int[][] sortTargets(ArrayList<TargetNode> targets) {
+	public static int[][] sortTargets(ArrayList<TargetNode> targets) {
 
 		int[][] srted = new int[targets.size()][2];
 		for(int i=0; i<srted.length; i++)

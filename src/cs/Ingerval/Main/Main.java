@@ -83,21 +83,21 @@ public class Main {
 		
 		int base = 0;
 		int dest = 0;
-		int k = 3;
-		int radius = 2;
+		int k = 5;
+		int radius = 3;
 		int dmax = 50;
 		int nRes=1;
-		int dlim = 4;
-		int nTargets = 9;
+		int dlim = 8;
+		int nTargets = 20;
 		int ITER = 1;
-		int ap = 2; // should be </= than cluster size
+		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
 		int dmaxsuper = 50;
 		int dminsuper = 5;
 		
 		
-		/*HashMap<Integer, ArrayList<TargetNode>> alltargets = new HashMap<Integer, ArrayList<TargetNode>>();
+		HashMap<Integer, ArrayList<TargetNode>> alltargets = new HashMap<Integer, ArrayList<TargetNode>>();
 		HashMap<Integer, HashMap<Integer, TargetNode>> alltargetmaps = new HashMap<Integer, HashMap<Integer, TargetNode>>();
 		HashMap<Integer, ArrayList<Integer>[]> allclus = new HashMap<Integer, ArrayList<Integer>[]>();
 		
@@ -113,13 +113,17 @@ public class Main {
 			allclus.put(iter, clus);
 			
 			
-		}*/
+		}
 		
 		
 		
 		
-		GroupingTargets.testClustering();
+		//GroupingTargets.testClustering();
 		
+		GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps, dmaxsuper, dminsuper);
+		
+		
+		//SecurityGameContraction.doubleOracleGCMultiGP3LPGCMultiTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
 		
 		/*ArrayList<TargetNode> targets = new ArrayList<TargetNode>();  //createGraph();
 		HashMap<Integer, TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
