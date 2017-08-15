@@ -359,6 +359,7 @@ public class GroupingTargets {
 		
 		fringequeue.add(start);
 		int pathcounter = 0;
+		int nodestocover = tempst.nodes.size();
 		while(fringequeue.size()>0)
 		{
 			//System.out.println("Polling from queue ");
@@ -592,11 +593,22 @@ public class GroupingTargets {
 				ru=utility_h;
 
 			TargetNode t = new TargetNode(i, ru);
-			t.attackerreward = ru;
-			t.attackerpenalty = 0;
-			t.defenderpenalty = -ru;
-			t.defenderreward = 0;
-			t.setAnimaldensity(ru);
+			if(t.getTargetid()==0)
+			{
+				t.attackerreward = utility_h;
+				t.attackerpenalty = 0;
+				t.defenderpenalty = -utility_h;
+				t.defenderreward = 0;
+				t.setAnimaldensity(ru);
+			}
+			else
+			{
+				t.attackerreward = ru;
+				t.attackerpenalty = 0;
+				t.defenderpenalty = -ru;
+				t.defenderreward = 0;
+				t.setAnimaldensity(ru);
+			}
 			targetmaps.put(i, t);
 			targets.add(t);
 		}
@@ -702,13 +714,17 @@ public class GroupingTargets {
 				}
 				for(Integer n: clus)
 				{
-					int ru = randInt(low, high);
-					TargetNode t = targetmaps.get(n);
-					t.attackerreward = ru;
-					t.attackerpenalty = 0;
-					t.defenderpenalty = -ru;
-					t.defenderreward = 0;
-					t.setAnimaldensity(ru);
+					
+					if(n!=0)
+					{
+						int ru = randInt(low, high);
+						TargetNode t = targetmaps.get(n);
+						t.attackerreward = ru;
+						t.attackerpenalty = 0;
+						t.defenderpenalty = -ru;
+						t.defenderreward = 0;
+						t.setAnimaldensity(ru);
+					}
 
 				}
 			}
@@ -1764,44 +1780,10 @@ public class GroupingTargets {
 	
 	public static double[] groupingWithDO(int base, int dest, int ncluster, int radius, int dmax, 
 			int nRes, int nTargets, ArrayList<TargetNode> targets, HashMap<Integer, TargetNode> targetmaps, 
-			ArrayList<Integer>[] clusters, int dmaxsuper, int dminsuper) throws Exception
+			ArrayList<Integer>[] clusters) throws Exception
 	{
 		
 		
-		
-		//Sort the targets according to attacker's reward
-		
-		
-		// assign some target value as zero
-		
-		/*targetmaps.get(11).attackerreward = 0;
-		targetmaps.get(11).defenderpenalty = 0;
-		
-		targetmaps.get(4).attackerreward = 0;
-		targetmaps.get(4).defenderpenalty = 0;
-		
-		
-		targetmaps.get(15).attackerreward = 0;
-		targetmaps.get(15).defenderpenalty = 0;
-		
-		targetmaps.get(16).attackerreward = 0;
-		targetmaps.get(16).defenderpenalty = 0;
-		*/
-		
-		/*
-		targetmaps.get(1).attackerreward = 0;
-		targetmaps.get(1).defenderpenalty = 0;
-		
-		targetmaps.get(2).attackerreward = 0;
-		targetmaps.get(2).defenderpenalty = 0;
-		
-		
-		targetmaps.get(4).attackerreward = 0;
-		targetmaps.get(4).defenderpenalty = 0;
-		
-		targetmaps.get(5).attackerreward = 0;
-		targetmaps.get(5).defenderpenalty = 0;
-		*/
 		
 		
 		
@@ -1836,7 +1818,7 @@ public class GroupingTargets {
 		
 
 
-		long contractiontime=0;
+		long clusteringtime=0;
 		long solvingtime=0;
 		long revmaptime=0;
 		int targetsize=0;
@@ -1896,6 +1878,13 @@ public class GroupingTargets {
 			HashMap<Integer, SuperTarget> currentst = GroupingTargets.clusterTargets(targetstocluster, targets, 
 					targetmaps, dmax, ncluster+1, radius, dstravel);
 			
+
+			Date stop = new Date();
+			long l2 = stop.getTime();
+			long diff = l2 - l1;
+
+			clusteringtime += diff;
+			
 			
 			//TODO save distance traveled for each cluster
 			// remove the unncessary ones. 
@@ -1940,11 +1929,6 @@ public class GroupingTargets {
 			
 			
 
-			Date stop = new Date();
-			long l2 = stop.getTime();
-			long diff = l2 - l1;
-
-			contractiontime += diff;
 			
 
 			System.out.println("current st size "+ currentst.size());
@@ -2093,6 +2077,11 @@ public class GroupingTargets {
 					diff = l2 - l1;
 
 					solvingtime += diff;
+					
+					
+					start = new Date();
+					l1 = start.getTime();
+
 
 					attackedtarget = SecurityGameContraction.findAttackSuperTargetWMapping(p, probdistribution, currentst, map, mapback);
 					attackedtarget = mapback.get(attackedtarget);
@@ -2114,6 +2103,13 @@ public class GroupingTargets {
 					
 					System.out.println("master "+masteritr+", slave "+itr+", u= "+attackeru+", v= "+attackerv);
 					System.out.println("attack target after rev map"+ attackedtarget);
+					
+					
+					stop = new Date();
+					l2 = stop.getTime();
+					diff = l2 - l1;
+
+					revmaptime += diff;
 
 					
 
@@ -2241,6 +2237,7 @@ public class GroupingTargets {
 
 
 			int addcount=0;
+			int ADD_C = 3;
 
 			for(int k=currentPlace+1; k<targetssorted.length; k++)
 			{
@@ -2250,7 +2247,7 @@ public class GroupingTargets {
 					
 					targetstocluster.add(targetssorted[k][0]);
 					System.out.println("adding target "+targetssorted[k][0] +", u = "+ targetssorted[k][1]);
-					if(addcount>=5)
+					if(addcount>=ADD_C)
 					{
 						break;
 					}
@@ -2263,12 +2260,12 @@ public class GroupingTargets {
 
 			System.out.println("currentplace  : "+ currentPlace);
 
-			if(addcount<5 || addcount==0)
+			if(addcount<ADD_C || addcount==0)
 			{
 				//System.out.println("adding more ");
 
 				int prevcur = currentPlace;
-				currentPlace += 5-addcount;
+				currentPlace += ADD_C-addcount;
 
 				//System.out.println("currentplace  : "+ currentPlace);
 				if(currentPlace>targetssorted.length-1)
@@ -2305,7 +2302,7 @@ public class GroupingTargets {
 
 		
 
-		double[] res1 = {defpayoff, contractiontime, solvingtime, targetstocluster.size(), attackeru, slavetime};
+		double[] res1 = {defpayoff, clusteringtime, solvingtime, targetstocluster.size(), attackeru, slavetime, revmaptime};
 		return res1;
 	}
 
@@ -2705,7 +2702,7 @@ public class GroupingTargets {
 	
 	public static void groupingWithDOExp(int base, int dest, int k, int radius, int dmax, int nRes, int nTargets,
 			int LIMIT,int ap,HashMap<Integer,ArrayList<Integer>[]> allclus, HashMap<Integer,ArrayList<TargetNode>> alltargets, 
-			HashMap<Integer,HashMap<Integer,TargetNode>> alltargetmaps, int dmaxsuper, int dminsuper ) throws Exception
+			HashMap<Integer,HashMap<Integer,TargetNode>> alltargetmaps ) throws Exception
 	{
 
 
@@ -2715,6 +2712,9 @@ public class GroupingTargets {
 		long totaltime = 0;
 		long solvingtime = 0;
 		long revmaptime = 0;
+		long clusteringtime = 0;
+		long slavetime = 0;
+		int finalsize = 0;
 
 		for(int iter=0; iter<LIMIT; iter++)
 		{
@@ -2726,11 +2726,14 @@ public class GroupingTargets {
 			
 			
 			
-			//ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
-			//HashMap<Integer,TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
 			
 			
-			//ArrayList<Integer>[] clus = GroupingTargets.createGraph3(targets, targetmaps);
+			
+		/*	ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
+			HashMap<Integer,TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
+			
+			
+			ArrayList<Integer>[] clus = GroupingTargets.createGraph3(targets, targetmaps);*/
 
 
 
@@ -2738,10 +2741,16 @@ public class GroupingTargets {
 			long l1 = start.getTime();
 
 			//ArrayList<Integer>[] clus = makeGraph(k, radius, dlim , nTargets, 2, 10, ap, targets, targetmaps);
-			double res[] = groupingWithDO(base, dest, k, radius, dmax, nRes, nTargets, targets, targetmaps, clus, dmaxsuper, dminsuper);
+			double res[] = groupingWithDO(base, dest, k, radius, dmax, nRes, nTargets, targets, targetmaps, clus);
+			//double[] res1 = {defpayoff, clusteringtime, solvingtime, targetstocluster.size(), attackeru, slavetime, revmaptime};
+			
+			
 			sumdefexp += res[0];
-			solvingtime+= res[4];
-			revmaptime += res[3];
+			solvingtime+= res[2];
+			revmaptime += res[6];
+			clusteringtime += res[1];
+			slavetime += res[5];
+			finalsize += res[3];
 
 			Date stop = new Date();
 			long l2 = stop.getTime();
@@ -2754,9 +2763,10 @@ public class GroupingTargets {
 		solvingtime /= LIMIT;
 		revmaptime /= LIMIT;
 		totaltime /= LIMIT; 
+		finalsize /= LIMIT;
 		
 		//System.out.println("Defender exp "+ (double)sumdefexp/LIMIT + ", time : "+ (long)totaltime/LIMIT);
-		writeInFile(nTargets, k, sumdefexp, solvingtime, revmaptime, totaltime);
+		writeInFileST("ClusteringWithDO",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime);
 		
 
 	}
@@ -2997,6 +3007,24 @@ public class GroupingTargets {
 		{
 			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"grp-result.csv"),true));
 			pw.append(nTargets+ "," + k+ ","+defexp+"," + solvingtime+ ","+revmaptime+"," + totaltime+"\n");
+			pw.close();
+
+		}
+		catch(Exception e)
+		{
+
+		}
+
+	}
+	
+	
+	private static void writeInFileST(String algo, int finalsize, double defexp, long solvingtime, long revmaptime, long clusteringtime, long totaltime) 
+	{
+
+		try
+		{
+			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"grp-result.csv"),true));
+			pw.append(algo+ ","+finalsize+","+defexp+"," + clusteringtime+ ","+solvingtime+"," + ","+revmaptime+","+totaltime+"\n");
 			pw.close();
 
 		}
@@ -5432,11 +5460,11 @@ public class GroupingTargets {
 		
 		
 		
-		TargetNode f = new TargetNode(6, 5);
-		TargetNode g = new TargetNode(7, 5);
-		TargetNode h = new TargetNode(8, 5);
-		TargetNode i = new TargetNode(9, 5);
-		TargetNode j = new TargetNode(10, 5);
+		TargetNode f = new TargetNode(6, 2);
+		TargetNode g = new TargetNode(7, 1);
+		TargetNode h = new TargetNode(8, 1);
+		TargetNode i = new TargetNode(9, 0);
+		TargetNode j = new TargetNode(10, 0);
 		
 		
 		
@@ -5520,7 +5548,10 @@ public class GroupingTargets {
 
 
 		
-
+		base.defenderreward=0;
+		base.defenderpenalty= -10;
+		base.attackerreward = 10;
+		base.attackerpenalty= 0;
 
 
 
@@ -5530,13 +5561,13 @@ public class GroupingTargets {
 		a.attackerpenalty= 0;
 
 		b.defenderreward=0;
-		b.defenderpenalty= -4;
-		b.attackerreward = 4;
+		b.defenderpenalty= -7;
+		b.attackerreward = 7;
 		b.attackerpenalty= 0;
 
 		c.defenderreward=0;
-		c.defenderpenalty= -5;
-		c.attackerreward = 5;
+		c.defenderpenalty= -7;
+		c.attackerreward = 7;
 		c.attackerpenalty= 0;
 
 
@@ -5673,14 +5704,19 @@ public class GroupingTargets {
 
 
 		d.defenderreward=0;
-		d.defenderpenalty= -5;
-		d.attackerreward = 5;
+		d.defenderpenalty= -1;
+		d.attackerreward = 1;
 		d.attackerpenalty= 0;
 
 		e.defenderreward=0;
-		e.defenderpenalty= -4;
-		e.attackerreward = 4;
+		e.defenderpenalty= -1;
+		e.attackerreward = 1;
 		e.attackerpenalty= 0;
+		
+		
+		
+		
+		
 
 		f.defenderreward=0;
 		f.defenderpenalty= -5;
@@ -5691,9 +5727,6 @@ public class GroupingTargets {
 		g.defenderpenalty= -4;
 		g.attackerreward = 4;
 		g.attackerpenalty= 0;
-		 
-
-		
 		
 		h.defenderreward=0;
 		h.defenderpenalty= -4;
@@ -5701,13 +5734,13 @@ public class GroupingTargets {
 		h.attackerpenalty= 0;
 
 		i.defenderreward=0;
-		i.defenderpenalty= -5;
-		i.attackerreward = 5;
+		i.defenderpenalty= -1;
+		i.attackerreward = 1;
 		i.attackerpenalty= 0;
 
 		j.defenderreward=0;
-		j.defenderpenalty= -4;
-		j.attackerreward = 4;
+		j.defenderpenalty= -1;
+		j.attackerreward = 1;
 		j.attackerpenalty= 0;
 		 
 

@@ -85,16 +85,16 @@ public class Main {
 		int dest = 0;
 		int k = 5;
 		int radius = 3;
-		int dmax = 50;
+		int dmax = 30;
 		int nRes=1;
-		int dlim = 8;
-		int nTargets = 20;
+		int dlim = 7;
+		int nTargets = 30;
 		int ITER = 1;
 		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
-		int dmaxsuper = 12;
-		int dminsuper = 5;
+		/*int dmaxsuper = 30;
+		int dminsuper = 5;*/
 		
 		
 		HashMap<Integer, ArrayList<TargetNode>> alltargets = new HashMap<Integer, ArrayList<TargetNode>>();
@@ -120,7 +120,16 @@ public class Main {
 		
 		//GroupingTargets.testClustering();
 		
-		GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps, dmaxsuper, dminsuper);
+		GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
+		
+		
+		
+		//SecurityGameContraction.modifiedOPDOTest(alltargets, alltargetmaps, ITER, nTargets , dmax, nRes);
+		SecurityGameContraction.targets.clear();
+		
+		
+		
+		
 		
 		
 		//SecurityGameContraction.doubleOracleGCMultiGP3LPGCMultiTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
@@ -240,7 +249,7 @@ public class Main {
 
 
 		//SecurityGameContraction.doubleOracleGCMultiGP3LP_modifiedOPTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
-		SecurityGameContraction.targets.clear();
+		//SecurityGameContraction.targets.clear();
 
 
 
