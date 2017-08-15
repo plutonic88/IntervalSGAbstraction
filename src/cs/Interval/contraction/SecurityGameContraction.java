@@ -542,6 +542,88 @@ public class SecurityGameContraction
 
 
 	}
+	
+	
+	private static void purifyAPSPMatrixZeroGT(int[][] adjacencymatrix,
+			ArrayList<TargetNode> targets, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		/*int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(TargetNode nei: n.getNeighbors())
+			{
+				System.out.print("["+n.getTargetid()+"]["+nei.getTargetid()+"] ---> ");
+				System.out.println("["+map.get(n.getTargetid())+"]["+map.get(nei.getTargetid())+"]=1");
+
+
+
+				adjacencymatrix[map.get(n.getTargetid())][map.get(nei.getTargetid())]=  n.getDistance(nei).intValue();
+			}
+			i++;
+		}*/
+
+
+		for (int source = 1; source <=nTargets; source++)
+		{
+			for (int destination = 1; destination <= nTargets; destination++)
+			{
+				//adjacencymatrix[source][destination] = scan.nextInt();
+
+
+
+
+				if (source == destination)
+				{
+					adjacencymatrix[source][destination] = 0;
+					continue;
+				}
+				if (adjacencymatrix[source][destination] == 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+				else if(adjacencymatrix[source][destination] < 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+			}
+		}
+
+
+
+		/*//int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(int j=1; j<= nTargets; j++)
+			{
+				int target = mapback.get(j);
+				TargetNode tmp = getTargetNode(target, targets);
+				if(!n.getNeighbors().contains(tmp))
+				{
+
+					if(n.getTargetid() != target)
+					{
+
+						//System.out.print("["+n.getTargetid()+"]["+target+"] ---> ");
+						//System.out.println("["+map.get(n.getTargetid())+"]["+map.get(target)+"]=1");
+						adjacencymatrix[map.get(n.getTargetid())][map.get(target)]=  INFINITY;
+					}
+
+				}
+
+
+			}
+			//i++;
+		}
+*/
+
+
+
+
+
+	}
 
 
 
@@ -10873,7 +10955,7 @@ public class SecurityGameContraction
 	
 	
 	public static ArrayList<ArrayList<Integer>> generatePathsForSuperTargetsAPSP(double dmax, HashMap<Integer, SuperTarget> sts,
-			HashMap<Integer,TargetNode> targetmaps, ArrayList<Integer> currenttargets, int nRes) throws Exception
+			HashMap<Integer,TargetNode> targetmaps, ArrayList<Integer> currenttargets, int nRes, HashMap<Integer,Double> dstravel) throws Exception
 			{
 
 
@@ -10931,8 +11013,11 @@ public class SecurityGameContraction
             		int des = dest.stid;
 
 
-
-            		double distcovered = apsp[map.get(src)][map.get(des)];
+            		//TODO consider distance, intra cluster
+            		
+            		
+            		
+            		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
             		
             		if(distcovered > dmax/2)
             			continue;
@@ -10957,8 +11042,8 @@ public class SecurityGameContraction
         		int des = dest.stid;
 
 
-
-        		double distcovered = apsp[map.get(src)][map.get(des)];
+        		//TODO consider distance, intra cluster
+        		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
         		System.out.print("dist covered "+ distcovered+"\n");
 
         		if(distcovered<=dmax/2)
@@ -10974,7 +11059,7 @@ public class SecurityGameContraction
         			continue;
         		
         		
-        		throw new Exception("Base to not neighbor for initial set of paths **********8");
+        		//throw new Exception("Base to not neighbor for initial set of paths **********8");
 
         		}
 
@@ -15617,7 +15702,7 @@ public class SecurityGameContraction
 		int[][] apspmat =  apsp.allPairShortestPath(adjacencymatrix);
 		
 		
-		purifyAPSPMatrixZero(apspmat, targets, nTargets, map, mapback);
+		purifyAPSPMatrixZeroGT(apspmat, targets, nTargets, map, mapback);
 		
 
 
@@ -15825,7 +15910,8 @@ public class SecurityGameContraction
 
 	public static ArrayList<ArrayList<Integer>> buildSuperGreedyCoverMultRes2(
 			HashMap<Integer, TargetNode> targetmaps, double dmax, int nTargets, int base, 
-			int nRes, HashMap<Integer,Double> attackerstrategy, HashMap<Integer, SuperTarget> sts) {
+			int nRes, HashMap<Integer,Double> attackerstrategy, HashMap<Integer, SuperTarget> sts, 
+			HashMap<Integer,Double> dstravel) {
 
 
 
@@ -15864,7 +15950,7 @@ public class SecurityGameContraction
 
 
 
-		return greedySuperCoverMultRes2(base, targetmaps, dmax, targetssorted, apsp, map,mapback, nRes, attackerstrategy, sts);
+		return greedySuperCoverMultRes2(base, targetmaps, dmax, targetssorted, apsp, map,mapback, nRes, attackerstrategy, sts, dstravel);
 	}
 	
 	
@@ -16787,7 +16873,7 @@ public class SecurityGameContraction
 	private static ArrayList<ArrayList<Integer>> greedySuperCoverMultRes2(int base, HashMap<Integer, TargetNode> targets,
 			double dmax, int[][] targetssorted, int[][] apspmat,
 			HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback,
-			int nRes, HashMap<Integer,Double> attackerstrategy, HashMap<Integer, SuperTarget> sts) 
+			int nRes, HashMap<Integer,Double> attackerstrategy, HashMap<Integer, SuperTarget> sts, HashMap<Integer,Double> dstravel) 
 			{
 
 
@@ -16848,19 +16934,25 @@ public class SecurityGameContraction
 					int bestj = -1;
 					for(int j=1; j<greedypath.size(); j++)
 					{
+						
+						
+						//TODO consider distance, intra cluster
 						int s = map.get(greedypath.get(j-1));
 						int d = map.get(greedypath.get(j));
-						int totaldisttemp = totaldist - apspmat[s][d];
+						//System.out.println(" s : "+ greedypath.get(j-1) + " , d : "+greedypath.get(j) + " j-1 "+ (j-1) + " j "+ j +  " gs "+ greedypath.size());
+						int totaldisttemp = totaldist - apspmat[s][d] - dstravel.get(greedypath.get(j-1)).intValue() - dstravel.get(greedypath.get(j)).intValue();
 
 						s = map.get(greedypath.get(j-1));
 						//d = map.get(targetssorted[i][0]);
 						d = map.get(tmptsrt.get(i));
-						totaldisttemp +=  apspmat[s][d];
+						//System.out.println(" s : "+ greedypath.get(j-1) + " , d : "+tmptsrt.get(i) + " j-1 "+ (j-1) + " i "+ i +  " gs "+ greedypath.size());
+						totaldisttemp +=  apspmat[s][d] + dstravel.get(greedypath.get(j-1)).intValue() + dstravel.get(tmptsrt.get(i)).intValue();
 
 
 						s = map.get(tmptsrt.get(i));
 						d = map.get(greedypath.get(j));
-						totaldisttemp +=  apspmat[s][d];
+						//System.out.println(" s : "+ greedypath.get(i) + " , d : "+greedypath.get(j) + " i "+ i + " j "+ j +  " gs "+ greedypath.size());
+						totaldisttemp +=  apspmat[s][d] + dstravel.get(tmptsrt.get(i)).intValue() + dstravel.get(greedypath.get(j)).intValue();;
 
 						/*System.out.println("totaldisttemp = "+totaldisttemp);
 						System.out.println("bestj : "+bestj);*/

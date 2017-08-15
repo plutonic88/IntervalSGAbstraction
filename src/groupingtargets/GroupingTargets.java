@@ -33,7 +33,8 @@ public class GroupingTargets {
 	
 	
 	public static HashMap<Integer, SuperTarget> clusterTargets(ArrayList<Integer> targetstocluster, 
-			ArrayList<TargetNode> graph, HashMap<Integer, TargetNode> targetmaps, double dmax, int k, int radius)
+			ArrayList<TargetNode> graph, HashMap<Integer, TargetNode> targetmaps, double dmax, int k, int radius,
+			HashMap<Integer, Double> dstravel)
 	{
 		
 		
@@ -76,11 +77,20 @@ public class GroupingTargets {
 			 int stid2 = -1;
 			 int aid1 = -1;
 			 int aid2 = -1;
+			 double sda1a2 = -1;
 			 SuperTarget dminst = new SuperTarget();
 			 for(SuperTarget st1 : sts.values())
 			 {
+				 
+				if(canBeMerged(st1, targetstocluster))
+				{
+				 
 				 for(SuperTarget st2: sts.values())
 				 {
+					 
+					 if(canBeMerged(st2, targetstocluster))
+					 {
+					 
 					 //if they are not same
 					 // check if st1 and st2 are neighbprs
 					 // have nodes in n eighbor
@@ -153,6 +163,7 @@ public class GroupingTargets {
 														 aid1 = a1.getTargetid();
 														 aid2 = a2.getTargetid();
 														 mindi = totaldi;
+														 sda1a2 = dista1a2;
 														 
 														 System.out.println("Current mindi "+ mindi + " \n ST1 "+ stid1 + " ST2 "+ stid2 + 
 																 "\n a1 "+ aid1 + ", a2 "+ aid2);
@@ -169,8 +180,10 @@ public class GroupingTargets {
 						 }
 
 					 }
+				 }
 					  
 				 }
+			 	}
 			 }
 			 
 			 
@@ -186,6 +199,7 @@ public class GroupingTargets {
 			 if(stid1 != -1)
 			 {
 
+				 dstravel.put(200+stid1+stid2, sda1a2);
 				 SuperTarget newst = SuperTarget.mergeSuperTargets(sts.get(stid1), sts.get(stid2), aid1, aid2, targetmaps);
 				 printSuperTarget(newst);
 				 sts.remove(stid1);
@@ -204,6 +218,37 @@ public class GroupingTargets {
 	}
 	
 	
+
+
+	private static boolean canBeMerged(SuperTarget st1, ArrayList<Integer> targetstocluster) {
+		
+		//if(st1.nodes.size() ==1)
+		
+		
+		if(st1.nodes.size()>1)
+			return true;
+
+
+
+		for(TargetNode t: st1.nodes.values())
+		{
+			//boolean f = false;
+			for(Integer n: targetstocluster)
+			{
+				if(n.equals(t.getTargetid()))
+				{
+					//f = true;
+					return true;
+				}
+			}
+		}
+
+
+
+		return false;
+	}
+
+
 
 
 	public static double minimumDist(SuperTarget st1, SuperTarget st2) {
@@ -485,9 +530,9 @@ public class GroupingTargets {
 		targetstocluster.add(9);
 		targetstocluster.add(10);
 		
+		HashMap<Integer, Double> d = new HashMap<>();
 		
-		
-		HashMap<Integer, SuperTarget> sts = GroupingTargets.clusterTargets(targetstocluster, targets, targetmaps, dmax, k+1, radius);
+		HashMap<Integer, SuperTarget> sts = GroupingTargets.clusterTargets(targetstocluster, targets, targetmaps, dmax, k+1, radius, d);
 		printSuperTargets(sts);
 		System.out.println("hii");
 		
@@ -1721,10 +1766,47 @@ public class GroupingTargets {
 			int nRes, int nTargets, ArrayList<TargetNode> targets, HashMap<Integer, TargetNode> targetmaps, 
 			ArrayList<Integer>[] clusters, int dmaxsuper, int dminsuper) throws Exception
 	{
-		double[] res = new double[5];
+		
 		
 		
 		//Sort the targets according to attacker's reward
+		
+		
+		// assign some target value as zero
+		
+		/*targetmaps.get(11).attackerreward = 0;
+		targetmaps.get(11).defenderpenalty = 0;
+		
+		targetmaps.get(4).attackerreward = 0;
+		targetmaps.get(4).defenderpenalty = 0;
+		
+		
+		targetmaps.get(15).attackerreward = 0;
+		targetmaps.get(15).defenderpenalty = 0;
+		
+		targetmaps.get(16).attackerreward = 0;
+		targetmaps.get(16).defenderpenalty = 0;
+		*/
+		
+		/*
+		targetmaps.get(1).attackerreward = 0;
+		targetmaps.get(1).defenderpenalty = 0;
+		
+		targetmaps.get(2).attackerreward = 0;
+		targetmaps.get(2).defenderpenalty = 0;
+		
+		
+		targetmaps.get(4).attackerreward = 0;
+		targetmaps.get(4).defenderpenalty = 0;
+		
+		targetmaps.get(5).attackerreward = 0;
+		targetmaps.get(5).defenderpenalty = 0;
+		*/
+		
+		
+		
+		
+		
 		
 		int[][] targetssorted = SecurityGameContraction.sortTargets(targets);
 		SecurityGameContraction.printSortedTargets(targetssorted);
@@ -1809,11 +1891,48 @@ public class GroupingTargets {
 			//Build an abstract graph Gt through target clustering given Tcur, Gt
 			
 			
+			HashMap<Integer, Double> dstravel = new HashMap<Integer, Double>();
+			
+			HashMap<Integer, SuperTarget> currentst = GroupingTargets.clusterTargets(targetstocluster, targets, 
+					targetmaps, dmax, ncluster+1, radius, dstravel);
 			
 			
-			HashMap<Integer, SuperTarget> currentst = GroupingTargets.clusterTargets(targetstocluster, targets, targetmaps, dmax, ncluster+1, radius);
+			//TODO save distance traveled for each cluster
+			// remove the unncessary ones. 
+			
+			ArrayList<Integer> notin = new ArrayList<Integer>();
+			
+			for(SuperTarget st: currentst.values())
+			{
+				if(st.nodes.size()==1)
+				{
+					dstravel.put(st.stid, 0.0);
+					
+				}
+				
+			}
+			
+			
+			int ind = 0;
+			for(Integer t: dstravel.keySet())
+			{
+				if(!currentst.keySet().contains(t))
+				{
+					notin.add(t);
+				}
+				ind++;
+			}
+			
+			for(Integer x: notin)
+			{
+				dstravel.remove(x);
+			}
+			
+			
 			//HashMap<Integer, Double> stvalue
 			assignSTValues(currentst, targetmaps);
+			
+			System.out.println("olaa ");
 			printSuperTargets(currentst);
 			
 			
@@ -1837,7 +1956,7 @@ public class GroupingTargets {
 			//TODO generate paths where there will be at least one target
 			//ArrayList<TargetNode> goals = generatePathsGreedy2(dmax, gamedata, tmpgraph, currenttargets, nRes);
 			//pathseq =  buildGreedyPathMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes);
-			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, targetstocluster, nRes);
+			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, targetstocluster, nRes, dstravel);
 			map = new HashMap<Integer, Integer>();
 			mapback = new HashMap<Integer, Integer>();
 			int icount = 0;
@@ -2035,7 +2154,7 @@ public class GroupingTargets {
 					l1 = start.getTime();
 
 					ArrayList<ArrayList<Integer>> newpathseq = SecurityGameContraction.buildSuperGreedyCoverMultRes2(targetmaps, 
-							dmax, currentst.size(), 0, nRes, attackerstrategy, currentst);
+							dmax, currentst.size(), 0, nRes, attackerstrategy, currentst, dstravel);
 					
 					stop = new Date();
 					l2 = stop.getTime();

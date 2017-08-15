@@ -93,7 +93,7 @@ public class Main {
 		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
-		int dmaxsuper = 50;
+		int dmaxsuper = 12;
 		int dminsuper = 5;
 		
 		
