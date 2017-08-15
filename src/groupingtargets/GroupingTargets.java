@@ -34,7 +34,7 @@ public class GroupingTargets {
 	
 	public static HashMap<Integer, SuperTarget> clusterTargets(ArrayList<Integer> targetstocluster, 
 			ArrayList<TargetNode> graph, HashMap<Integer, TargetNode> targetmaps, double dmax, int k, int radius,
-			HashMap<Integer, Double> dstravel)
+			HashMap<Integer, Double> dstravel, HashMap<Integer,ArrayList<Integer>> stpaths)
 	{
 		
 		
@@ -78,6 +78,7 @@ public class GroupingTargets {
 			 int aid1 = -1;
 			 int aid2 = -1;
 			 double sda1a2 = -1;
+			 ArrayList<Integer> spath = new ArrayList<Integer>();
 			 SuperTarget dminst = new SuperTarget();
 			 for(SuperTarget st1 : sts.values())
 			 {
@@ -146,8 +147,8 @@ public class GroupingTargets {
 												// System.out.println("shortestdist(a2,s2) "+ d2);
 												 
 												 // next measure the intra cluster shortest traveling path using a1 and a2
-												 
-												 double dista1a2 = shortestdist(a1,a2, tempst, dmax);
+												 ArrayList<Integer> tmpspath = new ArrayList<Integer>();
+												 double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpspath);
 												// System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
 												 
 												 // if any of the dist is <0 we know that it's not possible to have a path
@@ -164,6 +165,7 @@ public class GroupingTargets {
 														 aid2 = a2.getTargetid();
 														 mindi = totaldi;
 														 sda1a2 = dista1a2;
+														 spath.add(tmpspath.get(0));
 														 
 														 System.out.println("Current mindi "+ mindi + " \n ST1 "+ stid1 + " ST2 "+ stid2 + 
 																 "\n a1 "+ aid1 + ", a2 "+ aid2);
@@ -200,6 +202,7 @@ public class GroupingTargets {
 			 {
 
 				 dstravel.put(200+stid1+stid2, sda1a2);
+				 stpaths.put(200+stid1+stid2, spath);
 				 SuperTarget newst = SuperTarget.mergeSuperTargets(sts.get(stid1), sts.get(stid2), aid1, aid2, targetmaps);
 				 printSuperTarget(newst);
 				 sts.remove(stid1);
@@ -348,7 +351,7 @@ public class GroupingTargets {
 	}
 
 
-	private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tempst, double dmax) {
+	private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tempst, double dmax, ArrayList<Integer> spath) {
 		
 		
 		
@@ -377,6 +380,7 @@ public class GroupingTargets {
 				//System.out.println();
 				
 				goals.add(node);
+				SecurityGameContraction.makeClusterPathSeq(goals, spath);
 				return node.distancecoveredyet;
 				//break;
 
@@ -532,8 +536,9 @@ public class GroupingTargets {
 		targetstocluster.add(10);
 		
 		HashMap<Integer, Double> d = new HashMap<>();
+		HashMap<Integer, ArrayList<Integer>> stpaths = new HashMap<Integer, ArrayList<Integer>>();
 		
-		HashMap<Integer, SuperTarget> sts = GroupingTargets.clusterTargets(targetstocluster, targets, targetmaps, dmax, k+1, radius, d);
+		HashMap<Integer, SuperTarget> sts = GroupingTargets.clusterTargets(targetstocluster, targets, targetmaps, dmax, k+1, radius, d, stpaths);
 		printSuperTargets(sts);
 		System.out.println("hii");
 		
@@ -1874,9 +1879,10 @@ public class GroupingTargets {
 			
 			
 			HashMap<Integer, Double> dstravel = new HashMap<Integer, Double>();
+			HashMap<Integer, ArrayList<Integer>> stpaths = new HashMap<Integer, ArrayList<Integer>>();
 			
 			HashMap<Integer, SuperTarget> currentst = GroupingTargets.clusterTargets(targetstocluster, targets, 
-					targetmaps, dmax, ncluster+1, radius, dstravel);
+					targetmaps, dmax, ncluster+1, radius, dstravel, stpaths);
 			
 
 			Date stop = new Date();
@@ -1915,6 +1921,7 @@ public class GroupingTargets {
 			for(Integer x: notin)
 			{
 				dstravel.remove(x);
+				stpaths.remove(x);
 			}
 			
 			
@@ -2094,7 +2101,8 @@ public class GroupingTargets {
 
 					//SecurityGameContraction.printNodesWithNeighborsAndPath(domindatednodes, tmpgraph);
 
-					origpmat = SecurityGameContraction.makeSuperOrigPMatWOMap(p, pathseq, jset, nTargets, map, mapback, targetmaps, currentst);
+					origpmat = SecurityGameContraction.makeSuperOrigPMatWOMap(p, pathseq, jset, nTargets, map, mapback, 
+							targetmaps, currentst, stpaths);
 					attackedtarget = SecurityGameContraction.findAttackTarget(origpmat, probdistribution, targetmaps);
 					
 					//int u = getTargetNode(MIPSolver4.attackedtarget, tmpgraph).getTargetid();

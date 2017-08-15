@@ -10317,7 +10317,7 @@ public class SecurityGameContraction
 			ArrayList<ArrayList<Integer>> pathseq, 
 			List<ArrayList<Integer>> jset, int nTargets,
 			HashMap<Integer,Integer> originalmap, HashMap<Integer,Integer> originalmapback, 
-			HashMap<Integer,TargetNode> targetmaps, HashMap<Integer,SuperTarget> currentst) throws Exception {
+			HashMap<Integer,TargetNode> targetmaps, HashMap<Integer,SuperTarget> currentst, HashMap<Integer,ArrayList<Integer>> stpaths) throws Exception {
 
 
 
@@ -10351,10 +10351,32 @@ public class SecurityGameContraction
 					
 					// for all the nodes in the supertarget assign 1
 					
-					for(TargetNode t: currentst.get(st).nodes.values())
+					
+					
+					
+					if(currentst.get(st).nodes.size()==1)
 					{
-						origpmat[t.getTargetid()][jindex] = 1;
+						for(TargetNode t: currentst.get(st).nodes.values())
+						{
+							
+							origpmat[t.getTargetid()][jindex] = 1;
+						}
+						
 					}
+					else if(currentst.get(st).nodes.size() > 1)
+					{
+						ArrayList<Integer> pathnodes = stpaths.get(st);
+						for(TargetNode t: currentst.get(st).nodes.values())
+						{
+							if(pathnodes.contains(t.getTargetid()))
+							{
+							
+								origpmat[t.getTargetid()][jindex] = 1;
+							}
+						}
+						
+					}
+					
 					
 				}
 
@@ -10567,7 +10589,7 @@ public class SecurityGameContraction
 	
 	
 	
-	private static void makePathSeqSrcDest(ArrayList<ArrayList<Integer>> pathseq
+	public static void makePathSeqSrcDest(ArrayList<ArrayList<Integer>> pathseq
 			,ArrayList<TargetNode> goals, int pathcounter, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback,
 			ArrayList<TargetNode> targets) {
 
@@ -10609,6 +10631,24 @@ public class SecurityGameContraction
 
 
 	}
+	
+	
+	
+
+	public static void makeClusterPathSeq(ArrayList<TargetNode> goals, ArrayList<Integer> spath) {
+
+		int pathindex = 0;
+		for(TargetNode n: goals)
+		{
+			
+			//ArrayList<Integer> tmppathseq = new ArrayList<Integer>();
+			buildpathSeqq(n, spath);
+			
+			
+		}
+
+	}
+
 
 
 
