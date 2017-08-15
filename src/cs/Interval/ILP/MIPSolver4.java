@@ -4269,6 +4269,223 @@ public class MIPSolver4 {
 
 
 	}
+	
+	
+
+
+	public static double[] solveForAttackerLPST(int[][] p, HashMap<Integer, SuperTarget> sts, 
+			HashMap<Integer, TargetNode> targetmaps, double nResource, 
+			HashMap<Integer,Double> attackerstrategy)
+	{
+		/**
+		 * make the D matrix and A matrix
+		 */
+		int nTargets = sts.size();
+		int[][] D = new int[nTargets][nTargets];
+		int[][] A = new int[nTargets][nTargets];
+		int nJointSchedule= p[0].length;
+		/**
+		 * include targetid when using contraction
+		 */
+		int icount = 0;
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+
+
+		for(Integer stid: sts.keySet())
+		{
+
+			map.put(stid, icount);
+			mapback.put(icount, stid);
+			icount++;
+
+		}
+		for(Integer stid: sts.keySet())
+		{
+			// find supertarget's maximum value target for attacker
+			
+			
+			
+			
+			int targetid= map.get(stid);
+			//System.out.println("D["+target+"]["+target+"]=("+ gamedata[targetid][0] + ")-("+ gamedata[targetid][1]+")") ;
+			//D[targetid][targetid] = gamedata[targetid][0] - gamedata[targetid][1];
+			D[targetid][targetid] = (int)sts.get(stid).defenderreward - (int)sts.get(stid).defenderpenalty;
+			//System.out.println("A["+target+"]["+target+"]=("+ gamedata[targetid][3] + ")-("+ gamedata[targetid][2]+")") ;
+			//A[targetid][targetid] = gamedata[targetid][3] - gamedata[targetid][2];
+			A[targetid][targetid] = (int)sts.get(stid).attackerpenalty - (int)sts.get(stid).attackerreward;
+		}
+		/**
+		 * the U vectors
+		 * Ud
+		 * Ua
+		 */
+		System.out.println();
+		double[] Ud = new double[nTargets];
+		double[] Ua = new double[nTargets];
+
+		for(Integer stid: sts.keySet())
+		{
+			int targetid = map.get(stid);
+			//System.out.println("Ud["+target+"] = "+gamedata[targetid][1]);
+			Ud[targetid] = (int)sts.get(stid).defenderpenalty;
+			//System.out.println("Ua["+target+"] = "+gamedata[targetid][2]);
+			Ua[targetid] = (int)sts.get(stid).attackerreward;
+
+		}
+		int M =100000;
+
+		/**
+		 * cplex variables
+		 */
+		try
+		{
+
+			IloCplex cplex = new IloCplex();
+			IloNumVar[] x = new IloNumVar[nJointSchedule];//cplex.numVarArray(nPath, 0, 1);
+			for(int i=0; i<nJointSchedule ; i++)
+			{
+				x[i] = cplex.numVar(0, 1);
+			}
+			//IloNumVar[] d = cplex.numVarArray(nTargets, 0, Double.MAX_VALUE);
+			//IloNumVar dd = cplex.numVar(Double.NEGATIVE_INFINITY, Double.MAX_VALUE);
+			//IloNumVar[] k = cplex.numVarArray(nTargets, 0, Double.MAX_VALUE);
+			IloNumVar kk = cplex.numVar(Double.NEGATIVE_INFINITY, Double.MAX_VALUE);
+			//IloNumVar[] a = new IloNumVar[nTargets];
+			/*for(int i=0; i<nTargets; i++)
+			{
+				a[i] = cplex.boolVar();
+			}*/
+			/**
+			 * objective
+			 */
+			IloLinearNumExpr obj = cplex.linearNumExpr();
+			obj.addTerm(1,  kk);
+			cplex.addMinimize(obj);
+			/**
+			 * constraint 4
+			 */
+			/*for(int target=0; target<nTargets; target++)
+			{
+				IloLinearNumExpr expr3 = cplex.linearNumExpr();
+				expr3.addTerm(1, dd);
+
+				for(int jointpath=0; jointpath<nJointSchedule; jointpath++)
+				{
+					expr3.addTerm(-1.0*D[target][target]*p[target][jointpath], x[jointpath]);
+
+
+				}
+				expr3.addTerm(M, a[target]);
+				cplex.addLe(expr3, M+Ud[target]);
+			}*/
+			/**
+			 * constraint 5
+			 */
+
+			/*for(int target=0; target<nTargets; target++)
+			{
+				IloLinearNumExpr expr4 = cplex.linearNumExpr();
+				expr4.addTerm(1, kk);
+				for(int jointpath=0; jointpath<nJointSchedule; jointpath++)
+				{
+					expr4.addTerm(-1.0*A[target][target]*p[target][jointpath], x[jointpath]);
+				}
+				//expr4.addTerm(-1.0, Ud[target]);
+				expr4.addTerm(M, a[target]);
+				cplex.addLe(expr4, M+Ua[target]);
+			}*/
+
+			/**
+			 * constraint 6
+			 */
+			//for(int res=0; res<nResource; res++)
+
+			List<IloRange> constraints = new ArrayList<IloRange>();
+			for(int target=0; target<nTargets; target++)
+			{
+				IloLinearNumExpr expr5 = cplex.linearNumExpr();
+				for(int jointpath=0; jointpath<nJointSchedule; jointpath++)
+				{
+					expr5.addTerm(A[target][target]*p[target][jointpath], x[jointpath]);
+				}
+				expr5.addTerm(-1, kk);
+				constraints.add(cplex.addLe(expr5, -Ua[target]));
+			}
+
+			/**
+			 * constraint 7
+			 */
+			IloLinearNumExpr expr = cplex.linearNumExpr();
+			for(int j=0; j<nJointSchedule; j++)
+			{
+
+				expr.addTerm(1.0, x[j]);
+			}
+			cplex.addEq(expr, 1);
+
+			/**
+			 * constraint for attakced target
+			 */
+			/*IloLinearNumExpr expra = cplex.linearNumExpr();
+			for(int j=0; j<nTargets; j++)
+			{
+
+				expra.addTerm(1.0, a[j]);
+			}
+
+			cplex.addEq(expra, 1.0);*/
+
+
+
+			cplex.solve();
+			System.out.println("obj: "+ cplex.getObjValue());
+			double[] result = new double[nJointSchedule];
+			for(int i=0; i<nJointSchedule; i++)
+			{
+				if(cplex.getValue(x[i])>0)
+				{
+
+					System.out.print("x["+i+"]="+cplex.getValue(x[i])+ " ");
+					result[i] = cplex.getValue(x[i]);
+				}
+			}
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			/*for(int i=0; i<nTargets; i++)
+			{
+
+				if(cplex.getValue(a[i])>0)
+				{
+
+					System.out.print("a["+mapback.get(i)+"]="+cplex.getValue(a[i])+ " \n");
+					 attackedtarget=mapback.get(i);
+					 break;
+				}
+
+
+			}*/
+
+			for(int i=0; i<nTargets; i++)
+			{
+				attackerstrategy.put(mapback.get(i), -(cplex.getDual(constraints.get(i))));
+				System.out.println(" constraint "+ mapback.get(i) + " dual "+ -(cplex.getDual(constraints.get(i))));
+
+			}
+			return result;
+
+		}
+		catch(Exception ex)
+		{
+
+		}
+		return null;
+
+
+	}
+
+
 
 
 

@@ -221,9 +221,88 @@ public class SecurityGameContraction
 	}
 
 
-
+	
 	private static void purifyAPSPMatrixWithNeighborAndZero(int[][] apsmat,
 			ArrayList<TargetNode> targets, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		/*int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(TargetNode nei: n.getNeighbors())
+			{
+				System.out.print("["+n.getTargetid()+"]["+nei.getTargetid()+"] ---> ");
+				System.out.println("["+map.get(n.getTargetid())+"]["+map.get(nei.getTargetid())+"]=1");
+
+
+
+				adjacencymatrix[map.get(n.getTargetid())][map.get(nei.getTargetid())]=  n.getDistance(nei).intValue();
+			}
+			i++;
+		}*/
+
+
+		for (int source = 1; source <=nTargets; source++)
+		{
+			for (int destination = 1; destination <= nTargets; destination++)
+			{
+				//adjacencymatrix[source][destination] = scan.nextInt();
+
+
+
+
+				if (source == destination)
+				{
+					apsmat[source][destination] = 0;  // reason ache
+					continue;
+				}
+				if (apsmat[source][destination] == 0)
+				{
+					apsmat[source][destination] = INFINITY;
+				}
+			}
+		}
+
+
+
+		//int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(int j=1; j<= nTargets; j++)
+			{
+				int target = mapback.get(j);
+				TargetNode tmp = getTargetNode(target, targets);
+				if(!n.getNeighbors().contains(tmp))
+				{
+
+					if(n.getTargetid() != target)
+					{
+
+						/*System.out.print("["+n.getTargetid()+"]["+target+"] ---> ");
+						System.out.println("["+map.get(n.getTargetid())+"]["+map.get(target)+"]=INF");*/
+						apsmat[map.get(n.getTargetid())][map.get(target)]=  INFINITY;
+					}
+
+				}
+
+
+			}
+			//i++;
+		}
+
+
+
+
+
+
+	}
+	
+
+	private static void purifyAPSPSuperMatrixWithNeighborAndZero(int[][] apsmat,
+			HashMap<Integer, TargetNode> targetmaps, int nTargets, 
+			HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback, HashMap<Integer, SuperTarget> sts) {
 
 
 		/*int i=1; 
@@ -8651,6 +8730,43 @@ public class SecurityGameContraction
 
 		return pmat;
 	}
+	
+	
+	
+	public static int[][] makeSuperPmat(ArrayList<ArrayList<Integer>> pathseq,
+			List<ArrayList<Integer>> jset, HashMap<Integer,Integer> mapback, HashMap<Integer, 
+			SuperTarget> supertargets, HashMap<Integer,Integer> map) {
+
+
+
+
+
+		int[][] pmat = new int[supertargets.size()][jset.size()];
+
+
+
+		/**
+		 * mapping happened
+		 */
+		for(Integer stid: supertargets.keySet())
+		{
+			for(int j=0; j<jset.size(); j++)
+			{
+				/**
+				 * check if target t is in j schedule
+				 */
+				int targetid = stid;//targets.get(t).getTargetid();
+				int isinj = isInJointSchedule(targetid, jset.get(j), pathseq);
+				pmat[map.get(stid)][j] = isinj;
+
+			}
+		}
+
+
+		return pmat;
+	}
+	
+	
 
 	private static int isInJointSchedule(int target, ArrayList<Integer> jointschedule,
 			ArrayList<ArrayList<Integer>> pathseq) {
@@ -8695,7 +8811,7 @@ public class SecurityGameContraction
 
 
 
-	private static ArrayList<ArrayList<Integer>> removeDuplicatePathSimple(
+	public static ArrayList<ArrayList<Integer>> removeDuplicatePathSimple(
 			ArrayList<ArrayList<Integer>> pathseq) {
 
 		ArrayList<Integer> duplicatepaths = new ArrayList<Integer>();
@@ -8714,7 +8830,7 @@ public class SecurityGameContraction
 
 						for(int k=0; k<pathseq.get(j).size(); k++)
 						{
-							boolean isinj = isInJ(pathseq.get(j).get(k), pathseq.get(i));
+							boolean isinj = isInSuperJ(pathseq.get(j).get(k), pathseq.get(i));
 							if(!isinj)
 							{
 								same=false;
@@ -8911,15 +9027,36 @@ public class SecurityGameContraction
 
 		for(Integer x: arrayList)
 		{
-			if(integer==x)
+			if(integer.equals(x))
 				return true;
 		}
 
 
 		return false;
 	}
+	
+	
+	public static boolean isInSuperJ(Integer t, ArrayList<Integer> path) {
 
-	private static double expectedPayoffDef(int target,
+
+		for(Integer p: path)
+		{
+			if(p.equals(t))
+			{
+				//System.out.println( p+ " is equal to "+ t);
+				return true;
+			}
+			else
+			{
+				//System.out.println( p+ " is not equal to "+ t);
+			}
+		}
+
+
+		return false;
+	}
+
+	public static double expectedPayoffDef(int target,
 			int[][] origpmat, int[][] gamedata, double[] coverage) {
 
 		double prob =0;
@@ -8937,10 +9074,31 @@ public class SecurityGameContraction
 
 		return payoff;
 	}
+	
+	
+	public static double expectedPayoffDef(int target,
+			int[][] origpmat, HashMap<Integer, TargetNode> targetmaps, double[] coverage) {
+
+		double prob =0;
+
+		for(int path=0; path<coverage.length; path++)
+		{
+			prob += origpmat[target][path]*coverage[path];
+		}
+
+		double payoff = prob*(targetmaps.get(target).defenderreward) + (1-prob)*targetmaps.get(target).defenderpenalty;
+		payoff = Math.round(payoff*100)/100.0;
 
 
 
-	private static double expectedPayoffAtt(int target,
+
+		return payoff;
+	}
+
+
+
+
+	public static double expectedPayoffAtt(int target,
 			int[][] origpmat, int[][] gamedata, double[] coverage) {
 
 		double prob =0;
@@ -8951,6 +9109,26 @@ public class SecurityGameContraction
 		}
 
 		double payoff = prob*(gamedata[target][3]) + (1-prob)*gamedata[target][2];
+		payoff = Math.round(payoff*100)/100.0;
+
+
+
+
+		return payoff;
+	}
+	
+	
+	public static double expectedPayoffAtt(int target,
+			int[][] origpmat, HashMap<Integer, TargetNode> targetmaps, double[] coverage) {
+
+		double prob =0;
+
+		for(int path=0; path<coverage.length; path++)
+		{
+			prob += origpmat[target][path]*coverage[path];
+		}
+
+		double payoff = prob*(targetmaps.get(target).attackerpenalty) + (1-prob)*targetmaps.get(target).attackerreward;
 		payoff = Math.round(payoff*100)/100.0;
 
 
@@ -9106,8 +9284,84 @@ public class SecurityGameContraction
 
 	}
 	
+	public static int findAttackSuperTargetWMapping(int[][] pmat, double[] coverage, HashMap<Integer, SuperTarget> currentst, 
+			HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		double[] expectedpayoffs = expectedAttackerSTPayoffsWithMapping(pmat, coverage,  currentst, map, mapback);
+
+		/*for(int i=0; i<expectedpayoffs.length; i++)
+		{
+			System.out.println("target "+ mapback.get(i) +", attkr payoff "+ expectedpayoffs[i]);
+		}*/
+		double max = Double.NEGATIVE_INFINITY;
+		int maxtarget = -1;
+
+		for(int i=0; i<expectedpayoffs.length; i++)
+		{
+			if(max<expectedpayoffs[i])
+			{
+				max = expectedpayoffs[i];
+				maxtarget = i;
+			}
+		}
+
+		//System.out.println("max target "+maxtarget+", attkr payoff "+ expectedpayoffs[maxtarget]);
+
+
+		/**
+		 * check if there are ties
+		 */
+
+		ArrayList<Integer> tiedtargets = new ArrayList<Integer>();
+		tiedtargets.add(maxtarget);
+		for(int i=0; i<pmat.length; i++)
+		{
+			if((i!=maxtarget) && (expectedpayoffs[i] == max))
+			{
+				//System.out.println("tied target "+mapback.get(i) +", attkr payoff "+ expectedpayoffs[i]);
+
+				tiedtargets.add(i);
+			}
+		}
+
+		int selectedtarget = maxtarget;
+
+		if(tiedtargets.size()>1)
+		{
+
+			/**
+			 * there are tied targets
+			 * choose in favor of defender
+			 */
+			double defenderexpectedpayoffs[] =  defenderExpectedSTPayoffsWithMapping(tiedtargets, coverage, currentst, pmat, map, mapback);
+			/*for(int i=0; i<defenderexpectedpayoffs.length; i++)
+			{
+				System.out.println("target "+mapback.get(tiedtargets.get(i)) +", defender payoff "+ defenderexpectedpayoffs[i]);
+			}*/
+			double defmax = Double.NEGATIVE_INFINITY;
+			int defmaxtarget = -1;
+
+			for(int i=0; i<defenderexpectedpayoffs.length; i++)
+			{
+				if(defmax<defenderexpectedpayoffs[i])
+				{
+					defmax = defenderexpectedpayoffs[i];
+					defmaxtarget = i;
+				}
+			}
+			selectedtarget = defmaxtarget;
+			return tiedtargets.get(selectedtarget);
+		}
+
+
+
+		return selectedtarget;
+	}
 	
-	private static int findAttackTargetWMapping(int[][] pmat, double[] coverage, int[][] gamedata, 
+	
+	
+	public static int findAttackTargetWMapping(int[][] pmat, double[] coverage, int[][] gamedata, 
 			HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
 
 
@@ -9181,6 +9435,9 @@ public class SecurityGameContraction
 
 		return selectedtarget;
 	}
+	
+	
+	
 
 	private static double[] findAttackTargetWHashMap(int[][] pmat, double[] coverage, int[][] gamedata, 
 			HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
@@ -9332,6 +9589,81 @@ public class SecurityGameContraction
 	}
 	
 	
+	public static int findAttackTarget(int[][] pmat, double[] coverage, HashMap<Integer, TargetNode> targetmaps) {
+
+
+		double[] expectedpayoffs = expectedAttackerPayoffs(pmat, coverage, targetmaps);
+
+		/*for(int i=0; i<expectedpayoffs.length; i++)
+		{
+			System.out.println("target "+i+", attkr payoff "+ expectedpayoffs[i]);
+		}*/
+		double max = Double.NEGATIVE_INFINITY;
+		int maxtarget = -1;
+
+		for(int i=0; i<expectedpayoffs.length; i++)
+		{
+			if(max<expectedpayoffs[i])
+			{
+				max = expectedpayoffs[i];
+				maxtarget = i;
+			}
+		}
+
+		//System.out.println("max target "+maxtarget+", attkr payoff "+ expectedpayoffs[maxtarget]);
+
+
+		/**
+		 * check if there are ties
+		 */
+
+		ArrayList<Integer> tiedtargets = new ArrayList<Integer>();
+		tiedtargets.add(maxtarget);
+		for(int i=0; i<pmat.length; i++)
+		{
+			if((i!=maxtarget) && (expectedpayoffs[i] == max))
+			{
+				//System.out.println("tied target "+i+", attkr payoff "+ expectedpayoffs[i]);
+
+				tiedtargets.add(i);
+			}
+		}
+
+		int selectedtarget = maxtarget;
+
+		if(tiedtargets.size()>1)
+		{
+			//System.out.println("target "+i+", attkr payoff "+ expectedpayoffs[i]);
+			/**
+			 * there are tied targets
+			 * choose in favor of defender
+			 */
+			double defenderexpectedpayoffs[] =  defenderExpectedPayoffs(tiedtargets, coverage, targetmaps, pmat);
+			/*for(int i=0; i<defenderexpectedpayoffs.length; i++)
+			{
+				System.out.println("target "+tiedtargets.get(i)+", defender payoff "+ defenderexpectedpayoffs[i]);
+			}*/
+			double defmax = Double.NEGATIVE_INFINITY;
+			int defmaxtarget = -1;
+
+			for(int i=0; i<defenderexpectedpayoffs.length; i++)
+			{
+				if(defmax<defenderexpectedpayoffs[i])
+				{
+					defmax = defenderexpectedpayoffs[i];
+					defmaxtarget = i;
+				}
+			}
+			selectedtarget = defmaxtarget;
+			return tiedtargets.get(selectedtarget);
+		}
+
+
+
+		return selectedtarget;
+	}
+	
+	
 	private static HashMap<Integer,Double> defenderExpectedPayoffsWithHashMap(
 			ArrayList<Integer> targets, double[] coverage,
 			int[][] gamedata, int [][] origpmat, 
@@ -9405,6 +9737,41 @@ public class SecurityGameContraction
 
 		return expectedpayoff;
 	}
+	
+	private static double[] defenderExpectedSTPayoffsWithMapping(
+			ArrayList<Integer> tiedtargets, double[] coverage,
+			HashMap<Integer, SuperTarget> currentst, int [][] origpmat, 
+			HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+		double[] expectedpayoff = new double[tiedtargets.size()];
+
+		double[] c = new double[tiedtargets.size()];
+
+
+
+		for(int t=0; t<expectedpayoff.length; t++)
+		{
+			int target = tiedtargets.get(t);
+
+			for(int path=0; path<coverage.length; path++)
+			{
+				c[t] += origpmat[target][path]*coverage[path];
+
+
+				/*double defreward = origpmat[target][path]*coverage[path]*gamedata[target][0];
+					double defpenalty = (1-origpmat[target][path])*(1-coverage[path])*gamedata[target][1];
+					sum = sum + defpenalty + defreward;*/
+			}
+
+
+			expectedpayoff[t] = c[t]*currentst.get(mapback.get(target)).defenderreward + (1-c[t])*currentst.get(mapback.get(target)).defenderpenalty;
+			expectedpayoff[t] = Math.round(expectedpayoff[t]*100)/100.00;
+
+		}
+
+
+		return expectedpayoff;
+	}
 
 
 	private static double[] defenderExpectedPayoffs(
@@ -9440,9 +9807,44 @@ public class SecurityGameContraction
 
 		return expectedpayoff;
 	}
+	
+	
+	private static double[] defenderExpectedPayoffs(
+			ArrayList<Integer> tiedtargets, double[] coverage,
+			HashMap<Integer, TargetNode> targetmaps, int [][] origpmat) {
+
+		double[] expectedpayoff = new double[tiedtargets.size()];
+
+		double[] c = new double[tiedtargets.size()];
 
 
-	private static double expectedAttackerPayoff(int target, int[][] p,
+
+		for(int t=0; t<expectedpayoff.length; t++)
+		{
+			int target = tiedtargets.get(t);
+
+			for(int path=0; path<coverage.length; path++)
+			{
+				c[t] += origpmat[target][path]*coverage[path];
+
+
+				/*double defreward = origpmat[target][path]*coverage[path]*gamedata[target][0];
+					double defpenalty = (1-origpmat[target][path])*(1-coverage[path])*gamedata[target][1];
+					sum = sum + defpenalty + defreward;*/
+			}
+
+
+			expectedpayoff[t] = c[t]*targetmaps.get(target).defenderreward + (1-c[t])*targetmaps.get(target).defenderpenalty;
+			expectedpayoff[t]= Math.round(expectedpayoff[t]*100)/100.0;
+
+		}
+
+
+		return expectedpayoff;
+	}
+
+
+	public static double expectedAttackerPayoff(int target, int[][] p,
 			double[] probdistribution, int[][] gamedata, HashMap<Integer, Integer> map) {
 
 
@@ -9465,6 +9867,40 @@ public class SecurityGameContraction
 
 			double x = c*gamedata[target][3];
 			double y = (1-c)*gamedata[target][2];
+			//System.out.println(" attk: target "+ target+ ", coverage "+ c[target]+ ", r:"+y+",p:"+x);
+			expectedpayoffs = Math.round((x+y)*100)/100.00; //c[target]*gamedata[target][3] + (1-c[target]*gamedata[target][2]);
+
+		}
+
+
+		return expectedpayoffs;
+	}
+	
+	
+	public static double expectedAttackerSTPayoff(int target, int[][] p,
+			double[] probdistribution, HashMap<Integer,SuperTarget> currentst,
+			 HashMap<Integer, Integer> map) {
+
+
+		double expectedpayoffs = 0.0;
+
+		double c = 0;
+		//for(int target=0; target<expectedpayoffs.length; target++)
+		{
+			//System.out.println("\n\nTarget "+ target);
+
+
+
+
+			for(int jointschedule=0; jointschedule<probdistribution.length; jointschedule++)
+			{
+				c += p[map.get(target)][jointschedule]* probdistribution[jointschedule];
+				//System.out.println(" attk: target "+ target+ ", probj["+jointschedule+"] "+ probdistribution[jointschedule]+ ", coverage c:"+c);
+
+			}
+
+			double x = c*currentst.get(target).attackerpenalty;
+			double y = (1-c)*currentst.get(target).attackerreward;
 			//System.out.println(" attk: target "+ target+ ", coverage "+ c[target]+ ", r:"+y+",p:"+x);
 			expectedpayoffs = Math.round((x+y)*100)/100.00; //c[target]*gamedata[target][3] + (1-c[target]*gamedata[target][2]);
 
@@ -9543,6 +9979,42 @@ public class SecurityGameContraction
 	}
 	
 	
+	private static double[] expectedAttackerSTPayoffsWithMapping(int[][] pmat,
+			double[] coverage, HashMap<Integer, SuperTarget> currentst, 
+			HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		double[] expectedpayoffs = new double[pmat.length];
+
+		double[] c = new double[pmat.length];
+		for(int stid: currentst.keySet())
+		{
+			//System.out.println("\n\nTarget "+ target);
+
+
+			int tid = map.get(stid);
+
+			for(int jointschedule=0; jointschedule<coverage.length; jointschedule++)
+			{
+				c[tid] += pmat[tid][jointschedule]* coverage[jointschedule];
+
+			}
+
+			//double x = c[tid]*gamedata[originalmapback.get(target)][3];
+			double x = c[tid]*currentst.get(stid).attackerpenalty;
+			//double y = (1-c[target])*gamedata[originalmapback.get(target)][2];
+			double y = (1-c[tid])*currentst.get(stid).attackerreward;
+			//System.out.println(" attk: target "+ target+ ", coverage "+ c[target]+ ", r:"+y+",p:"+x);
+			expectedpayoffs[tid] = Math.round((x+y)*100)/100.00; //c[target]*gamedata[target][3] + (1-c[target]*gamedata[target][2]);
+
+		}
+
+
+		return expectedpayoffs;
+	}
+	
+	
+	
 	private static HashMap<Integer,Double> expectedAttackerPayoffsWithHashMap(int[][] origpmat,
 			double[] coverage, int[][] gamedata, 
 			HashMap<Integer,Integer> originalmap, HashMap<Integer,Integer> originalmapback) {
@@ -9578,6 +10050,37 @@ public class SecurityGameContraction
 
 
 	private static double[] expectedAttackerPayoffs(int[][] origpmat,
+			double[] coverage, HashMap<Integer, TargetNode> targetmaps) {
+
+
+		double[] expectedpayoffs = new double[origpmat.length];
+
+		double[] c = new double[origpmat.length];
+		for(int target=0; target<expectedpayoffs.length; target++)
+		{
+			//System.out.println("\n\nTarget "+ target);
+
+
+
+
+			for(int jointschedule=0; jointschedule<coverage.length; jointschedule++)
+			{
+				c[target] += origpmat[target][jointschedule]* coverage[jointschedule];
+
+			}
+
+			double x = c[target]*targetmaps.get(target).attackerpenalty;
+			double y = (1-c[target])*targetmaps.get(target).attackerreward;
+			//System.out.println(" attk: target "+ target+ ", coverage "+ c[target]+ ", r:"+y+",p:"+x);
+			expectedpayoffs[target] =  Math.round(((x+y)*100))/100.0; //c[target]*gamedata[target][3] + (1-c[target]*gamedata[target][2]);
+
+		}
+
+
+		return expectedpayoffs;
+	}
+	
+	private static double[] expectedAttackerPayoffs(int[][] origpmat,
 			double[] coverage, int[][] gamedata) {
 
 
@@ -9607,9 +10110,10 @@ public class SecurityGameContraction
 
 		return expectedpayoffs;
 	}
-
-
-	private static int[][] makeOrigPMatWOMap(int[][] p,
+	
+	
+	
+	public static int[][] makeOrigPMatWOMap(int[][] p,
 			ArrayList<ArrayList<Integer>> pathseq, 
 			List<ArrayList<Integer>> jset, int nTargets, ArrayList<TargetNode> dominatednodes,
 			HashMap<Integer,Integer> originalmap, HashMap<Integer,Integer> originalmapback, 
@@ -9674,6 +10178,61 @@ public class SecurityGameContraction
 					}
 
 
+				}
+
+			}
+			jindex++;
+		}
+
+
+		return origpmat;
+	}
+
+
+
+	public static int[][] makeSuperOrigPMatWOMap(int[][] p,
+			ArrayList<ArrayList<Integer>> pathseq, 
+			List<ArrayList<Integer>> jset, int nTargets,
+			HashMap<Integer,Integer> originalmap, HashMap<Integer,Integer> originalmapback, 
+			HashMap<Integer,TargetNode> targetmaps, HashMap<Integer,SuperTarget> currentst) throws Exception {
+
+
+
+		int[][] origpmat = new int[nTargets][jset.size()];
+
+		int jindex = 0;
+		for(ArrayList<Integer> j: jset)
+		{
+
+			ArrayList<ArrayList<Integer>> paths = new ArrayList<ArrayList<Integer>>();
+			for(Integer jpath: j)
+			{
+				paths.add(pathseq.get(jpath));
+			}
+
+
+			// 0 11 18 2 5 9 13 19 6 7 12 14 15 16 20 21 22 24 
+
+			for(ArrayList<Integer> path: paths)
+			{
+				//printNodesWithNeighborsAndPath(dominatednodes, targets);
+				/*System.out.println("Considering path :");
+				printGreedyPath(path);
+				System.out.println();*/
+
+				for(int targetindex=0; targetindex<path.size()-1; targetindex++)
+				{
+
+					// get the supertarget
+					int st = path.get(targetindex);
+					
+					// for all the nodes in the supertarget assign 1
+					
+					for(TargetNode t: currentst.get(st).nodes.values())
+					{
+						origpmat[t.getTargetid()][jindex] = 1;
+					}
+					
 				}
 
 			}
@@ -15264,7 +15823,52 @@ public class SecurityGameContraction
 	}
 
 
-	private static ArrayList<ArrayList<Integer>> buildGreedyCoverMultRes2(
+	public static ArrayList<ArrayList<Integer>> buildSuperGreedyCoverMultRes2(
+			HashMap<Integer, TargetNode> targetmaps, double dmax, int nTargets, int base, 
+			int nRes, HashMap<Integer,Double> attackerstrategy, HashMap<Integer, SuperTarget> sts) {
+
+
+
+		ArrayList<ArrayList<Integer>> paths = new ArrayList<ArrayList<Integer>>();
+		
+		
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+		//ArrayList<Integer> graphint = new ArrayList<Integer>();
+		
+		
+		int i = 1;
+		for(Integer stid: sts.keySet())
+		{
+			map.put(stid, i);
+			mapback.put(i, stid);
+			//graphint.add(map.get(targets.get(i-1).getTargetid()));
+			i++;
+		}
+		
+		
+		
+		int[][] adjacencymatrix = new int[sts.size()+1][sts.size()+1];
+		makeAdjacencyMatrixST(adjacencymatrix , sts, sts.size(), map, mapback);
+		
+		AllPairShortestPath allPairShortestPath= new AllPairShortestPath(sts.size());
+		int[][] apsp = allPairShortestPath.allPairShortestPath(adjacencymatrix);
+        //ArrayList<Integer> path = AllPairShortestPath.getPath(1, 2, allPairShortestPath.next);
+
+		purifyAPSPSuperMatrixWithNeighborAndZero(apsp, targetmaps, sts.size(), map, mapback, sts);
+		
+		ArrayList<Integer> tcur = new ArrayList<Integer>(); //greedyFirstRoute(dmax,gamedata, targets);
+
+		int[][] targetssorted = sortSuperTargets(sts);
+
+
+
+		return greedySuperCoverMultRes2(base, targetmaps, dmax, targetssorted, apsp, map,mapback, nRes, attackerstrategy, sts);
+	}
+	
+	
+	public static ArrayList<ArrayList<Integer>> buildGreedyCoverMultRes2(
 			ArrayList<TargetNode> targets, double dmax, int nTargets, int base, 
 			int nRes, HashMap<Integer,Double> attackerstrategy) {
 
@@ -16035,10 +16639,155 @@ public class SecurityGameContraction
 	}
 	
 	
+	
 	private static ArrayList<ArrayList<Integer>> greedyCoverMultRes2(int base, ArrayList<TargetNode> targets,
 			double dmax, int[][] targetssorted, int[][] apspmat,
 			HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback,
 			int nRes, HashMap<Integer,Double> attackerstrategy) 
+			{
+
+
+		ArrayList<Integer> tsrt = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> bestjointgr = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> jointgr = new ArrayList<ArrayList<Integer>>();
+		double besttotalcoin = -1;
+		//int[] coin = new int[targetssorted.length];
+
+		HashMap<Integer, Double> coin = new HashMap<Integer, Double>();
+
+		for(int k=0; k<targetssorted.length; k++)
+		{
+			//coin[targetssorted[k][0]]=;
+			coin.put(targetssorted[k][0], targetssorted[k][1]*attackerstrategy.get(targetssorted[k][0]));
+		}
+		for(int k=1; k<targetssorted.length; k++)
+		{
+			tsrt.add(targetssorted[k][0]);
+		}
+		/*System.out.println("Tsrt : ");
+		printGreedyPath(tsrt);*/
+
+		for(int iter = 0; iter<10; iter++)
+		{
+			ArrayList<Integer> tmptsrt = new ArrayList<Integer>();
+			if(iter==0)
+			{
+				tmptsrt=tsrt;
+			}
+			else
+			{
+				//shuffleArray(tmptsrt);
+				tmptsrt = new ArrayList<Integer>(tsrt);
+				Collections.shuffle(tmptsrt, new Random());
+			}
+			int i=0; 
+
+
+			double totalcoin = 0;
+			HashMap<Integer, Double> remaincoin = coin;
+			ArrayList<Integer> greedypath = new ArrayList<Integer>();
+			for(int res = 0; res<nRes; res++)
+			{
+				//System.out.println("res = "+res);
+				//System.out.println("Adding base to greedy path : ");
+				greedypath.clear();
+				greedypath.add(base);
+				greedypath.add(base);
+				//printGreedyPath(greedypath);
+				int totaldist = 0;
+				totalcoin = totalcoin + remaincoin.get(base);
+				remaincoin.remove(base);
+				remaincoin.put(base, 0.0);
+				while(i<tsrt.size())
+				{
+					int besttotaldisttemp = -1;
+					int bestj = -1;
+					for(int j=1; j<greedypath.size(); j++)
+					{
+						int s = map.get(greedypath.get(j-1));
+						int d = map.get(greedypath.get(j));
+						int totaldisttemp = totaldist - apspmat[s][d];
+
+						s = map.get(greedypath.get(j-1));
+						//d = map.get(targetssorted[i][0]);
+						d = map.get(tmptsrt.get(i));
+						totaldisttemp +=  apspmat[s][d];
+
+
+						s = map.get(tmptsrt.get(i));
+						d = map.get(greedypath.get(j));
+						totaldisttemp +=  apspmat[s][d];
+
+						/*System.out.println("totaldisttemp = "+totaldisttemp);
+						System.out.println("bestj : "+bestj);*/
+
+						if ((totaldisttemp<dmax) && 
+								((besttotaldisttemp==-1) || (totaldisttemp<besttotaldisttemp)) && totaldisttemp>0)
+						{
+							bestj = j; // trying to inseert as much target as possible by taking target which will result in minimum distance 
+							/**
+							 * a b c d ....we will try to insert x between ab or bc or cd
+							 * we will choose which will result in the minimum total distance
+							 */
+							besttotaldisttemp = totaldisttemp;
+							/*System.out.println("updating besttotaldisttemp = "+besttotaldisttemp);
+							System.out.println("updating bestj : "+bestj);*/
+						}
+
+
+
+					}
+					if(bestj>-1)
+					{
+						greedypath = insertTsrt(greedypath, 0, bestj-1, tmptsrt.get(i) , bestj, greedypath.size()-1);
+						if(greedypath.size()>dmax)
+						{
+							printGreedyPath(greedypath);
+						}
+						//printGreedyPath(greedypath);
+						totaldist = besttotaldisttemp;
+
+						totalcoin += remaincoin.get(tmptsrt.get(i));
+						//remaincoin[tmptsrt.get(i)] = 0;
+						remaincoin.remove(tmptsrt.get(i));
+						remaincoin.put(tmptsrt.get(i), 0.0);
+					}
+					i++;
+				} // while loop
+				if(greedypath.size()==2 && greedypath.get(0)==base && greedypath.get(0)==base)
+				{
+					greedypath.clear();
+					greedypath.add(base);
+				}
+				if(greedypath.size()>=3)
+				{
+					ArrayList<Integer> tmp = new ArrayList<Integer>(greedypath);
+					if(greedypath.size()>dmax)
+					{
+						printGreedyPath(greedypath);
+					}
+					jointgr.add(tmp);
+					//printPaths(jointgr);
+				}
+			}
+			if(totalcoin>besttotalcoin)
+			{
+				bestjointgr = jointgr;
+				besttotalcoin = totalcoin;
+			}
+			//printPaths(jointgr);
+
+		}
+		return bestjointgr;
+
+
+			}
+	
+	
+	private static ArrayList<ArrayList<Integer>> greedySuperCoverMultRes2(int base, HashMap<Integer, TargetNode> targets,
+			double dmax, int[][] targetssorted, int[][] apspmat,
+			HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback,
+			int nRes, HashMap<Integer,Double> attackerstrategy, HashMap<Integer, SuperTarget> sts) 
 			{
 
 
@@ -27942,7 +28691,7 @@ public class SecurityGameContraction
 	}
 	
 	
-	private static ArrayList<ArrayList<Integer>> determineNewPaths(ArrayList<ArrayList<Integer>> newpathseq, int[][] origpmat,
+	public static ArrayList<ArrayList<Integer>> determineNewPaths(ArrayList<ArrayList<Integer>> newpathseq, int[][] origpmat,
 			double[] probdistribution) {
 		
 		ArrayList<ArrayList<Integer>> purifiedpaths = new ArrayList<ArrayList<Integer>>();
@@ -31781,6 +32530,35 @@ public class SecurityGameContraction
 		}
 		return srted;
 	}
+	
+	
+	public static int[][] sortSuperTargets(HashMap<Integer, SuperTarget> sts) {
+
+		int[][] srted = new int[sts.size()][2];
+		int i = 0;
+		for(SuperTarget st: sts.values())
+		{
+			srted[i][0] = st.stid;
+			srted[i][1] = (int)st.attackerreward;
+			i++;
+		}
+		int[] swap = {0,0};
+
+		for (int k = 0; k < srted.length; k++) 
+		{
+			for (int d = 1; d < srted.length-k; d++) 
+			{
+				if (srted[d-1][1] < srted[d][1])    // ascending order
+				{
+					swap = srted[d];
+					srted[d]  = srted[d-1];
+					srted[d-1] = swap;
+				}
+			}
+		}
+		return srted;
+	}
+
 
 
 
