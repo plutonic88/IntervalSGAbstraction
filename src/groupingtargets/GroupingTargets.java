@@ -50,7 +50,7 @@ public class GroupingTargets {
 			clusters[t].add(t);
 		}
 		HashMap<Integer, SuperTarget> sts = SuperTarget.buildSuperTargets(clusters,targetmaps);
-		 printSuperTargets(sts);
+		// printSuperTargets(sts);
 		 int stssize = 1; // to keep track if any targets were clustered
 		 while(true)
 		 {
@@ -107,7 +107,7 @@ public class GroupingTargets {
 						 //merge them and create a temp supertarget
 						 SuperTarget tempst = SuperTarget.mergeSuperTargets(st1,st2);
 						 tempst.stid = 200 + st1.stid + st2.stid;
-						 printSuperTarget(tempst);
+						// printSuperTarget(tempst);
 						/**
 						  * for every pair of access points
 						  */
@@ -189,8 +189,8 @@ public class GroupingTargets {
 			 }
 			 
 			 
-			 System.out.println("Current mindi "+ mindi + " \n ST1 "+ stid1 + " ST2 "+ stid2 + 
-					 "\n a1 "+ aid1 + ", a2 "+ aid2);
+			// System.out.println("Current mindi "+ mindi + " \n ST1 "+ stid1 + " ST2 "+ stid2 + 
+				//	 "\n a1 "+ aid1 + ", a2 "+ aid2);
 			 /**
 			  * Merge two cluster which have min d
 			  * For the new id of supertargets concat the strings with comma
@@ -204,15 +204,15 @@ public class GroupingTargets {
 				 dstravel.put(200+stid1+stid2, sda1a2);
 				 stpaths.put(200+stid1+stid2, spath);
 				 SuperTarget newst = SuperTarget.mergeSuperTargets(sts.get(stid1), sts.get(stid2), aid1, aid2, targetmaps);
-				 printSuperTarget(newst);
+				// printSuperTarget(newst);
 				 sts.remove(stid1);
 				 sts.remove(stid2);
 				 updateNeighbors(newst, sts, stid1, stid2);
 				 sts.put(newst.stid, newst);
 				 //update the neighbors of ST
-				 System.out.println("\n\n After merging # supertargets : "+ sts.size());
-				 System.out.println("\n After merging new supertargets : ");
-				 printSuperTargets(sts);
+				// System.out.println("\n\n After merging # supertargets : "+ sts.size());
+				// System.out.println("\n After merging new supertargets : ");
+				// printSuperTargets(sts);
 			 }
 			 System.out.println("hi");
 			 
@@ -1796,7 +1796,7 @@ public class GroupingTargets {
 		
 		
 		int[][] targetssorted = SecurityGameContraction.sortTargets(targets);
-		SecurityGameContraction.printSortedTargets(targetssorted);
+		//SecurityGameContraction.printSortedTargets(targetssorted);
 		
 		
 		//Get the list of initial targets using GCR from Tsrt, Tcur = GreedyCoverR()
@@ -1883,6 +1883,7 @@ public class GroupingTargets {
 			
 			HashMap<Integer, SuperTarget> currentst = GroupingTargets.clusterTargets(targetstocluster, targets, 
 					targetmaps, dmax, ncluster+1, radius, dstravel, stpaths);
+			targetsize= currentst.size();
 			
 
 			Date stop = new Date();
@@ -1928,8 +1929,8 @@ public class GroupingTargets {
 			//HashMap<Integer, Double> stvalue
 			assignSTValues(currentst, targetmaps);
 			
-			System.out.println("olaa ");
-			printSuperTargets(currentst);
+			//System.out.println("olaa ");
+			//printSuperTargets(currentst);
 			
 			
 			//Generate initial set of paths using GreedyPathR, scur = GPR(Gt)
@@ -2064,7 +2065,7 @@ public class GroupingTargets {
 					 */
 					//jSet.
 
-					printJointSchedule(jset);
+					//printJointSchedule(jset);
 
 					p = SecurityGameContraction.makeSuperPmat(pathseq, jset, mapback, currentst, map);
 					//printPathMat(p);
@@ -2167,9 +2168,9 @@ public class GroupingTargets {
 					slavetime += diff;
 					
 					
-					System.out.println("newpathseq size before purify : "+newpathseq.size());
+					/*System.out.println("newpathseq size before purify : "+newpathseq.size());
 					    //newpathseq = SecurityGameContraction.determineNewPaths(newpathseq, p, probdistribution);
-						System.out.println("newpathseq size after purify : "+newpathseq.size());
+						System.out.println("newpathseq size after purify : "+newpathseq.size());*/
 						
 						
 						/*if((newpathseq.size()==0) || (itr>=10))
@@ -2210,7 +2211,7 @@ public class GroupingTargets {
 						System.out.println("New path seq size "+ pathseq.size());
 						//printPaths(pathseq);
 						int newsize = pathseq.size();
-						System.out.println("haa ");
+						//System.out.println("haa ");
 
 
 						if((oldsize==newsize) || (itr>=10))
@@ -2220,7 +2221,7 @@ public class GroupingTargets {
 							break;
 						}
 
-						SecurityGameContraction.printPaths(pathseq);
+						//SecurityGameContraction.printPaths(pathseq);
 
 				} // end if else
 				System.out.println("iter"+ itr);
@@ -2245,7 +2246,7 @@ public class GroupingTargets {
 
 
 			int addcount=0;
-			int ADD_C = 3;
+			int ADD_C = 5;
 
 			for(int k=currentPlace+1; k<targetssorted.length; k++)
 			{
@@ -2310,7 +2311,7 @@ public class GroupingTargets {
 
 		
 
-		double[] res1 = {defpayoff, clusteringtime, solvingtime, targetstocluster.size(), attackeru, slavetime, revmaptime};
+		double[] res1 = {defpayoff, clusteringtime, solvingtime, targetsize, attackeru, slavetime, revmaptime};
 		return res1;
 	}
 
@@ -2772,6 +2773,7 @@ public class GroupingTargets {
 		revmaptime /= LIMIT;
 		totaltime /= LIMIT; 
 		finalsize /= LIMIT;
+		clusteringtime /= LIMIT;
 		
 		//System.out.println("Defender exp "+ (double)sumdefexp/LIMIT + ", time : "+ (long)totaltime/LIMIT);
 		writeInFileST("ClusteringWithDO",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime);
@@ -3028,11 +3030,13 @@ public class GroupingTargets {
 	
 	private static void writeInFileST(String algo, int finalsize, double defexp, long solvingtime, long revmaptime, long clusteringtime, long totaltime) 
 	{
+		
+		//ClusteringWithDO",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime
 
 		try
 		{
 			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"grp-result.csv"),true));
-			pw.append(algo+ ","+finalsize+","+defexp+"," + clusteringtime+ ","+solvingtime+"," + ","+revmaptime+","+totaltime+"\n");
+			pw.append(algo+ ","+finalsize+","+defexp+"," + clusteringtime+ ","+solvingtime+ ","+revmaptime+","+totaltime+"\n");
 			pw.close();
 
 		}

@@ -83,14 +83,14 @@ public class Main {
 		
 		int base = 0;
 		int dest = 0;
-		int k = 5;
+		int k = 10;
 		int radius = 3;
-		int dmax = 30;
+		int dmax = 50;
 		int nRes=1;
-		int dlim = 7;
-		int nTargets = 30;
-		int ITER = 1;
-		int ap = 4; // should be </= than cluster size
+		int dlim = 5;
+		int nTargets = 100;
+		int ITER = 20;
+		int ap = 6; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
 		/*int dmaxsuper = 30;
@@ -124,7 +124,7 @@ public class Main {
 		
 		
 		
-		//SecurityGameContraction.modifiedOPDOTest(alltargets, alltargetmaps, ITER, nTargets , dmax, nRes);
+		SecurityGameContraction.doubleOracleGCMultiGP3LPGCMultiTest(alltargets, alltargetmaps, ITER, nTargets , dmax, nRes);
 		SecurityGameContraction.targets.clear();
 		
 		
@@ -230,7 +230,7 @@ public class Main {
 
 
 		//Exact DO + GC multi + GP 3 + LP + GC multi 
-		//	SecurityGameContraction.doubleOracleGCMultiExactLPGCMultiTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
+			//SecurityGameContraction.doubleOracleGCMultiExactLPGCMultiTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
 		SecurityGameContraction.targets.clear();
 
 

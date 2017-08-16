@@ -10351,10 +10351,14 @@ public class SecurityGameContraction
 					
 					// for all the nodes in the supertarget assign 1
 					
+					for(TargetNode t: currentst.get(st).nodes.values())
+					{
+						
+						origpmat[t.getTargetid()][jindex] = 1;
+					}
 					
 					
-					
-					if(currentst.get(st).nodes.size()==1)
+					/*if(currentst.get(st).nodes.size()==1)
 					{
 						for(TargetNode t: currentst.get(st).nodes.values())
 						{
@@ -10375,7 +10379,7 @@ public class SecurityGameContraction
 							}
 						}
 						
-					}
+					}*/
 					
 					
 				}
@@ -10959,8 +10963,19 @@ public class SecurityGameContraction
 				//System.out.println("FInding shortest dist for target "+ dest.getTargetid());
 				ArrayList<Integer>  pathnodes = new ArrayList<Integer>();
 				ArrayList<TargetNode>  pnodes = new ArrayList<TargetNode>();
-				if(base.getNeighbors().contains(dest))
+				
+				
+				int src = base.getTargetid();
+				int des = dest.getTargetid();
+
+
+
+				double distcovered = apsp[map.get(src)][map.get(des)];
+				if(base.getNeighbors().contains(dest) && distcovered<=dmax/2)
 				{
+					
+					
+					
 					pnodes = base.getPath(dest);
 					for(int k=0; k<pnodes.size(); k++)
 					{
@@ -10977,12 +10992,12 @@ public class SecurityGameContraction
 					//System.out.print("dist covered "+ distcovered1+"\n");
 
 
-					int src = base.getTargetid();
-					int des = dest.getTargetid();
+					src = base.getTargetid();
+					des = dest.getTargetid();
 
 
 
-					double distcovered = apsp[map.get(src)][map.get(des)];
+					distcovered = apsp[map.get(src)][map.get(des)];
 					System.out.print("dist covered "+ distcovered+"\n");
 
 					if(distcovered<=dmax/2)
@@ -18991,7 +19006,7 @@ public class SecurityGameContraction
 	}
 	
 	
-	public static void modifiedOPDOTest(HashMap<Integer, ArrayList<TargetNode>> alltargets,
+	public static void doubleOracleGCMultiGP3LPGCMultiTest(HashMap<Integer, ArrayList<TargetNode>> alltargets,
 			HashMap<Integer, HashMap<Integer, TargetNode>> alltargetmaps,
 			int ITER, int nTargets,
 			double dmax, int nRes) throws Exception {
@@ -19015,7 +19030,7 @@ public class SecurityGameContraction
 
 			Date start = new Date();
 			long l1 = start.getTime();
-			double[] res = modifiedOPDO(gamedata, nTargets, nRes, dmax, iter, targetmaps, targets);
+			double[] res = doubleOracleGCMultiGP3LPGCMulti(gamedata, nTargets, nRes, dmax, iter, targetmaps, targets);
 			Date stop = new Date();
 			long l2 = stop.getTime();
 			long diff = l2 - l1;
@@ -19039,7 +19054,7 @@ public class SecurityGameContraction
 
 		System.out.println("\nDef avg exp utility : "+ sumsol/ITER);
 
-		writeInFile("modifiedOP",(int)sumfinaltargetsize/ITER, sumsol/ITER, sumcontractiontime/ITER, sumsolvtime/ITER,sumslavetime/ITER,  totaltime/ITER);
+		writeInFile("DO",(int)sumfinaltargetsize/ITER, sumsol/ITER, sumcontractiontime/ITER, sumsolvtime/ITER,sumslavetime/ITER,  totaltime/ITER);
 
 
 
@@ -19557,7 +19572,7 @@ public class SecurityGameContraction
 
 		try
 		{
-			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("result.csv"),true));
+			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("grp-result.csv"),true));
 			//PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/fake/Documents/workspace/IntervalSGAbstraction/"+"result.csv"),true));
 			pw.append(expno+","+finalsize+ ","+ avgsol+ ","+contracttime+"," + solvingtime+"," +slavetime+","+ totaltime+"\n");
 			pw.close();
@@ -24983,7 +24998,7 @@ public class SecurityGameContraction
 	}
 	
 
-	private static double[] modifiedOPDO(int[][] gamedata,
+	private static double[] doubleOracleGCMultiGP3LPGCMulti(int[][] gamedata,
 			int nTargets, int nRes, double
 			dmax, int iter, HashMap<Integer,TargetNode> targetmaps,
 			ArrayList<TargetNode> targets) throws Exception {
@@ -25288,7 +25303,7 @@ public class SecurityGameContraction
 					 */
 					System.out.println("attacked target after rev map "+ attackedtarget);
 
-					//ArrayList<ArrayList<Integer>> newpathseq = buildGreedyCoverMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes, attackerstrategy);
+					ArrayList<ArrayList<Integer>> newpathseq = buildGreedyCoverMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes, attackerstrategy);
 
 					//test
 					
@@ -25297,7 +25312,7 @@ public class SecurityGameContraction
 					
 					//ArrayList<ArrayList<Integer>> newpathseq = MIPSolver4.originalOP(1, gamedata, tmpgraph, nRes, nTargets, dmax);
 					
-					ArrayList<ArrayList<Integer>> newpathseq = MIPSolver4.modifiedTOP(1, gamedata, tmpgraph, nRes, nTargets, dmax);
+					//ArrayList<ArrayList<Integer>> newpathseq = MIPSolver4.modifiedTOP(1, gamedata, tmpgraph, nRes, nTargets, dmax);
 					
 					stop = new Date();
 					l2 = stop.getTime();
