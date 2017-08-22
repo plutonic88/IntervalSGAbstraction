@@ -5,6 +5,7 @@ package cs.Interval.contraction;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.math.RoundingMode;
@@ -12750,6 +12751,163 @@ public class SecurityGameContraction
 		}
 
 	}
+	
+	
+	public static void buildcsvGraph(int numRow, int numCol, double[][] u, double[][] e, ArrayList<TargetNode> targets) 
+	{
+		/**
+		 * create the nodes and add to the target list
+		 */
+		Random rand = new Random(50);
+
+		for(int target=0; target< (numRow*numCol); target++)
+		{
+			//System.out.println("target "+ target + " animal density "+ gamedata[target][0]);
+
+			TargetNode node = new TargetNode(target, 0);
+			/*node.defenderreward = gamedata[target][0];
+			node.defenderpenalty = gamedata[target][1];
+			node.attackerreward = gamedata[target][2];
+			node.attackerpenalty = gamedata[target][3];*/
+
+			targets.add(node);
+			if(target==0)
+			{
+				//graph = node;
+				node.setStart(true);
+
+			}
+			if(target==((numRow*numCol)-1))
+			{
+				node.setGoal(true);
+			}
+		}
+
+		//setDummyUtility();
+
+		/**
+		 * build the connections and graph
+		 */
+		int targetid = 0;
+		
+		
+		for(int row=0; row<numRow; row++)
+		{
+			for(int col=0; col<numCol; col++)
+			{
+				/**
+				 * add the neighbors and distances
+				 */
+
+				TargetNode tmp = targets.get(targetid);
+				
+				
+				tmp.setRowCol(row, col);
+				
+				
+				tmp.setCoinvalue(u[row][col]);
+				tmp.defenderreward = 0;
+				tmp.defenderpenalty = -u[row][col];
+				tmp.attackerreward = u[row][col];
+				tmp.attackerpenalty = 0;
+				tmp.setAnimaldensity(u[row][col]);
+				
+				/*try {
+					PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"realdata2.csv"),true));
+					
+					pw.append(tmp.getTargetid()+","+u[row][col]+ ","+(row*50) + ","+(col*50)+ "\n");
+					pw.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+*/
+				
+				
+				
+				
+				
+				for(int neighborindex=0; neighborindex<8; neighborindex++)
+				{
+					int neighborrow = -1;
+					int neighborcol = -1;
+					if(neighborindex==0)
+					{
+						neighborrow = row-1;
+						neighborcol = col-1;
+					}
+					else if(neighborindex==1)
+					{
+						neighborrow = row-1;
+						neighborcol = col;
+					}
+					else if(neighborindex==2)
+					{
+						neighborrow = row-1;
+						neighborcol = col+1;
+					}
+					else if(neighborindex==3)
+					{
+						neighborrow = row;
+						neighborcol = col-1;
+					}
+					else if(neighborindex==4)
+					{
+						neighborrow = row;
+						neighborcol = col+1;
+					}
+					else if(neighborindex==5)
+					{
+						neighborrow = row+1;
+						neighborcol = col-1;
+					}
+					else if(neighborindex==6)
+					{
+						neighborrow = row+1;
+						neighborcol = col;
+					}
+					else if(neighborindex==7)
+					{
+						neighborrow = row+1;
+						neighborcol = col+1;
+					}
+
+
+					if(neighborrow >=0 && neighborrow <numRow && neighborcol >=0 && neighborcol < numCol)
+					{
+						//int targetid = targets.get(targetindex).getTargetid();
+						int neighborid = (neighborrow* (numCol)) + neighborcol;
+						targets.get(targetid).addNeighbor(targets.get(neighborid));
+						ArrayList<TargetNode> pathnodes = new ArrayList<TargetNode>();
+						//pathnodes.add(targets.get(targetid));
+						//pathnodes.add(targets.get(neighborid));
+						targets.get(targetid).setPath(targets.get(neighborid), pathnodes);
+						targets.get(targetid).setPathUtility(targets.get(neighborid), 0.0);
+
+
+						if(targetid==neighborid)
+						{
+							System.out.println("what !!!");
+						}
+						//System.out.println(" target "+ targetid + ", adding neighbor "+ neighborid);
+						//Double distance = 1.0;//rand.nextDouble()*10+5;
+						
+						double d1 = Math.sqrt((50*50) + e[neighborrow][neighborcol]*e[neighborrow][neighborcol]);
+						
+						/*System.out.println("target "+ targetid + ", neirow "+ neighborrow
+								+ ", neicol "+ neighborcol + ", ele "+e[neighborrow][neighborcol]+", d = "+ d1);
+						
+						*/
+						targets.get(targetid).addDistance(targets.get(neighborid), Math.floor(d1));
+						//targets.get(neighborid).addDistance(targets.get(targetid), Math.floor(distance));
+					}
+
+				}
+				targetid++;
+			}
+		}
+
+	}
 
 	private void setDummyUtility() {
 
@@ -18647,7 +18805,7 @@ public class SecurityGameContraction
 	
 	
 
-	private static int[][] constructGameData(double[][] u) {
+	public static int[][] constructGameData(double[][] u) {
 		
 		
 		int[][] gd = new int[u.length*u[0].length][u[0].length];

@@ -15,6 +15,7 @@ import cs.Interval.ILP.LpSolverIP;
 import cs.Interval.ILP.MIPSolver3;
 import cs.Interval.contraction.SecurityGameContraction;
 import cs.Interval.contraction.TargetNode;
+import cs.com.realworld.ReadData;
 import groupingtargets.GroupingTargets;
 
 public class Main {
@@ -62,13 +63,19 @@ public class Main {
 
 	public static void main(String[] args) throws Exception 
 	{
+		
+		
+		
+		
+		//GroupingTargets.createCSVTestData();
+		//GroupingTargets.testWeka();
 
 		int lstart=0,  lend=2, hstart=8, hend=10;
 
 		int perc = 5;//Integer.parseInt(args[3]);
-		int nrow=2;//Integer.parseInt(args[0]), 
+		/*int nrow=2;//Integer.parseInt(args[0]), 
 		int ncol=2;//Integer.parseInt(args[1]);
-		//int ITER=1;
+*/		//int ITER=1;
 		//int nTargets=nrow*ncol;
 		//int nRes=1;
 		//double dmax = 4;//Integer.parseInt(args[2]);
@@ -80,16 +87,17 @@ public class Main {
 		int[] percforcats = {10, 80, 10};
 		
 		
-		
+		int nrow = 50;
+		int ncol = 50;
 		int base = 0;
 		int dest = 0;
 		int k = 10;
 		int radius = 3;
-		int dmax = 50;
+		int dmax = 40;
 		int nRes=1;
 		int dlim = 5;
 		int nTargets = 100;
-		int ITER = 20;
+		int ITER = 1;
 		int ap = 6; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
@@ -120,11 +128,14 @@ public class Main {
 		
 		//GroupingTargets.testClustering();
 		
-		GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
+		//GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
+		
+		
+		GroupingTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
 		
 		
 		
-		SecurityGameContraction.doubleOracleGCMultiGP3LPGCMultiTest(alltargets, alltargetmaps, ITER, nTargets , dmax, nRes);
+		//SecurityGameContraction.doubleOracleGCMultiGP3LPGCMultiTest(alltargets, alltargetmaps, ITER, nTargets , dmax, nRes);
 		SecurityGameContraction.targets.clear();
 		
 		

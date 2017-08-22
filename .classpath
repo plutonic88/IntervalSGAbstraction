@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/thanhjar/matlabcontrol-4.1.0.jar"/>
 	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/commons-collections4-4.1/commons-collections4-4.1-javadoc.jar"/>
 	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/commons-collections4-4.1/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="/Users/anjonsunny/research/GSG/weka-3-8-1/weka.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
