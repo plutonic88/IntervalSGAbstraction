@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -26,11 +24,11 @@ import cs.Interval.contraction.SecurityGameContraction;
 import cs.Interval.contraction.TargetNode;
 import cs.com.allpair.AllPairShortestPath;
 import cs.com.realworld.ReadData;
+import weka.clusterers.MakeDensityBasedClusterer;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
-import weka.core.converters.ConverterUtils.DataSource;
-import weka.clusterers.*;
 
 
 public class GroupingTargets {
@@ -42,11 +40,11 @@ public class GroupingTargets {
 	
 	public static void testWeka() throws Exception {
 		
-		FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/realdata2.csv");
+		/*FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/realdata2.csv");
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		Instances instances = new Instances(br);
-		 
+		 */
 		 
 		 
 		 // Print header and instances.
@@ -60,7 +58,7 @@ public class GroupingTargets {
 		 
 		 System.out.println(model);*/
 		 
-		 MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
+		/* MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
 		 dc.setNumClusters(10);
 		
 		 dc.buildClusterer(instances);
@@ -73,7 +71,7 @@ public class GroupingTargets {
 			 System.out.println("instance  "+i +", cluster "+ dc.clusterInstance(instances.get(i)));
 		 
 			 
-		 }
+		 }*/
 		 
 		 
 		 
@@ -85,25 +83,25 @@ public class GroupingTargets {
 		 System.out.println(em);*/
 		 
 		 
-		/* 
+		 
 		 CSVLoader csvload = new CSVLoader();
-		 csvload.setSource(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/realdata2.csv"));
+		 csvload.setSource(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/realdata3.csv"));
 		 Instances data = csvload.getDataSet();
 		 
 		 
 		 ArffSaver arf = new ArffSaver();
 		 arf.setInstances(data);
-		 arf.setFile(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata2.arff"));
+		 arf.setFile(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata3.arff"));
 		 arf.writeBatch();
-		*/
+		
 		
 	}
 	
 	
 	public static void createCSVTestData()
 	{
-		int nrow = 50;
-		int ncol = 50;
+		int nrow = 10;
+		int ncol = 10;
 		double utility [][] = new double[560][560];
 		double elevation [][] = new double[560][560];
 		double u [][] = new double[nrow][ncol];
@@ -116,7 +114,7 @@ public class GroupingTargets {
 		//ReadData.getChunk(560, 560, utility, elevation, 0, 0, nrow, ncol, u, e);
 		
 		
-		ReadData.createCSVData(560, 560, utility, elevation);
+		//ReadData.createCSVData(560, 560, utility, elevation);
 		//int[][] gamedata = SecurityGameContraction.constructGameData(utility);
 		ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
 		SecurityGameContraction.buildcsvGraph(nrow,ncol,utility, elevation,targets );
@@ -330,6 +328,10 @@ public class GroupingTargets {
 		
 		Instances newinstance = new Instances(instances);
 		
+		
+		
+		
+		
 		/**
 		 * remove unwanted instance
 		 * index is the target id
@@ -339,9 +341,22 @@ public class GroupingTargets {
 		{
 			if(!targetstocluster.contains(tid))
 			{
-				newinstance.remove(tid.intValue());
+				
+				
+				
+				
+				int index = findIndex(newinstance, tid);
+				
+				if(index != -1)
+				{
+					newinstance.remove(index);
+				}
+				
 			}
 		}
+		
+		
+		System.out.println("New instance size  "+ newinstance.size());
 		
 		/**
 		 * cluster
@@ -531,12 +546,37 @@ public class GroupingTargets {
 	
 
 
+	private static int findIndex(Instances newinstance, Integer tid) {
+		// TODO Auto-generated method stub
+		
+		int index = 0;
+		
+		Iterator<Instance> ins = newinstance.iterator();
+		
+		while(ins.hasNext())
+		{
+			Instance newins = ins.next();
+			if(newins.value(0) == tid.intValue())
+				return index;
+			index++;
+		}
+		
+		
+		return -1;
+	}
+
+
 	private static ArrayList<Integer>[] clusterWithWeka(int k, Instances newinstance, int totalcluster,
 			ArrayList<Integer> targetstocluster, HashMap<Integer, TargetNode> targetmaps) throws Exception {
 		
 		
 		
 		ArrayList<Integer>[] clusters = (ArrayList<Integer>[])new ArrayList[totalcluster];
+		
+		for(int i=0; i<totalcluster; i++)
+		{
+			clusters[i] = new ArrayList<Integer>();
+		}
 		
 		
 	/*	FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/realdata2.csv");
@@ -558,7 +598,16 @@ public class GroupingTargets {
 		 System.out.println(model);*/
 		 
 		 MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
-		 dc.setNumClusters(k);
+		
+		 
+		 if(newinstance.get(0).value(0) != 0)
+		 {
+			 throw new Exception("0 is not the base");
+		 }
+		 
+		 newinstance.remove(0); // remove base
+		 
+		 dc.setNumClusters(k-1); // 0 for base
 		
 		 dc.buildClusterer(newinstance);
 		 System.out.println(dc);
@@ -567,13 +616,20 @@ public class GroupingTargets {
 		 
 		 for(int i=0; i<newinstance.size(); i++)
 		 {
-			 System.out.println("instance  "+i +", cluster "+ dc.clusterInstance(newinstance.get(i)));
+			 System.out.println("instance  "+i +", cluster "+ dc.clusterInstance(newinstance.get(i))+1);
 			 int clusterid = dc.clusterInstance(newinstance.get(i));
 			 int tid = (int)newinstance.get(i).value(0);
-			 clusters[clusterid].add(tid);
+			 if(tid!=0)
+			 {
+				 clusters[clusterid+1].add(tid);
+			 }
 		 
 			 
 		 }
+		 
+		 clusters[0].add(0); //base
+		 
+		 printClusters(clusters);
 		 
 		 int j = k;
 		 for(Integer t: targetmaps.keySet())
@@ -585,7 +641,7 @@ public class GroupingTargets {
 		 }
 		 
 
-		
+		 printClusters(clusters);
 		
 		return clusters;
 	}
@@ -2770,7 +2826,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		 */
 		
 		
-		FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata.arff");
+		FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata3.arff");
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		// Read all the instances in the file (ARFF, CSV, XRFF, ...)
@@ -2786,11 +2842,12 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		 model.setDistanceFunction(new weka.core.ManhattanDistance());
 		 System.out.println(model);*/
 		 MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
-		 dc.setNumClusters(10);
+		// instances.remove(0); // remove the base
+		 dc.setNumClusters(9);
 		 dc.buildClusterer(instances);
 		 System.out.println(dc);
 		 
-		 for(int i=0; i<instances.size(); i++)
+		 for(int i=0; i<instances.size(); i++) //without base
 		 {
 			 System.out.println("instance  "+i +", cluster "+ dc.clusterInstance(instances.get(i)));
 		  

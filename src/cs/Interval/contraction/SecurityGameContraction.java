@@ -12813,7 +12813,7 @@ public class SecurityGameContraction
 				tmp.setAnimaldensity(u[row][col]);
 				
 				/*try {
-					PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"realdata2.csv"),true));
+					PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"realdata3.csv"),true));
 					
 					pw.append(tmp.getTargetid()+","+u[row][col]+ ","+(row*50) + ","+(col*50)+ "\n");
 					pw.close();
@@ -18764,7 +18764,7 @@ public class SecurityGameContraction
 			
 			
 			ReadData.readData(560, 560, utility, elevation);
-			ReadData.getChunk(560, 560, utility, elevation, 0, 0, nrow, ncol, u, e);
+			ReadData.getChunk( utility, elevation, 0, 0, nrow, ncol, u, e);
 			int[][] gamedata = constructGameData(u);//SecurityGameAbstraction.parseSecurityGameFile("inputr-0.700000.csv", iter);
 
 			

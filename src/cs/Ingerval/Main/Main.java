@@ -87,18 +87,18 @@ public class Main {
 		int[] percforcats = {10, 80, 10};
 		
 		
-		int nrow = 50;
-		int ncol = 50;
+		int nrow = 10;
+		int ncol = 10;
 		int base = 0;
 		int dest = 0;
 		int k = 10;
 		int radius = 3;
-		int dmax = 40;
+		int dmax = 5000;
 		int nRes=1;
 		int dlim = 5;
 		int nTargets = 100;
 		int ITER = 1;
-		int ap = 6; // should be </= than cluster size
+		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
 		/*int dmaxsuper = 30;
