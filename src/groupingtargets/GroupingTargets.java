@@ -25,6 +25,7 @@ import cs.Interval.contraction.TargetNode;
 import cs.com.allpair.AllPairShortestPath;
 import cs.com.realworld.ReadData;
 import weka.clusterers.MakeDensityBasedClusterer;
+import weka.clusterers.SimpleKMeans;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -255,7 +256,11 @@ public class GroupingTargets {
 														 aid2 = a2.getTargetid();
 														 mindi = totaldi;
 														 sda1a2 = dista1a2;
-														 spath.add(tmpspath.get(0));
+														 spath.clear();
+														 for(Integer in: tmpspath)
+														 {
+															 spath.add(in);
+														 }
 														 
 														 System.out.println("Current mindi "+ mindi + " \n ST1 "+ stid1 + " ST2 "+ stid2 + 
 																 "\n a1 "+ aid1 + ", a2 "+ aid2);
@@ -315,7 +320,7 @@ public class GroupingTargets {
 
 	public static HashMap<Integer, SuperTarget> clusterTargetsWeka(ArrayList<Integer> targetstocluster, 
 			ArrayList<TargetNode> graph, HashMap<Integer, TargetNode> targetmaps, double dmax, int k, int radius,
-			HashMap<Integer, Double> dstravel, HashMap<Integer,ArrayList<Integer>> stpaths, MakeDensityBasedClusterer dc, Instances instances) throws Exception
+			HashMap<Integer, Double> dstravel, HashMap<Integer,ArrayList<Integer>> stpaths, SimpleKMeans dc, Instances instances) throws Exception
 	{
 		
 		
@@ -635,7 +640,7 @@ public class GroupingTargets {
 		 
 		 System.out.println(model);*/
 		 
-		 MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
+		SimpleKMeans dc = new SimpleKMeans();
 		
 		 
 		 if(newinstance.get(0).value(0) != 0)
@@ -2807,7 +2812,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 	
 
 	
-	public static double[] wekaClusteringWithDO(int base, int dest, int ncluster, int radius, int dmax, 
+	public static double[] wekaClusteringWithDORW(int base, int dest, int ncluster, int radius, int dmax, 
 			int nRes, int nTargets, ArrayList<TargetNode> targets, HashMap<Integer, TargetNode> targetmaps) throws Exception
 	{
 		
@@ -2879,9 +2884,10 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		 model.buildClusterer(instances);
 		 model.setDistanceFunction(new weka.core.ManhattanDistance());
 		 System.out.println(model);*/
-		 MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
+		 //MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
+		 SimpleKMeans dc = new SimpleKMeans();
 		// instances.remove(0); // remove the base
-		 dc.setNumClusters(9);
+		 dc.setNumClusters(ncluster-1);
 		 dc.buildClusterer(instances);
 		 System.out.println(dc);
 		 
@@ -3270,10 +3276,12 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 						//System.out.println("haa ");
 
 
-						if((oldsize==newsize) || (itr>=10))
+						if((oldsize==newsize) || (itr>=20))
 						{
 							canaddpath = false;
-							System.out.println("Slave can't add any new path ###############");
+							System.out.println("Slave can't add any new path ############### or iteration>20");
+							printSuperTargets(currentst);
+							SecurityGameContraction.printPaths(pathseq);
 							break;
 						}
 
@@ -3293,6 +3301,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 			if((currentPlace==targetssorted.length-1 || (attackeru>= attackerv)) && !canaddpath)
 			{
 				System.out.println("outer loop ....breaking.@@@@@@@@@@@@@@@..attacker u>=v="+attackeru);
+				printSuperTargets(currentst);
 				break;
 			}
 			
@@ -3348,6 +3357,8 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 			}
 
 			masteritr++;
+			
+		
 
 
 		} // outer while loop
@@ -3838,7 +3849,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 
 	}
 	
-	public static void wekaClusteringWithDOExp(int nrow, int ncol, int base, int dest, int k, int radius, int dmax, int nRes, int nTargets,
+	public static void wekaClusteringWithDOExpRW(int nrow, int ncol, int base, int dest, int k, int radius, int dmax, int nRes, int nTargets,
 			int LIMIT,int ap,HashMap<Integer,ArrayList<Integer>[]> allclus, HashMap<Integer,ArrayList<TargetNode>> alltargets, 
 			HashMap<Integer,HashMap<Integer,TargetNode>> alltargetmaps ) throws Exception
 	{
@@ -3909,7 +3920,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 			long l1 = start.getTime();
 
 			//ArrayList<Integer>[] clus = makeGraph(k, radius, dlim , nTargets, 2, 10, ap, targets, targetmaps);
-			double res[] = wekaClusteringWithDO(base, dest, k, radius, dmax, nRes, nTargets, targets, targetmaps);
+			double res[] = wekaClusteringWithDORW(base, dest, k, radius, dmax, nRes, nTargets, targets, targetmaps);
 			//double[] res1 = {defpayoff, clusteringtime, solvingtime, targetstocluster.size(), attackeru, slavetime, revmaptime};
 			
 			

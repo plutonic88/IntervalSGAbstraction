@@ -91,9 +91,9 @@ public class Main {
 		int ncol = 10;
 		int base = 0;
 		int dest = 0;
-		int k = 10;
+		int k = 11;
 		int radius = 3;
-		int dmax = 5000;
+		int dmax = 7000;
 		int nRes=1;
 		int dlim = 5;
 		int nTargets = 100;
@@ -131,7 +131,9 @@ public class Main {
 		//GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
 		
 		
-		GroupingTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
+		GroupingTargets.wekaClusteringWithDOExpRW(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
+		
+		
 		
 		
 		
