@@ -391,7 +391,7 @@ public class GroupingTargets {
 
 
 
-		// printSuperTargets(sts);
+		 printSuperTargets(sts);
 		int stssize = 1; // to keep track if any targets were clustered
 		
 		/**
@@ -408,16 +408,7 @@ public class GroupingTargets {
 		 */
 
 		System.out.println("Computing dmin");
-		double mindi = Double.MAX_VALUE;
-		int stid1 = -1;
-		//int stid2 = -1;
-		int aid1 = -1;
-		int aid2 = -1;
-		double sda1a2 = -1;
-		ArrayList<Integer> spath = new ArrayList<Integer>();
-		SuperTarget dminst = new SuperTarget();
 		
-		double mindist = 500000;
 
 		for(SuperTarget tempst: sts.values())
 		{
@@ -427,6 +418,24 @@ public class GroupingTargets {
 			/**
 			 * for every pair of access points
 			 */
+			
+			System.out.println("Computing ap for ST "+ tempst.stid);
+			
+			
+			double mindi = Double.MAX_VALUE;
+			int stid1 = -1;
+			//int stid2 = -1;
+			int aid1 = -1;
+			int aid2 = -1;
+			double sda1a2 = -1;
+			ArrayList<Integer> spath = new ArrayList<Integer>();
+			SuperTarget dminst = new SuperTarget();
+			
+			double mindist = 500000;
+			
+			
+			
+			
 
 			if(tempst.nodes.size()>1)
 			{
@@ -445,31 +454,43 @@ public class GroupingTargets {
 						if(a1.getTargetid() != a2.getTargetid())
 						{
 							// for every pair of supertargets which are not st1 or st2
-							for(SuperTarget s1: sts.values())
+							for(SuperTarget s1: sts.values()) // need neighbor cluster of a1
 							{
-								for(SuperTarget s2: sts.values())
+								for(SuperTarget s2: sts.values()) // need neighbor cluster  of a2?
 								{
+									
+									boolean arebothnei = areBothNei(s1,s2,tempst);
+									
 									if(s1.stid != tempst.stid && 
-											s2.stid != tempst.stid )
+											s2.stid != tempst.stid  && arebothnei)
 									{
 										// measure the distance between a1->s1 and a2->s2
 
 										//a1->s1 distance between a target and a supertarget
-										//												 System.out.println("\n\n a1 "+ a1.getTargetid() + " , a2 "+ a2.getTargetid() +
-										//														 "\n s1 "+ s1.stid + ", s2 "+ s2.stid + 
-										//														 "\n tempst "+ tempst.stid);
+										System.out.println("\n\n a1 "+ a1.getTargetid() + " , a2 "+ a2.getTargetid() +
+												"\n s1 "+ s1.stid + ", s2 "+ s2.stid + 
+												"\n tempst "+ tempst.stid);
 
 
-										double d1 = shortestdist(a1,s1);
-										// System.out.println("shortestdist(a1,s1) "+ d1);
+										double d1 = shortestdist(a1,s1); // should i use bfs for longer path other than near neighbor?
+										//TODO
+										System.out.println("shortestdist(a1,s1) "+ d1);
 
-										double d2 = shortestdist(a2,s2);
-										// System.out.println("shortestdist(a2,s2) "+ d2);
+										double d2 = shortestdist(a2,s2); // should i use bfs for longer path other than near neighbor?
+										//TODO
+										System.out.println("shortestdist(a2,s2) "+ d2);
 
 										// next measure the intra cluster shortest traveling path using a1 and a2
 										ArrayList<Integer> tmpspath = new ArrayList<Integer>();
 										double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpspath);
-										// System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
+										
+										if(dista1a2 ==0)
+										{
+											//throw new Exception("No path found to compute AP for st "+ tempst.stid);
+											System.out.println("No path found to compute AP for st "+ tempst.stid);
+										}
+										
+										System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
 
 										// if any of the dist is <0 we know that it's not possible to have a path
 
@@ -485,7 +506,12 @@ public class GroupingTargets {
 												aid2 = a2.getTargetid();
 												mindi = totaldi;
 												sda1a2 = dista1a2;
-												spath.add(tmpspath.get(0));
+												//spath.add(tmpspath.get(0));
+												spath.clear();
+												for(Integer in: tmpspath)
+												{
+													spath.add(in);
+												}
 
 												System.out.println("Current mindi "+ mindi +  
 														"\n a1 "+ aid1 + ", a2 "+ aid2);
@@ -519,9 +545,11 @@ public class GroupingTargets {
 			 * add the new one. 
 			 */
 
-			if(stid1 != -1)
+			if((mindi < Double.MAX_VALUE) && (mindi > 0))
 			{
 
+				System.out.println("AP done for st "+ tempst.stid);
+				
 				dstravel.put(tempst.stid, sda1a2);
 				stpaths.put(tempst.stid, spath);
 				//SuperTarget newst = SuperTarget.mergeSuperTargets(sts.get(stid1), sts.get(stid2), aid1, aid2, targetmaps);
@@ -533,7 +561,7 @@ public class GroupingTargets {
 				//update the neighbors of ST
 				// System.out.println("\n\n After merging # supertargets : "+ sts.size());
 				// System.out.println("\n After merging new supertargets : ");
-				// printSuperTargets(sts);
+				 printSuperTargets(sts);
 			}
 			System.out.println("hi");
 		}
@@ -544,6 +572,16 @@ public class GroupingTargets {
 	
 	
 	
+
+
+	private static boolean areBothNei(SuperTarget s1, SuperTarget s2, SuperTarget tempst) {
+		
+		
+		if(isNeighbor(s1, tempst) && isNeighbor(s2, tempst))
+			return true;
+		
+		return false;
+	}
 
 
 	private static int findIndex(Instances newinstance, Integer tid) {
@@ -2901,6 +2939,8 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 					targetmaps, dmax, ncluster, radius, dstravel, stpaths, dc, instances);
 			targetsize= currentst.size();
 			
+			
+			printSuperTargets(currentst);
 
 			Date stop = new Date();
 			long l2 = stop.getTime();
@@ -3862,7 +3902,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 			}
 			
 			
-
+			//printNodesWithNeighborsAndPath(targetmaps);
 
 
 			Date start = new Date();

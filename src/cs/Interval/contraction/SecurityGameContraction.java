@@ -11140,6 +11140,13 @@ public class SecurityGameContraction
 
 
         		//TODO consider distance, intra cluster
+        		
+        		if(!dstravel.containsKey(dest.stid)) // no path exists
+        		{
+        			continue;
+        		}
+        		
+        		
         		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
         		System.out.print("dist covered "+ distcovered+"\n");
 
