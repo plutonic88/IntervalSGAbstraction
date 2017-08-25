@@ -1,22 +1,19 @@
 package cs.Interval.ILP;
 
-import ilog.concert.IloException;
-import ilog.concert.IloLinearNumExpr;
-import ilog.concert.IloNumVar;
-import ilog.concert.IloNumVarType;
-import ilog.concert.IloQuadIntExpr;
-import ilog.concert.IloQuadNumExpr;
-import ilog.concert.IloRange;
-import ilog.cplex.IloCplex;
-import ilog.cplex.IloCplex.UnknownObjectException;
-
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
 import cs.Interval.contraction.TargetNode;
 import groupingtargets.SuperTarget;
+import ilog.concert.IloException;
+import ilog.concert.IloLinearNumExpr;
+import ilog.concert.IloNumVar;
+import ilog.concert.IloNumVarType;
+import ilog.concert.IloQuadNumExpr;
+import ilog.concert.IloRange;
+import ilog.cplex.IloCplex;
+import ilog.cplex.IloCplex.UnknownObjectException;
 
 public class MIPSolver4 {
 
