@@ -170,19 +170,19 @@ public class AllPairShortestPath
 			}
 		}
 
-		for (int source = 1; source <= numberofvertices; source++)
-			System.out.print("\t" + source);
+		/*for (int source = 1; source <= numberofvertices; source++)
+			//System.out.print("\t" + source);
 
-		System.out.println();
+		//System.out.println();
 		for (int source = 1; source <= numberofvertices; source++)
 		{
-			System.out.print(source + "\t");
+			//System.out.print(source + "\t");
 			for (int destination = 1; destination <= numberofvertices; destination++)
 			{
-				System.out.print(distancematrix[source][destination] + "\t");
+				//System.out.print(distancematrix[source][destination] + "\t");
 			}
-			System.out.println();
-		}
+			//System.out.println();
+		}*/
 		return distancematrix;
 	}
 

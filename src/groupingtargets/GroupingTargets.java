@@ -24,8 +24,7 @@ import cs.Interval.contraction.SecurityGameContraction;
 import cs.Interval.contraction.TargetNode;
 import cs.com.allpair.AllPairShortestPath;
 import cs.com.realworld.ReadData;
-import weka.clusterers.MakeDensityBasedClusterer;
-import weka.clusterers.SimpleKMeans;
+import weka.clusterers.EM;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -320,7 +319,7 @@ public class GroupingTargets {
 
 	public static HashMap<Integer, SuperTarget> clusterTargetsWeka(ArrayList<Integer> targetstocluster, 
 			ArrayList<TargetNode> graph, HashMap<Integer, TargetNode> targetmaps, double dmax, int k, int radius,
-			HashMap<Integer, Double> dstravel, HashMap<Integer,ArrayList<Integer>> stpaths, SimpleKMeans dc, Instances instances) throws Exception
+			HashMap<Integer, Double> dstravel, HashMap<Integer,ArrayList<Integer>> stpaths, EM dc, Instances instances) throws Exception
 	{
 		
 		
@@ -369,7 +368,7 @@ public class GroupingTargets {
 		
 		int totalcluster = k + (instances.size()-newinstance.size());
 		
-		ArrayList<Integer>[] clusters = clusterWithWeka(k, newinstance, totalcluster, targetstocluster,targetmaps);
+		ArrayList<Integer>[] clusters = clusterWithWeka(k, newinstance, totalcluster, targetstocluster,targetmaps, dc);
 		
 		
 		//ArrayList<Integer>[] clusters = (ArrayList<Integer>[])new ArrayList[targetmaps.size()];
@@ -414,6 +413,10 @@ public class GroupingTargets {
 
 		System.out.println("Computing dmin");
 		
+		
+		
+		
+		
 
 		for(SuperTarget tempst: sts.values())
 		{
@@ -432,6 +435,8 @@ public class GroupingTargets {
 			//int stid2 = -1;
 			int aid1 = -1;
 			int aid2 = -1;
+			int s1id = -1;
+			int s2id = -2;
 			double sda1a2 = -1;
 			ArrayList<Integer> spath = new ArrayList<Integer>();
 			SuperTarget dminst = new SuperTarget();
@@ -444,6 +449,11 @@ public class GroupingTargets {
 
 			if(tempst.nodes.size()>1)
 			{
+				
+				if(tempst.stid==14)
+				{
+					System.out.println("shortestdist(a1,s1) ");
+				}
 
 				for(TargetNode a1: tempst.ap.values())
 				{
@@ -459,72 +469,83 @@ public class GroupingTargets {
 						if(a1.getTargetid() != a2.getTargetid())
 						{
 							// for every pair of supertargets which are not st1 or st2
-							for(SuperTarget s1: sts.values()) // need neighbor cluster of a1
+							for(SuperTarget s1: tempst.neighbors.values()) // need neighbor cluster of a1
 							{
-								for(SuperTarget s2: sts.values()) // need neighbor cluster  of a2?
+								for(SuperTarget s2: tempst.neighbors.values()) // need neighbor cluster  of a2?
 								{
 									
-									boolean arebothnei = areBothNei(s1,s2,tempst);
-									
-									if(s1.stid != tempst.stid && 
-											s2.stid != tempst.stid  && arebothnei)
+									if(s1.stid != s2.stid)
 									{
-										// measure the distance between a1->s1 and a2->s2
-
-										//a1->s1 distance between a target and a supertarget
-										System.out.println("\n\n a1 "+ a1.getTargetid() + " , a2 "+ a2.getTargetid() +
-												"\n s1 "+ s1.stid + ", s2 "+ s2.stid + 
-												"\n tempst "+ tempst.stid);
 
 
-										double d1 = shortestdist(a1,s1); // should i use bfs for longer path other than near neighbor?
-										//TODO
-										System.out.println("shortestdist(a1,s1) "+ d1);
+										boolean arebothnei = areBothNei(s1,s2,tempst);
 
-										double d2 = shortestdist(a2,s2); // should i use bfs for longer path other than near neighbor?
-										//TODO
-										System.out.println("shortestdist(a2,s2) "+ d2);
-
-										// next measure the intra cluster shortest traveling path using a1 and a2
-										ArrayList<Integer> tmpspath = new ArrayList<Integer>();
-										double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpspath);
-										
-										if(dista1a2 ==0)
+										if(s1.stid != tempst.stid && 
+												s2.stid != tempst.stid  && arebothnei)
 										{
-											//throw new Exception("No path found to compute AP for st "+ tempst.stid);
-											System.out.println("No path found to compute AP for st "+ tempst.stid);
-										}
-										
-										System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
+											// measure the distance between a1->s1 and a2->s2
 
-										// if any of the dist is <0 we know that it's not possible to have a path
+											//a1->s1 distance between a target and a supertarget
+											System.out.println("\n\n a1 "+ a1.getTargetid() + " , a2 "+ a2.getTargetid() +
+													"\n s1 "+ s1.stid + ", s2 "+ s2.stid + 
+													"\n tempst "+ tempst.stid);
 
-										if(d1 > 0 && d2 > 0 && dista1a2 > 0)
-										{
-											double totaldi = d1 + dista1a2 + d2;
-											if(totaldi < mindi)
+
+											double d1 = shortestdist(a1,s1); // should i use bfs for longer path other than near neighbor?
+											//TODO
+											System.out.println("shortestdist(a1,s1) "+ d1);
+
+											double d2 = shortestdist(a2,s2); // should i use bfs for longer path other than near neighbor?
+											//TODO
+											System.out.println("shortestdist(a2,s2) "+ d2);
+
+											// next measure the intra cluster shortest traveling path using a1 and a2
+											
+											
+											
+											
+											ArrayList<Integer> tmpspath = new ArrayList<Integer>();
+											double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpspath);
+
+											if(dista1a2 ==0)
 											{
-												//stid1 = .stid;
-												//stid2 = st2.stid;
-												dminst = tempst;
-												aid1 = a1.getTargetid();
-												aid2 = a2.getTargetid();
-												mindi = totaldi;
-												sda1a2 = dista1a2;
-												//spath.add(tmpspath.get(0));
-												spath.clear();
-												for(Integer in: tmpspath)
-												{
-													spath.add(in);
-												}
-
-												System.out.println("Current mindi "+ mindi +  
-														"\n a1 "+ aid1 + ", a2 "+ aid2);
-
-
+												//throw new Exception("No path found to compute AP for st "+ tempst.stid);
+												System.out.println("No path found to compute AP for st "+ tempst.stid);
 											}
-										}
 
+											System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
+
+											// if any of the dist is <0 we know that it's not possible to have a path
+
+											if(d1 > 0 && d2 > 0 && dista1a2 > 0)
+											{
+												double totaldi = d1 + dista1a2 + d2;
+												if(totaldi < mindi)
+												{
+													//stid1 = .stid;
+													//stid2 = st2.stid;
+													dminst = tempst;
+													aid1 = a1.getTargetid();
+													aid2 = a2.getTargetid();
+													mindi = totaldi;
+													sda1a2 = dista1a2;
+													s1id = s1.stid;
+													s2id = s2.stid;
+													//spath.add(tmpspath.get(0));
+													spath.clear();
+													for(Integer in: tmpspath)
+													{
+														spath.add(in);
+													}
+
+													System.out.println("Current mindi "+ mindi +  
+															"\n a1 "+ aid1 + ", a2 "+ aid2);
+
+
+												}
+											}
+
+										}
 									}
 								}
 							}
@@ -549,6 +570,17 @@ public class GroupingTargets {
 			 * remove the old two clusters
 			 * add the new one. 
 			 */
+			
+			
+			//TODO what to do when there is no path from a1 to a2?????
+			
+			
+			
+			if(tempst.stid==14 && sda1a2==-1)
+			{
+				System.out.println("shortestdist(a1,s1) ");
+				printSuperTarget(tempst);
+			}
 
 			if((mindi < Double.MAX_VALUE) && (mindi > 0))
 			{
@@ -561,17 +593,21 @@ public class GroupingTargets {
 				// printSuperTarget(newst);
 				/*sts.remove(stid1);
 				sts.remove(stid2);*/
-				updateNeighborsAndAP(tempst, sts, aid1, aid2);
+				//printSuperTargets(sts);
+				
+				updateAP(tempst, sts, aid1, aid2);
 				//sts.put(newst.stid, newst);
 				//update the neighbors of ST
 				// System.out.println("\n\n After merging # supertargets : "+ sts.size());
 				// System.out.println("\n After merging new supertargets : ");
-				 printSuperTargets(sts);
+				 
 			}
 			System.out.println("hi");
 		}
 
 		//}
+		updateNeighbors(sts);
+		printSuperTargets(sts);
 		 return sts;
 	}
 	
@@ -610,7 +646,7 @@ public class GroupingTargets {
 
 
 	private static ArrayList<Integer>[] clusterWithWeka(int k, Instances newinstance, int totalcluster,
-			ArrayList<Integer> targetstocluster, HashMap<Integer, TargetNode> targetmaps) throws Exception {
+			ArrayList<Integer> targetstocluster, HashMap<Integer, TargetNode> targetmaps, EM dc) throws Exception {
 		
 		
 		
@@ -639,8 +675,12 @@ public class GroupingTargets {
 		 model.setDistanceFunction(new weka.core.ManhattanDistance());
 		 
 		 System.out.println(model);*/
+		
+		
+		//EM dc = new EM();
+		
 		 
-		SimpleKMeans dc = new SimpleKMeans();
+		//SimpleKMeans dc = new SimpleKMeans();
 		
 		 
 		 if(newinstance.get(0).value(0) != 0)
@@ -783,13 +823,13 @@ public class GroupingTargets {
 	}
 	
 	
-private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, SuperTarget> sts, int aid1, int aid2 ) {
+private static void updateAP(SuperTarget curst, HashMap<Integer, SuperTarget> sts, int aid1, int aid2 ) {
 		
 		// remove old sts as neighbors
 		
 		
 		
-		curst.neighbors.clear();
+		//curst.neighbors.clear();
 		curst.ap.clear();
 		
 		curst.ap.put(aid1, curst.nodes.get(aid1));
@@ -797,33 +837,80 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		
 		
 		//update new neighbor for every st and curst
-		for(SuperTarget st: sts.values())
+		/*for(SuperTarget st: sts.values())
 		{
-			if(isPotentialNeighbor(curst, st))
+			if(curst.stid != st.stid)
 			{
-				
-				//should enter neighbor again?
-				st.neighbors.put(curst.stid, curst);
-				curst.neighbors.put(st.stid, st);
-				
-				
+				if(isPotentialNeighbor(curst, st))
+				{
+
+					//should enter neighbor again?
+					//st.neighbors.put(curst.stid, curst);
+					curst.neighbors.put(st.stid, st);
+
+
+				}
+				else
+				{
+					st.neighbors.remove(curst.stid);
+					//curst.neighbors.remove(st.stid);
+				}
 			}
-			else
-			{
-				st.neighbors.remove(curst.stid);
-				curst.neighbors.remove(st.stid);
-			}
-		}
+		}*/
 		
 	}
+
+
+private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
+	
+	// remove old sts as neighbors
+	
+	
+	
+	
+	//update new neighbor for every st and curst
+	for(SuperTarget st: sts.values())
+	{
+
+
+		for(SuperTarget st2: sts.values())
+		{
+
+			if(st2.stid != st.stid)
+			{
+				if(!isPotentialNeighbor(st2, st))
+				{
+
+					//should enter neighbor again?
+					//st.neighbors.put(curst.stid, curst);
+					//st2.neighbors.put(st.stid, st);
+					
+					st.neighbors.remove(st2.stid);
+					st2.neighbors.remove(st.stid);
+
+
+				}
+				else
+				{
+					
+				}
+			}
+		}
+	}
+	
+}
 
 
 	private static boolean isPotentialNeighbor(SuperTarget newst, SuperTarget st) {
 		
 		
-		for(TargetNode nei: st.ap.values())
+		if(newst.stid == st.stid)
+			return false;
+		
+		
+		for(TargetNode nei: newst.ap.values())
 		{
-			for(TargetNode nei2 : newst.ap.values())
+			for(TargetNode nei2 : st.ap.values())
 			{
 				if(nei.getNeighbors().contains(nei2))
 					return true;
@@ -853,21 +940,22 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		TargetNode start = new TargetNode(a1);
 		Queue<TargetNode> fringequeue = new LinkedList<TargetNode>();
 		ArrayList<TargetNode> goals = new ArrayList<TargetNode>();
+		ArrayList<TargetNode> closed = new ArrayList<TargetNode>();
 		
 		fringequeue.add(start);
 		int pathcounter = 0;
 		int nodestocover = tempst.nodes.size();
 		while(fringequeue.size()>0)
 		{
-			//System.out.println("Polling from queue ");
-			//System.out.println("Queue size before polling "+ fringequeue.size());
+			System.out.println("Polling from queue ");
+			System.out.println("Queue size before polling "+ fringequeue.size());
 			TargetNode node = fringequeue.poll();
-			//System.out.println("Pulled node "+ node.getTargetid() + ", distance covered "+ node.distancecoveredyet);
+			System.out.println("Pulled node "+ node.getTargetid() + ", distance covered "+ node.distancecoveredyet);
 			//System.out.println("Queue size after polling "+ fringequeue.size());
 			if( (node.getTargetid()==a2.getTargetid()) &&
 					(node.distancecoveredyet>0) && node.distancecoveredyet<=dmax)
 			{
-				//System.out.println("Adding node "+ node.getTargetid() +" to goals..."+ node.distancecoveredyet+ ", pcount:  "+ pathcounter);
+				System.out.println("Adding node "+ node.getTargetid() +" to goals..."+ node.distancecoveredyet+ ", pcount:  "+ pathcounter);
 				//System.out.println();
 				//printPath(node);
 				//pathcounter++;
@@ -887,7 +975,8 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 				 * expand the node
 				 */
 				//System.out.println("Expanding node "+ node.getTargetid());
-				//Logger.logit("Expanding node "+ node.getTargetid()+"\n");
+				Logger.logit("Expanding node "+ node.getTargetid()+"\n");
+				closed.add(node);
 				ArrayList<TargetNode> succs = ExpandTarget(node, tempst.nodes, dmax);
 				/**
 				 * add nodes to queue
@@ -896,9 +985,13 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 				{
 					//System.out.println("Adding node "+ suc.getTargetid() +", distance covered  "+suc.distancecoveredyet+", to queue");
 					//Logger.logit("Adding node "+ suc.getTargetid() +", distance covered  "+suc.distancecoveredyet+", to queue"+"\n");
-					fringequeue.add(suc);
+					if(!isInclosed(closed,node))
+					{
+						fringequeue.add(suc);
+					}
 
 				}
+				
 				//System.out.println("Queue size after adding "+ fringequeue.size());
 
 			}
@@ -912,6 +1005,19 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 	
 	
 	
+	public static boolean isInclosed(ArrayList<TargetNode> closed, TargetNode node) {
+
+		
+		for(TargetNode t: closed)
+		{
+			if(t.getTargetid() == node.getTargetid())
+				return true;
+		}
+		return false;
+		
+	}
+
+
 	private static ArrayList<TargetNode> ExpandTarget(TargetNode node, HashMap<Integer,TargetNode> nodes, double dmax ) 
 	{
 		ArrayList<TargetNode> successors = new ArrayList<TargetNode>();
@@ -2885,7 +2991,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		 model.setDistanceFunction(new weka.core.ManhattanDistance());
 		 System.out.println(model);*/
 		 //MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
-		 SimpleKMeans dc = new SimpleKMeans();
+		 EM dc = new EM();
 		// instances.remove(0); // remove the base
 		 dc.setNumClusters(ncluster-1);
 		 dc.buildClusterer(instances);
@@ -3381,6 +3487,597 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 		double[] res1 = {defpayoff, clusteringtime, solvingtime, targetsize, attackeru, slavetime, revmaptime};
 		return res1;
 	}
+	
+	public static double[] wekaClusteringWithDO(int base, int dest, int ncluster, int radius, int dmax, 
+			int nRes, int nTargets, ArrayList<TargetNode> targets, HashMap<Integer, TargetNode> targetmaps, int iter) throws Exception
+	{
+		
+		
+		
+		
+		
+		
+		
+		
+		int[][] targetssorted = SecurityGameContraction.sortTargets(targets);
+		//SecurityGameContraction.printSortedTargets(targetssorted);
+		
+		
+		//Get the list of initial targets using GCR from Tsrt, Tcur = GreedyCoverR()
+		
+		ArrayList<Integer> targetstocluster = SecurityGameContraction.buildGreedyCoverMultRes(targets, dmax, nTargets, 0, nRes);
+		
+		int currentPlace = targetstocluster.size()-1;
+		
+		//ArrayList<TargetNode> domindatednodes = new ArrayList<TargetNode>();
+
+		//ArrayList<TargetNode> tmpgraph = new ArrayList<TargetNode>();
+		//HashMap<Integer, TargetNode> tmptargetmaps = new HashMap<Integer, TargetNode>();
+		int attackedtarget=-1;
+		int[][] p;
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+		HashSet jSet=new HashSet();
+		ArrayList<ArrayList<Integer>> pathseq = new ArrayList<ArrayList<Integer>>();
+		List<ArrayList<Integer>> jset = new ArrayList<ArrayList<Integer>>(jSet);
+		double[] probdistribution= new double[jset.size()];
+		double attackeru= -999;
+		double attackerv = -999;
+
+		
+
+
+		long clusteringtime=0;
+		long solvingtime=0;
+		long revmaptime=0;
+		int targetsize=0;
+		double slavetime = 0;
+		int [][] origpmat = new int[nTargets][];
+		boolean canaddpath = true;
+		
+		int masteritr=0;
+		
+		
+		
+		
+		/**
+		 * make instances for clustering with weka
+		 */
+		
+		
+		
+		
+		
+
+		 CSVLoader csvload = new CSVLoader();
+		 csvload.setSource(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/realdata"+iter+".csv"));
+		 Instances data = csvload.getDataSet();
+		 
+		 
+		 ArffSaver arf = new ArffSaver();
+		 arf.setInstances(data);
+		 arf.setFile(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata"+iter+".arff"));
+		 arf.writeBatch();
+		
+		
+		
+		
+		
+		
+		
+		FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata"+iter+".arff");
+		DataInputStream in = new DataInputStream(fstream);
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		// Read all the instances in the file (ARFF, CSV, XRFF, ...)
+		 //DataSource source = new DataSource(br);
+		 Instances instances = new Instances(br);
+		 // Print header and instances.
+		// System.out.println("\nDataset:\n");
+		 System.out.println(instances.toSummaryString());
+		 
+		/* SimpleKMeans model = new SimpleKMeans();
+		 model.setNumClusters(10);
+		 model.buildClusterer(instances);
+		 model.setDistanceFunction(new weka.core.ManhattanDistance());
+		 System.out.println(model);*/
+		 //MakeDensityBasedClusterer dc = new MakeDensityBasedClusterer();
+		 EM dc = new EM();
+		// instances.remove(0); // remove the base
+		 dc.setNumClusters(ncluster-1);
+		 dc.buildClusterer(instances);
+		 System.out.println(dc);
+		 
+		 for(int i=0; i<instances.size(); i++) //without base
+		 {
+			 System.out.println("instance  "+i +", cluster "+ dc.clusterInstance(instances.get(i)));
+		  
+		 }
+		
+		
+
+		
+		while(true)
+		{
+			
+			System.out.println("Outer loop...Master");
+
+			pathseq = new ArrayList<ArrayList<Integer>>();
+
+			System.out.println("\nCurrent place : "+ currentPlace);
+
+			System.out.print("Current target list : ");
+
+			for(int i=0; i<targetstocluster.size(); i++)
+			{
+				System.out.print(targetstocluster.get(i)+",");
+			}
+
+
+			/*tmpgraph = SecurityGameContraction.getDuplicateGraph(targets);
+			for(TargetNode t: tmpgraph)
+			{
+				tmptargetmaps.put(t.getTargetid(), t);
+			}*/
+			
+			
+			
+			
+			System.out.println();
+
+			//SecurityGameContraction.printNodesWithNeighborsAndPath(domindatednodes, tmpgraph);
+
+
+			Date start = new Date();
+			long l1 = start.getTime();
+
+
+			//Build an abstract graph Gt through target clustering given Tcur, Gt
+			
+			
+			HashMap<Integer, Double> dstravel = new HashMap<Integer, Double>();
+			HashMap<Integer, ArrayList<Integer>> stpaths = new HashMap<Integer, ArrayList<Integer>>();
+			
+			HashMap<Integer, SuperTarget> currentst = GroupingTargets.clusterTargetsWeka(targetstocluster, targets, 
+					targetmaps, dmax, ncluster, radius, dstravel, stpaths, dc, instances);
+			targetsize= currentst.size();
+			
+			
+			printSuperTargets(currentst);
+
+			Date stop = new Date();
+			long l2 = stop.getTime();
+			long diff = l2 - l1;
+
+			clusteringtime += diff;
+			
+			
+			//TODO save distance traveled for each cluster
+			// remove the unncessary ones. 
+			
+			ArrayList<Integer> notin = new ArrayList<Integer>();
+			
+			for(SuperTarget st: currentst.values())
+			{
+				if(st.nodes.size()==1)
+				{
+					dstravel.put(st.stid, 0.0);
+					
+				}
+				
+			}
+			
+			
+			int ind = 0;
+			for(Integer t: dstravel.keySet())
+			{
+				if(!currentst.keySet().contains(t))
+				{
+					notin.add(t);
+				}
+				ind++;
+			}
+			
+			for(Integer x: notin)
+			{
+				dstravel.remove(x);
+				stpaths.remove(x);
+			}
+			
+			
+			//HashMap<Integer, Double> stvalue
+			assignSTValues(currentst, targetmaps);
+			
+			//System.out.println("olaa ");
+			//printSuperTargets(currentst);
+			
+			
+			//Generate initial set of paths using GreedyPathR, scur = GPR(Gt)
+			
+			
+
+			
+
+			System.out.println("current st size "+ currentst.size());
+			
+			//SecurityGameContraction.printNodesWithNeighborsAndPath(domindatednodes, tmpgraph);
+			p = new int[currentst.size()][]; // p matrix
+
+			//apply greedy approach
+			//TODO generate paths where there will be at least one target
+			//ArrayList<TargetNode> goals = generatePathsGreedy2(dmax, gamedata, tmpgraph, currenttargets, nRes);
+			//pathseq =  buildGreedyPathMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes);
+			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, targetstocluster, nRes, dstravel);
+			map = new HashMap<Integer, Integer>();
+			mapback = new HashMap<Integer, Integer>();
+			int icount = 0;
+			for(SuperTarget st: currentst.values())
+			{
+
+				map.put(st.stid, icount);
+				System.out.println("SuperTarget "+ st.stid +" --> "+icount);
+				mapback.put(icount, st.stid);
+				icount++;
+
+			}
+			//makePathSeq(pathseq, goals, goals.size(), tmpgraph.size(), map, mapback, tmpgraph);
+			//printPaths(pathseq);
+			System.out.println("Total path with duplicates "+pathseq.size());
+			pathseq = SecurityGameContraction.removeDuplicatePathSimple(pathseq);
+			System.out.println("Total path without duplicates "+pathseq.size()+"\n");
+
+
+
+
+			SecurityGameContraction.printPaths(pathseq);
+			
+			System.out.println("hi");
+
+			/**
+			 * keep only nRes*3 paths from the end
+			 */
+
+			//ArrayList<ArrayList<Integer>> initpaths =	filterPaths(pathseq, 3*nRes, currenttargets);
+			//System.out.println("Initial number of paths "+ pathseq.size());
+			//printPaths(pathseq);
+
+
+			/*if(pathseq.size()==0)
+			{
+				System.out.println("pathseq 0, iter..nqqqqq"+ iter);
+			}*/
+
+
+
+			int itr=0;
+			while(true)
+			{
+				
+				System.out.println("Entered inner loop...slave");
+				
+				itr++;
+
+				
+
+				if(pathseq.size()==0)
+				{
+					System.out.println("pathseq 0, iter.ohhh"+ masteritr);
+				}
+
+
+				canaddpath = true;
+
+				Integer[] input = new Integer[pathseq.size()];
+				int[] branch = new int[nRes];//{0,0};//new char[k];
+
+				for(int i=0; i<input.length; i++)
+				{
+					input[i] = i;
+				}
+				jSet=new HashSet();
+				if(pathseq.size()==0)
+				{
+					//System.out.println("pathseq 0, iter"+ iter);
+					//choose the worst payoff for defender
+
+					Double mAxpayoff = Double.MIN_VALUE;
+					Double defpayoff = 0.0;
+					/*for(int i=0; i<domindatednodes.size(); i++)
+					{
+						tmpgraph.add(domindatednodes.get(i));
+					}*/
+					
+					for(SuperTarget st: currentst.values())
+					{
+						for(TargetNode x: st.nodes.values())
+						{
+							if(x.attackerreward>mAxpayoff)
+							{
+								mAxpayoff= x.attackerreward;
+								defpayoff = x.defenderpenalty;
+							}
+						}
+					}
+				}
+				else
+				{
+					//System.out.println("pathseq "+pathseq.size()+", iter"+ iter+", contrac "+ contractionsize);
+					if(pathseq.size()<nRes)
+					{
+
+						branch = new int[pathseq.size()];
+						jSet=combine(input, pathseq.size(), 0, branch, 0, jSet);
+					}
+					else
+					{
+						jSet=combine(input, nRes, 0, branch, 0, jSet);
+					}
+
+					jset = new ArrayList<ArrayList<Integer>>(jSet);
+					/**
+					 * columns will be combination of paths for each resources. 
+					 *//*
+					*//**
+					 * pmat, where columns will be combination of paths. 
+					 * rows are targets. 
+					 * each entry will say whether the target is in the joint schedule
+					 */
+					//jSet.
+
+					//printJointSchedule(jset);
+
+					p = SecurityGameContraction.makeSuperPmat(pathseq, jset, mapback, currentst, map);
+					//printPathMat(p);
+
+					start = new Date();
+					l1 = start.getTime();
+
+					HashMap<Integer, Double> attackerstrategy = new HashMap<Integer, Double>();
+
+					System.out.println("Solving LP");
+					probdistribution = MIPSolver4.solveForAttackerLPST(p, currentst, targetmaps, nRes, attackerstrategy);
+
+					
+
+					stop = new Date();
+					l2 = stop.getTime();
+					diff = l2 - l1;
+
+					solvingtime += diff;
+					
+					
+					start = new Date();
+					l1 = start.getTime();
+
+
+					attackedtarget = SecurityGameContraction.findAttackSuperTargetWMapping(p, probdistribution, currentst, map, mapback);
+					attackedtarget = mapback.get(attackedtarget);
+					System.out.println("attack target before rev map "+ attackedtarget);
+					
+					
+					//int u = getTargetNode(MIPSolver4.attackedtarget, tmpgraph).getTargetid();
+					attackeru = SecurityGameContraction.expectedAttackerSTPayoff(attackedtarget, p, probdistribution, currentst, map);
+					//System.out.println("attacker u= "+attackeru);
+
+					//SecurityGameContraction.printNodesWithNeighborsAndPath(domindatednodes, tmpgraph);
+
+					origpmat = SecurityGameContraction.makeSuperOrigPMatWOMap(p, pathseq, jset, nTargets, map, mapback, 
+							targetmaps, currentst, stpaths);
+					attackedtarget = SecurityGameContraction.findAttackTarget(origpmat, probdistribution, targetmaps);
+					
+					//int u = getTargetNode(MIPSolver4.attackedtarget, tmpgraph).getTargetid();
+					attackerv = SecurityGameContraction.expectedPayoffAtt(attackedtarget, origpmat, targetmaps, probdistribution);
+					//System.out.println("attacker v= "+attackerv);
+					
+					System.out.println("master "+masteritr+", slave "+itr+", u= "+attackeru+", v= "+attackerv);
+					System.out.println("attack target after rev map"+ attackedtarget);
+					
+					
+					stop = new Date();
+					l2 = stop.getTime();
+					diff = l2 - l1;
+
+					revmaptime += diff;
+
+					
+
+					if(probdistribution.equals(null))
+					{
+						throw new Exception("Prob null...");
+					}
+
+					/*if(attackeru>=targetssorted[currentPlace+1][1] || currentPlace==targetssorted.length)
+					{
+						System.out.println("attacker u "+ attackeru +" is greater than u("+targetssorted[currentPlace+1][0]+")="+targetssorted[currentPlace+1][1]);
+
+						break;
+					}
+
+					if(attackeru>= targetssorted[currentPlace+1][1])
+					{
+						System.out.println("inner loop ....breaking.$$$$$$$$$$$$$$$$$..attacker u>=v="+attackeru);
+						break;
+					}*/
+					
+					
+					if(currentPlace<targetssorted.length-1 && attackeru<targetssorted[currentPlace+1][1])
+					{
+						System.out.println("inner loop ....breaking.%%%%%%%%%%..attacker u<=v "+attackeru);
+						break;
+					}
+					/**
+					 * apply greedy slave
+					 * 
+					 * find the attack target and find a path that includes that target
+
+					 */
+					//System.out.println("attacked target after rev map "+ attackedtarget);
+					
+					
+					start = new Date();
+					l1 = start.getTime();
+
+					ArrayList<ArrayList<Integer>> newpathseq = SecurityGameContraction.buildSuperGreedyCoverMultRes2(targetmaps, 
+							dmax, currentst.size(), 0, nRes, attackerstrategy, currentst, dstravel);
+					
+					stop = new Date();
+					l2 = stop.getTime();
+					diff = l2 - l1;
+
+					slavetime += diff;
+					
+					
+					/*System.out.println("newpathseq size before purify : "+newpathseq.size());
+					    //newpathseq = SecurityGameContraction.determineNewPaths(newpathseq, p, probdistribution);
+						System.out.println("newpathseq size after purify : "+newpathseq.size());*/
+						
+						
+						/*if((newpathseq.size()==0) || (itr>=10))
+						{
+							canaddpath = false;
+							System.out.println("Slave can't add any new path ###############");
+							break;
+						}
+						System.out.println("New whole path seq ");
+						
+						*/
+						
+
+						//makeSlavePathSeq(newpathseq, goal);
+						//removeDuplicatePathSimple(newpathseq);
+						if(newpathseq.size()==0)
+						{
+							canaddpath = false;
+							System.out.println("Slave can't add any new path ###############");
+							break;
+						}
+						//System.out.println("tcur: ");
+						//printGreedyPath(currenttargets);
+						//System.out.println("newpathseq: ");
+						SecurityGameContraction.printPaths(newpathseq);
+
+						System.out.println("Old path seq size "+ pathseq.size());
+
+						int oldsize = pathseq.size();
+						for(ArrayList<Integer> q: newpathseq)
+						{
+							pathseq.add(q);
+						}
+
+						System.out.println("new paths added by slave *************, attacked target "+ attackedtarget);
+
+						pathseq = SecurityGameContraction.removeDuplicatePathSimple(pathseq);
+						System.out.println("New path seq size "+ pathseq.size());
+						//printPaths(pathseq);
+						int newsize = pathseq.size();
+						//System.out.println("haa ");
+
+
+						if((oldsize==newsize) || (itr>=20))
+						{
+							canaddpath = false;
+							System.out.println("Slave can't add any new path ############### or iteration>20");
+							printSuperTargets(currentst);
+							SecurityGameContraction.printPaths(pathseq);
+							break;
+						}
+
+						//SecurityGameContraction.printPaths(pathseq);
+
+				} // end if else
+				System.out.println("iter"+ itr);
+				
+			} // inner while loop 
+
+
+
+
+			// add all targets all targets with utility >= U(a')
+
+
+			if((currentPlace==targetssorted.length-1 || (attackeru>= attackerv)) && !canaddpath)
+			{
+				System.out.println("outer loop ....breaking.@@@@@@@@@@@@@@@..attacker u>=v="+attackeru);
+				printSuperTargets(currentst);
+				break;
+			}
+			
+			double ulimit = targetmaps.get(attackedtarget).attackerreward;
+
+			System.out.println("attacked target "+ attackedtarget+", adding all target w u >= "+ ulimit);
+
+
+			int addcount=0;
+			int ADD_C = 5;
+
+			for(int k=currentPlace+1; k<targetssorted.length; k++)
+			{
+				if(targetssorted[k][1]>=ulimit)
+				{
+					addcount++;
+					
+					targetstocluster.add(targetssorted[k][0]);
+					System.out.println("adding target "+targetssorted[k][0] +", u = "+ targetssorted[k][1]);
+					if(addcount>=ADD_C)
+					{
+						break;
+					}
+				}
+			}
+			
+			System.out.println("addcount : "+ addcount);
+
+			currentPlace = targetstocluster.size()-1;
+
+			System.out.println("currentplace  : "+ currentPlace);
+
+			if(addcount<ADD_C || addcount==0)
+			{
+				//System.out.println("adding more ");
+
+				int prevcur = currentPlace;
+				currentPlace += ADD_C-addcount;
+
+				//System.out.println("currentplace  : "+ currentPlace);
+				if(currentPlace>targetssorted.length-1)
+				{
+					currentPlace = targetssorted.length-1;
+				}
+				//System.out.println("attacker u "+ attackeru +" is less than u("+targetssorted[currentPlace][0]+")="+targetssorted[currentPlace][1]);
+
+				for(int k= prevcur+1; k<=currentPlace; k++ )
+				{
+
+					System.out.println("adding target  "+ targetssorted[k][0]);
+					targetstocluster.add(targetssorted[k][0]);
+				}
+			}
+
+			masteritr++;
+			
+		
+
+
+		} // outer while loop
+
+		System.out.println("Final target list size : "+ targetstocluster.size());
+
+		for(int i=0; i<targetstocluster.size(); i++)
+		{
+			System.out.print(targetstocluster.get(i)+",");
+		}
+
+		
+		double defpayoff = SecurityGameContraction.expectedPayoffDef(attackedtarget, origpmat, targetmaps, probdistribution);
+
+
+
+
+		
+
+		double[] res1 = {defpayoff, clusteringtime, solvingtime, targetsize, attackeru, slavetime, revmaptime};
+		return res1;
+	}
+
 
 
 
@@ -3913,7 +4610,7 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 			}
 			
 			
-			//printNodesWithNeighborsAndPath(targetmaps);
+			printNodesWithNeighborsAndPath(targetmaps);
 
 
 			Date start = new Date();
@@ -3921,6 +4618,70 @@ private static void updateNeighborsAndAP(SuperTarget curst, HashMap<Integer, Sup
 
 			//ArrayList<Integer>[] clus = makeGraph(k, radius, dlim , nTargets, 2, 10, ap, targets, targetmaps);
 			double res[] = wekaClusteringWithDORW(base, dest, k, radius, dmax, nRes, nTargets, targets, targetmaps);
+			//double[] res1 = {defpayoff, clusteringtime, solvingtime, targetstocluster.size(), attackeru, slavetime, revmaptime};
+			
+			
+			sumdefexp += res[0];
+			solvingtime+= res[2];
+			revmaptime += res[6];
+			clusteringtime += res[1];
+			slavetime += res[5];
+			finalsize += res[3];
+
+			Date stop = new Date();
+			long l2 = stop.getTime();
+			long diff = l2 - l1;
+			totaltime += diff;
+
+		}
+		
+		sumdefexp /= LIMIT;
+		solvingtime /= LIMIT;
+		revmaptime /= LIMIT;
+		totaltime /= LIMIT; 
+		finalsize /= LIMIT;
+		clusteringtime /= LIMIT;
+		
+		//System.out.println("Defender exp "+ (double)sumdefexp/LIMIT + ", time : "+ (long)totaltime/LIMIT);
+		writeInFileST("AutoClusteringWithDO",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime);
+		
+
+	}
+	
+	
+	public static void wekaClusteringWithDOExp(int nrow, int ncol, int base, int dest, int k, int radius, int dmax, int nRes, int nTargets,
+			int LIMIT,int ap, HashMap<Integer,ArrayList<TargetNode>> alltargets, 
+			HashMap<Integer,HashMap<Integer,TargetNode>> alltargetmaps ) throws Exception
+	{
+
+
+
+		
+		double sumdefexp = 0.0;
+		long totaltime = 0;
+		long solvingtime = 0;
+		long revmaptime = 0;
+		long clusteringtime = 0;
+		long slavetime = 0;
+		int finalsize = 0;
+
+		for(int iter=0; iter<LIMIT; iter++)
+		{
+			//ArrayList<Integer>[] clus = allclus.get(iter);
+			ArrayList<TargetNode> targets = alltargets.get(iter);//new ArrayList<TargetNode>();
+			HashMap<Integer,TargetNode> targetmaps = alltargetmaps.get(iter); //new HashMap<Integer, TargetNode>();
+			
+			
+			
+			
+			printNodesWithNeighborsAndPath(targetmaps);
+
+
+			Date start = new Date();
+			long l1 = start.getTime();
+
+			//ArrayList<Integer>[] clus = makeGraph(k, radius, dlim , nTargets, 2, 10, ap, targets, targetmaps);
+			double res[] = wekaClusteringWithDO(base, dest, k, radius, dmax, nRes, nTargets, targets, targetmaps, iter);
 			//double[] res1 = {defpayoff, clusteringtime, solvingtime, targetstocluster.size(), attackeru, slavetime, revmaptime};
 			
 			

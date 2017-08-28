@@ -72,7 +72,7 @@ public class Main {
 
 		int lstart=0,  lend=2, hstart=8, hend=10;
 
-		int perc = 5;//Integer.parseInt(args[3]);
+		int perc = 10;//Integer.parseInt(args[3]);
 		/*int nrow=2;//Integer.parseInt(args[0]), 
 		int ncol=2;//Integer.parseInt(args[1]);
 */		//int ITER=1;
@@ -91,10 +91,10 @@ public class Main {
 		int ncol = 10;
 		int base = 0;
 		int dest = 0;
-		int k = 11;
+		int k = 15;
 		int radius = 3;
-		int dmax = 7000;
-		int nRes=1;
+		int dmax = 30;
+		int nRes=2;
 		int dlim = 5;
 		int nTargets = 100;
 		int ITER = 1;
@@ -105,24 +105,82 @@ public class Main {
 		int dminsuper = 5;*/
 		
 		
+		
+		
+		
+		
+		// best algo 
+		/*
+		SecurityGameContraction.targets.clear();
+		
+		double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
+		//double[][] density=SecurityGameContraction.generateRandomDensityV2(ncat, ITER, ranges, nTargets, targetsincat);
+
+
+
+		int percentages[] ={100};//{Integer.parseInt(args[1])};
+		int thresholds[] = {2};
+		
+		SecurityGameContraction.doubleOracleTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
+		SecurityGameContraction.targets.clear();
+		*/
+		
+		
+		
+		///////////////////////
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		HashMap<Integer, ArrayList<TargetNode>> alltargets = new HashMap<Integer, ArrayList<TargetNode>>();
 		HashMap<Integer, HashMap<Integer, TargetNode>> alltargetmaps = new HashMap<Integer, HashMap<Integer, TargetNode>>();
-		HashMap<Integer, ArrayList<Integer>[]> allclus = new HashMap<Integer, ArrayList<Integer>[]>();
-		
+		//HashMap<Integer, ArrayList<Integer>[]> allclus = new HashMap<Integer, ArrayList<Integer>[]>();
+		//HashMap<Integer, ArrayList<Integer>[]> allclus = new HashMap<Integer, ArrayList<Integer>[]>();
+		double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
 		
 		for(int iter = 0; iter<ITER; iter++)
 		{
 			ArrayList<TargetNode> targets = new ArrayList<TargetNode>();  //createGraph();
 			HashMap<Integer, TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
-			ArrayList<Integer>[] clus = GroupingTargets.makeGraph(k, radius, dlim , nTargets, utiliy_l, utility_h, ap, targets, targetmaps);
+			//ArrayList<Integer>[] clus = GroupingTargets.makeGraph(k, radius, dlim , nTargets, utiliy_l, utility_h, ap, targets, targetmaps);
+			//int[][] gamedata = new int[nTargets][4];
+
+			//double u [][] = new double[nrow][ncol];
 			
+			//for(int i=0; i<)
+			
+			SecurityGameContraction.buildcsvGraphExp(nrow,ncol,density,targets, iter );
+			//SecurityGameContraction.assignRandomDensityZeroSum(density, gamedata, targets, iter);
+			//SecurityGameContraction.buildGraph(nrow, ncol, gamedata, targets);
+			//SecurityGameContraction.assignRandomDensityZeroSum(density, gamedata, targets, iter);
 			alltargets.put(iter, targets);
+			
+			for(TargetNode t : targets)
+			{
+				targetmaps.put(t.getTargetid(), t);
+				
+			}
+			
 			alltargetmaps.put(iter, targetmaps);
-			allclus.put(iter, clus);
+			//allclus.put(iter, clus);
 			
 			
 		}
 		
+
+		GroupingTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap,  
+				alltargets, alltargetmaps);
 		
 		
 		
@@ -131,7 +189,7 @@ public class Main {
 		//GroupingTargets.groupingWithDOExp(base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
 		
 		
-		GroupingTargets.wekaClusteringWithDOExpRW(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
+		//GroupingTargets.wekaClusteringWithDOExpRW(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, allclus,  alltargets, alltargetmaps);
 		
 		
 		
@@ -186,20 +244,23 @@ public class Main {
 		
 		
 
-/*
+
 		int[] targetsincat = getTargetsInCats(nTargets, percforcats);
 
 
 
-		double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
+		/*double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
 		//double[][] density=SecurityGameContraction.generateRandomDensityV2(ncat, ITER, ranges, nTargets, targetsincat);
 
 
 
 		int percentages[] ={100};//{Integer.parseInt(args[1])};
 		int thresholds[] = {2};
+		
+		SecurityGameContraction.doubleOracleGCMultiGP3LPGCMultiTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes);
+		SecurityGameContraction.targets.clear();*/
 
-*/
+
 
 
 		//grouping test
