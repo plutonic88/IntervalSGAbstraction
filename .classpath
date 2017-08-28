@@ -2,15 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/thanhjar/cplex.jar">
+	<classpathentry kind="lib" path="C:/Users/IASRLusers/eclipse-workspace/IntervalSGAbstraction/commons-collections4-4.1/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/IASRLusers/eclipse-workspace/IntervalSGAbstraction/commons-collections4-4.1/commons-collections4-4.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/IASRLusers/eclipse-workspace/IntervalSGAbstraction/thanhjar/commons-csv-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/IASRLusers/eclipse-workspace/IntervalSGAbstraction/thanhjar/cplex.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/thanhjar"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="IntervalSGAbstraction/thanhjar"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/thanhjar/commons-csv-1.0.jar"/>
-	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/thanhjar/matlabcontrol-4.1.0.jar"/>
-	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/commons-collections4-4.1/commons-collections4-4.1-javadoc.jar"/>
-	<classpathentry kind="lib" path="/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/commons-collections4-4.1/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="/Users/anjonsunny/research/GSG/weka-3-8-1/weka.jar"/>
+	<classpathentry kind="lib" path="C:/Users/IASRLusers/eclipse-workspace/IntervalSGAbstraction/thanhjar/matlabcontrol-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/IASRLusers/eclipse-workspace/IntervalSGAbstraction/thanhjar/weka.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

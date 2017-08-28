@@ -2975,7 +2975,7 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 		 */
 		
 		
-		FileInputStream fstream = new FileInputStream("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/newdata3.arff");
+		FileInputStream fstream = new FileInputStream("C:\\Users\\IASRLusers\\eclipse-workspace\\IntervalSGAbstraction\\newdata3.arff");
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		// Read all the instances in the file (ARFF, CSV, XRFF, ...)
