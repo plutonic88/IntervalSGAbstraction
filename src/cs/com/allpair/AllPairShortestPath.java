@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import groupingtargets.SuperTarget;
+
 
 
 
 public class AllPairShortestPath
 {
-	private int distancematrix[][];
+	public int distancematrix[][];
 	public int next[][];
 	private int numberofvertices;
 	public static final int INFINITY = 9999999;
@@ -57,6 +59,43 @@ public class AllPairShortestPath
 
 
 	public  ArrayList<Integer> getPath(int src, int dest, HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback)
+	{
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		ArrayList<Integer> origpath = new ArrayList<Integer>();
+
+		int i = map.get(src);
+		int j = map.get(dest);
+
+
+		if(next[i][j]==MY_NULL)
+		{
+			return origpath;
+		}
+
+		path.add(i);
+
+		while(i!=j)
+		{
+			i = next[i][j];
+			path.add(i);
+		}
+
+		for(Integer x: path)
+		{
+			origpath.add(mapback.get(x));
+		}
+		if(origpath.size()>2)
+		{
+			origpath.remove(0);
+			origpath.remove(origpath.size()-1);
+		}
+		return origpath;
+
+	}
+	
+	
+	
+	public  ArrayList<Integer> getPathInST(int src, int dest, HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback, SuperTarget tempst)
 	{
 		ArrayList<Integer> path = new ArrayList<Integer>();
 		ArrayList<Integer> origpath = new ArrayList<Integer>();

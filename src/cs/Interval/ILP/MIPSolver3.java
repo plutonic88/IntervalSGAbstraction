@@ -32,7 +32,7 @@ public class MIPSolver3 {
 	 */
 	public static ArrayList<Integer> solve(ArrayList<TargetNode> duplicatetargets, 
 			ArrayList<TargetNode> targets, HashMap<Integer, Integer> nodewithcoins,
-			ArrayList<TargetNode> dominatedtargets, double distancelimit, int nTargets) throws IloException
+			ArrayList<TargetNode> dominatedtargets, double distancelimit, int nTargets) throws Exception
 	{
 		//edgewithcoins = 0;
 

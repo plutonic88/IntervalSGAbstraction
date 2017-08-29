@@ -31,6 +31,8 @@ public class SuperTarget {
 	public HashMap<Integer, TargetNode> entrypoints = new HashMap<Integer, TargetNode>();
 	public HashMap<Integer, TargetNode> exitpoints = new HashMap<Integer, TargetNode>();
 	public HashMap<Integer, SuperTarget> neighbors = new  HashMap<Integer, SuperTarget>();
+	public HashMap<SuperTarget, Double> distances = new HashMap<SuperTarget, Double>();
+	public HashMap<SuperTarget, ArrayList<Integer>> path = new HashMap<SuperTarget, ArrayList<Integer>>();
 
 
 	public SuperTarget(SuperTarget superTarget) {

@@ -4,19 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import cs.Interval.Abstraction.SecurityGameAbstraction;
-import cs.Interval.Coincollection.CoinCollection;
-import cs.Interval.ILP.LpSolverIP2;
-import cs.Interval.ILP.LpSolverIP;
-import cs.Interval.ILP.MIPSolver3;
 import cs.Interval.contraction.SecurityGameContraction;
 import cs.Interval.contraction.TargetNode;
-import cs.com.realworld.ReadData;
-import groupingtargets.GroupingTargets;
+import groupingtargets.ClusterTargets;
 
 public class Main {
 
@@ -87,17 +80,17 @@ public class Main {
 		int[] percforcats = {10, 80, 10};
 		
 		
-		int nrow = 10;
+		int nrow = 5;
 		int ncol = 10;
 		int base = 0;
 		int dest = 0;
-		int k = 15;
+		int k = 5;
 		int radius = 3;
-		int dmax = 30;
+		int dmax = 20;
 		int nRes=2;
 		int dlim = 5;
-		int nTargets = 100;
-		int ITER = 1;
+		int nTargets = 50;
+		int ITER = 5;
 		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
@@ -160,7 +153,7 @@ public class Main {
 			
 			//for(int i=0; i<)
 			
-			SecurityGameContraction.buildcsvGraphExp(nrow,ncol,density,targets, iter );
+			ClusterTargets.buildcsvGraphExp(nrow,ncol,density,targets, iter );
 			//SecurityGameContraction.assignRandomDensityZeroSum(density, gamedata, targets, iter);
 			//SecurityGameContraction.buildGraph(nrow, ncol, gamedata, targets);
 			//SecurityGameContraction.assignRandomDensityZeroSum(density, gamedata, targets, iter);
@@ -178,9 +171,28 @@ public class Main {
 			
 		}
 		
+		
+		int percentages[] ={100};//{Integer.parseInt(args[1])};
+		int thresholds[] = {2};
+		
 
-		GroupingTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap,  
-				alltargets, alltargetmaps);
+		ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
+		
+
+		//4 DO + GC multi + GP 3 + LP + GC multi 
+		SecurityGameContraction.DOTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes, alltargets, alltargetmaps);
+		SecurityGameContraction.targets.clear();
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
