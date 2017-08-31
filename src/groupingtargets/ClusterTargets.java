@@ -2305,13 +2305,13 @@ private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tem
 						
 						for(TargetNode n: currentst.get(st).nodes.values())
 						{
-							for(TargetNode n2: currentst.get(st).nodes.values())
+							//for(TargetNode n2: currentst.get(st).nodes.values())
 							{
-								if(n.getNeighbors().contains(n2)  &&  (n.getTargetid() != n2.getTargetid()) && (!isDone(done, n, n2)))
+								if(t.getNeighbors().contains(n)  &&  (n.getTargetid() != t.getTargetid()) && (!isDone(done, t, n)))
 								{
 									
 									
-									ArrayList<TargetNode> ppath = n.getPath(n2);
+									ArrayList<TargetNode> ppath = t.getPath(n);
 									
 									for(TargetNode pnode: ppath)
 									{
@@ -2319,7 +2319,7 @@ private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tem
 									}
 									
 									
-									done.add(new int[]{n.getTargetid(), n2.getTargetid()});
+									done.add(new int[]{t.getTargetid(), n.getTargetid()});
 									
 								}
 							}

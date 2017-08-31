@@ -5122,7 +5122,7 @@ public class SecurityGameContraction
 
 	
 	public static double[] noContractionNoColumnGeneration(ArrayList<TargetNode> targets, double threshold,
-			double dmax, int[][] gamedata, SecurityGameContraction sgc, int nRes ) throws Exception
+			double dmax, int[][] gamedata, int nRes ) throws Exception
 	{
 		double attackeru=0;
 		double attackerv=0;
@@ -15800,7 +15800,7 @@ public class SecurityGameContraction
 
 
 
-	public static void noContractionNoColumnGenerationTest(double[][] density, int ITER, int nrow, int ncol, int[] percentages, double dmax, int nRes) throws Exception 
+	public static void noContractionNoColumnGenerationTest(double[][] density, int ITER, int nrow, int ncol, int[] percentages, double dmax, int nRes, HashMap<Integer,ArrayList<TargetNode>> alltargets, HashMap<Integer,HashMap<Integer,TargetNode>> alltargetmaps) throws Exception 
 	{
 
 
@@ -15833,10 +15833,21 @@ public class SecurityGameContraction
 
 				for(int iter=0; iter<ITER; iter++)
 				{
-					targets.clear();
+
+					ArrayList<TargetNode> targets = alltargets.get(iter);//new ArrayList<TargetNode>();
+					HashMap<Integer,TargetNode> targetmaps = alltargetmaps.get(iter); //new HashMap<Integer, TargetNode>();
+					
+					
+					
+					
+					//printNodesWithNeighborsAndPath(targetmaps);
+
+					int[][] gamedata = new int[nTargets][4];//SecurityGameAbstraction.parseSecurityGameFile("inputr-0.700000.csv", iter);
+					
+					gamedata = constructGameData(targets);
 					double [] result = new double[2];
 
-					int[][] gamedata = new int[nTargets][4]; //SecurityGameAbstraction.parseSecurityGameFile("inputr-0.700000.csv", iter);
+					//int[][] gamedata = new int[nTargets][4]; //SecurityGameAbstraction.parseSecurityGameFile("inputr-0.700000.csv", iter);
 					//	makeZeroSum(gamedata,nTargets);
 
 					System.out.println("\n Iter "+ (iter+1));
@@ -15844,12 +15855,12 @@ public class SecurityGameContraction
 					System.out.println("dmax "+ dmax);
 					//System.out.println("Unnecessary targets "+ nUnaccesstargets);
 					System.out.println("nRes "+ nRes);
-					SecurityGameContraction sgc = new SecurityGameContraction(nrow, ncol, gamedata);
+					//SecurityGameContraction sgc = new SecurityGameContraction(nrow, ncol, gamedata);
 
 					//chooseDummyNodes(nUnaccesstargets);
 
 					//makeStarGraph(gamedata, nTargets);
-					assignRandomDensityZeroSum(density, gamedata, targets, iter);
+					//assignRandomDensityZeroSum(density, gamedata, targets, iter);
 
 					Date start = new Date();
 					long l1 = start.getTime();
@@ -15882,7 +15893,7 @@ public class SecurityGameContraction
 
 					//sgc.contractGraph(domindatednodes, targets);
 
-					result =	SecurityGameContraction.noContractionNoColumnGeneration(targets, threshold, dmax, gamedata, sgc, nRes);
+					result =	SecurityGameContraction.noContractionNoColumnGeneration(targets, threshold, dmax, gamedata, nRes);
 					sumsol += result[0];
 					sumthreshold += result[1];
 					sumiter += result[2];
@@ -15905,7 +15916,7 @@ public class SecurityGameContraction
 				DecimalFormat df = new DecimalFormat("#.#######");
 				double revtime = revmaptime/ITER;
 				String x = df.format(revtime);
-				writeInFile("14",(int)targetsize/ITER, avgsol, contractiontime/ITER, solvingtime/ITER, sumtime/ITER);
+				writeInFile("baseline",(int)targetsize/ITER, avgsol, contractiontime/ITER, solvingtime/ITER, sumtime/ITER);
 			}
 
 		}

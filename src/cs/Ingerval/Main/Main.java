@@ -81,15 +81,15 @@ public class Main {
 		
 		
 		int nrow = 5;
-		int ncol = 10;
+		int ncol = 5;
 		int base = 0;
 		int dest = 0;
 		int k = 5;
 		int radius = 3;
-		int dmax = 20;
+		int dmax = 9;
 		int nRes=2;
 		int dlim = 5;
-		int nTargets = 50;
+		int nTargets = 25;
 		int ITER = 5;
 		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
@@ -176,13 +176,24 @@ public class Main {
 		int thresholds[] = {2};
 		
 
-		ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
+		//ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
 		
 
 		//4 DO + GC multi + GP 3 + LP + GC multi 
-		SecurityGameContraction.DOTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes, alltargets, alltargetmaps);
+		//SecurityGameContraction.DOTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes, alltargets, alltargetmaps);
 		SecurityGameContraction.targets.clear();
-
+		
+		
+		//14
+		SecurityGameContraction.noContractionNoColumnGenerationTest(density, ITER, nrow, ncol, percentages, dmax, nRes, alltargets, alltargetmaps );
+		SecurityGameContraction.targets.clear();
+		
+		
+		
+		
+		
+		
+		//
 		
 		
 		
