@@ -10,6 +10,7 @@ import java.util.List;
 import cs.Interval.contraction.SecurityGameContraction;
 import cs.Interval.contraction.TargetNode;
 import groupingtargets.ClusterTargets;
+import groupingtargets.GroupingTargets;
 
 public class Main {
 
@@ -80,17 +81,17 @@ public class Main {
 		int[] percforcats = {10, 80, 10};
 		
 		
-		int nrow = 5;
-		int ncol = 5;
+		int nrow = 6;
+		int ncol = 6;
 		int base = 0;
 		int dest = 0;
-		int k = 5;
+		int k = 8;
 		int radius = 3;
-		int dmax = 9;
+		int dmax = 12;
 		int nRes=2;
 		int dlim = 5;
-		int nTargets = 25;
-		int ITER = 5;
+		int nTargets = 36;
+		int ITER = 20;
 		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;
@@ -140,13 +141,15 @@ public class Main {
 		HashMap<Integer, HashMap<Integer, TargetNode>> alltargetmaps = new HashMap<Integer, HashMap<Integer, TargetNode>>();
 		//HashMap<Integer, ArrayList<Integer>[]> allclus = new HashMap<Integer, ArrayList<Integer>[]>();
 		//HashMap<Integer, ArrayList<Integer>[]> allclus = new HashMap<Integer, ArrayList<Integer>[]>();
-		double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
+		//double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
+		
+		double[][] density = new double[ITER][nTargets];
+		
 		
 		for(int iter = 0; iter<ITER; iter++)
 		{
 			ArrayList<TargetNode> targets = new ArrayList<TargetNode>();  //createGraph();
 			HashMap<Integer, TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
-			//ArrayList<Integer>[] clus = GroupingTargets.makeGraph(k, radius, dlim , nTargets, utiliy_l, utility_h, ap, targets, targetmaps);
 			//int[][] gamedata = new int[nTargets][4];
 
 			//double u [][] = new double[nrow][ncol];
@@ -154,6 +157,7 @@ public class Main {
 			//for(int i=0; i<)
 			
 			ClusterTargets.buildcsvGraphExp(nrow,ncol,density,targets, iter );
+			
 			//SecurityGameContraction.assignRandomDensityZeroSum(density, gamedata, targets, iter);
 			//SecurityGameContraction.buildGraph(nrow, ncol, gamedata, targets);
 			//SecurityGameContraction.assignRandomDensityZeroSum(density, gamedata, targets, iter);
@@ -166,6 +170,12 @@ public class Main {
 			}
 			
 			alltargetmaps.put(iter, targetmaps);
+			
+			ArrayList<Integer>[] clus = GroupingTargets.makeCluster(k , nTargets, utiliy_l, utility_h, targets, targetmaps, density, iter);
+			
+			ClusterTargets.buildFile(nrow,ncol,density,targets, iter );
+			
+			
 			//allclus.put(iter, clus);
 			
 			
@@ -176,11 +186,11 @@ public class Main {
 		int thresholds[] = {2};
 		
 
-		//ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
+		ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
 		
 
 		//4 DO + GC multi + GP 3 + LP + GC multi 
-		//SecurityGameContraction.DOTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes, alltargets, alltargetmaps);
+		SecurityGameContraction.DOTest(density,ITER,nrow, ncol, percentages, thresholds, dmax, nRes, alltargets, alltargetmaps);
 		SecurityGameContraction.targets.clear();
 		
 		

@@ -117,34 +117,38 @@ public class SuperTarget {
 
 		for(int i=0; i<clusters.length; i++)
 		{
-			// create a st object
-			SuperTarget st = new SuperTarget();
-			// set id
-			st.stid = i;
-			// list all the nodes in a hashmap
-			for(Integer t: clusters[i])
+			
+			if(clusters[i].size()>0)
 			{
-				TargetNode tmp = targetmaps.get(t);
-				st.nodes.put(t, tmp);
-				//System.out.println("Inserting target "+ t + " in super target "+ i);
-			}
+				// create a st object
+				SuperTarget st = new SuperTarget();
+				// set id
+				st.stid = i;
+				// list all the nodes in a hashmap
+				for(Integer t: clusters[i])
+				{
+					TargetNode tmp = targetmaps.get(t);
+					st.nodes.put(t, tmp);
+					//System.out.println("Inserting target "+ t + " in super target "+ i);
+				}
 
-			// list all the accesspoints : entry and exit points
-			for(TargetNode node: st.nodes.values()) // key is the target id
-			{
-				// get the node, check if it has any neighbor outside of this super target
-				boolean hasneioutside = hasNeiOutSide(node, st.nodes);
-				if(hasneioutside)
+				// list all the accesspoints : entry and exit points
+				for(TargetNode node: st.nodes.values()) // key is the target id
 				{
-					//System.out.println("Inserting target "+ node.getTargetid() + " as accesspoint of supertarget "+ i);
-					st.ap.put(node.getTargetid(), node);
+					// get the node, check if it has any neighbor outside of this super target
+					boolean hasneioutside = hasNeiOutSide(node, st.nodes);
+					if(hasneioutside)
+					{
+						//System.out.println("Inserting target "+ node.getTargetid() + " as accesspoint of supertarget "+ i);
+						st.ap.put(node.getTargetid(), node);
+					}
+					else
+					{
+						//System.out.println("target "+ node.getTargetid() + " has no outside neighbor ");
+					}
 				}
-				else
-				{
-					//System.out.println("target "+ node.getTargetid() + " has no outside neighbor ");
-				}
+				sts.put(st.stid, st);
 			}
-			sts.put(st.stid, st);
 		}
 
 

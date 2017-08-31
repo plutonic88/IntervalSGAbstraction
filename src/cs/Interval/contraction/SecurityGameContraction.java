@@ -5211,7 +5211,7 @@ public class SecurityGameContraction
 		//makeOriginalMapping(originalmap, originalmapback, targets);
 		//printPaths(pathseq);
 		System.out.println("Total path with duplicates "+pathseq.size());
-		pathseq = removeDuplicatePathSimple(pathseq);
+		//pathseq = removeDuplicatePathSimple(pathseq);
 		System.out.println("Total path without duplicates "+pathseq.size()+"\n");
 		//printPaths(pathseq);
 

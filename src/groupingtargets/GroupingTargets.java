@@ -1186,8 +1186,8 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 
 		return cluster;
 	}
-
-
+	
+	
 	public static ArrayList<Integer>[] makeGraph(int k, int radius, int dlim, int nTargets, int utiliy_l,
 			int utility_h, int ap, ArrayList<TargetNode> targets, HashMap<Integer,TargetNode> targetmaps)
 	{
@@ -1431,6 +1431,221 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 		return cluster;
 
 	}
+
+
+
+	public static ArrayList<Integer>[] makeCluster(int k, int nTargets, int utility_l, 
+			int utility_h, ArrayList<TargetNode> targets, HashMap<Integer,TargetNode> targetmaps, double[][] density, int iter)
+	{
+		//ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
+		//HashMap<Integer, TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
+		// create targets
+
+
+		//targetmaps.clear();
+		//targets.clear();
+
+		
+
+		ArrayList<Integer>[] cluster = (ArrayList<Integer>[])new ArrayList[k];
+		for(int i=0; i<k; i++)
+		{
+			cluster[i] = new ArrayList<Integer>();
+		}
+		cluster[0].add(0); // base
+
+		int curindex = 0;
+		int tleft = nTargets-1;
+
+		int[] nodes = new int[nTargets-1];
+		for(int i=0; i<nodes.length; i++)
+		{
+			nodes[i] = i+1;
+		}
+		shuffleArray(nodes);
+
+		int nodepercluster = (nTargets-1)/(k);
+		int remainder = (nTargets-1)%(k);
+		if(remainder>0)
+		{
+			nodepercluster+=1;
+		}
+
+		
+		ArrayList<Integer> done = new ArrayList<Integer>();
+		done.add(0);
+		
+		
+		int cid = 1;
+		while(true)
+		{
+			// pick how many targets to include in cluster cid
+
+			int count = 0;
+			if(cid==k-1 && remainder>0)
+				nodepercluster += (nTargets - ((k-1)*nodepercluster + 1));
+			
+			if(done.size()==targetmaps.size())
+			{
+				break;
+			}
+			while(true)
+			{
+				//pick a node to add in cluster
+				
+				
+				
+				int nodeid = pickNode(targetmaps, done, nodepercluster, cluster[cid]);
+				if((nodeid == -1) || (done.size()==targetmaps.size()))
+				{
+					break;
+				}
+				cluster[cid].add(nodeid);
+				if(nodeid==0)
+				{
+					System.out.println("fffff count  "+ count + ", nodeperclus "+ nodepercluster);
+
+				}
+				done.add(nodeid);
+				
+				count++;
+				if(count == nodepercluster)
+				{
+					System.out.println("count  "+ count + ", nodeperclus "+ nodepercluster);
+					break;
+				}
+			}
+			//curindex += nodepercluster;
+			if(done.size()<targetmaps.size())
+			{
+				cid ++;
+				if(cid == k)
+				{
+					cid =1;
+				}
+			}
+
+		}
+
+		printClusters(cluster);
+		
+		//Random rand = new Random();
+		
+		for(int i=0; i<nTargets; i++)
+		{
+			
+			for(ArrayList<Integer> clus: cluster)
+			{
+				if(clus.get(0) == 0)
+				{
+					density[iter][0] = utility_h;
+					
+				}
+				else
+				{
+					int utility = randInt(utility_l, utility_h);
+					for(Integer n: clus)
+					{
+						density[iter][n] = Math.abs(utility - randInt(0,2));
+					}
+				}
+				
+			}
+
+		}
+
+		return cluster;
+
+	}
+	
+	
+	
+	
+
+	private static int pickNode(HashMap<Integer, TargetNode> targetmaps, ArrayList<Integer> done, int nodepercluster,
+			ArrayList<Integer> cluster) {
+		
+		
+		int nodeid = -1;
+		
+		int[] nodes = new int[targetmaps.size()-done.size()];
+		
+		int index = 0;
+		for(Integer i: targetmaps.keySet())
+		{
+			if(!done.contains((i)))
+			{
+				nodes[index++] = i;
+				//System.out.println("Adding node "+ i);
+				
+			}
+		}
+		shuffleArray(nodes);
+
+		
+		
+		
+		// if cluster empty, choose any node
+		if(cluster.size()==0)
+		{
+			int nodeidindex = randInt(0, nodes.length-1);
+			nodeid = nodes[nodeidindex];
+		}
+		else
+		{
+			// pick a node which is not in cluster, and done
+			//which is neighbor of any node in cluster
+			//nodes = new int[targetmaps.size()-1-done.size()];
+			
+			ArrayList<Integer> potentialnode = new ArrayList<Integer>(); // neighbbor of cluster and not in cluster and done
+			
+			for(Integer clusnode: cluster)
+			{
+				for(TargetNode potnode: targetmaps.get(clusnode).getNeighbors())
+				{
+					// see if it's in done 
+					if(!done.contains(potnode.getTargetid()) && (potnode.getTargetid() != 0))
+					{
+						potentialnode.add(potnode.getTargetid());
+					}
+				}
+				
+				
+				
+			}
+			
+			
+			nodes = new int[potentialnode.size()];
+			int ind = 0;
+			for(int n: potentialnode)
+			{
+				nodes[ind++] = n;
+			}
+			
+			shuffleArray(nodes);
+			if(nodes.length==0)
+			{
+				System.out.println("ouch! found no node to add");
+				return -1;
+			}
+			int nodeidindex = randInt(0, nodes.length-1);
+			nodeid = nodes[nodeidindex];
+			
+			if(nodeid ==0)
+			{
+				System.out.println("ouch! found no node to add");
+			}
+
+		}
+		
+		
+		
+		return nodeid;
+		
+		
+		
+	}
+
 
 	static void shuffleArray(int[] ar)
 	{
