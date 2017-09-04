@@ -13,6 +13,7 @@ public class TargetNode {
 	public double attackerreward;
 	public double attackerpenalty;
 	public double distfrombase;
+	public boolean isinattackcluster = false;
 	
 	public double getDistfrombase() {
 		return distfrombase;

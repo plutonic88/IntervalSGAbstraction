@@ -1724,7 +1724,7 @@ public class SecurityGameContraction
 		int l=0;
 		//ArrayList<Integer> added = new ArrayList<Integer>();
 		//int dominatedcount = 0;
-		Random rand = new Random(targets.size());
+		//Random rand = new Random(targets.size());
 		//int settozero = nTargets - n;
 
 
@@ -2133,7 +2133,7 @@ public class SecurityGameContraction
 	
 	
 
-	private static void instantContractionWithAPSP(
+	public static void instantContractionWithAPSP(
 			ArrayList<TargetNode> domindatednodes,
 			ArrayList<TargetNode> targets, double dmax) 
 	{
@@ -8824,7 +8824,7 @@ public class SecurityGameContraction
 
 	}
 
-	private static int[][] makePmat(ArrayList<ArrayList<Integer>> pathseq,
+	public static int[][] makePmat(ArrayList<ArrayList<Integer>> pathseq,
 			List<ArrayList<Integer>> jset, HashMap<Integer,Integer> mapback, ArrayList<TargetNode> targets) {
 
 
@@ -9639,7 +9639,7 @@ public class SecurityGameContraction
 		return new double[]{selectedtarget, max};
 	}
 
-	private static int findAttackTarget(int[][] pmat, double[] coverage, int[][] gamedata) {
+	public static int findAttackTarget(int[][] pmat, double[] coverage, int[][] gamedata) {
 
 
 		double[] expectedpayoffs = expectedAttackerPayoffs(pmat, coverage, gamedata);
@@ -11053,7 +11053,7 @@ public class SecurityGameContraction
 	
 	
 	public static ArrayList<ArrayList<Integer>> generatePathsForSuperTargetsAPSP(double dmax, HashMap<Integer, SuperTarget> sts,
-			HashMap<Integer,TargetNode> targetmaps, ArrayList<Integer> currenttargets, int nRes, HashMap<Integer,Double> dstravel) throws Exception
+			HashMap<Integer,TargetNode> targetmaps, int nRes, HashMap<Integer,Double> dstravel) throws Exception
 			{
 
 
@@ -11116,6 +11116,7 @@ public class SecurityGameContraction
             		
             		
             		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
+            		System.out.print("dist covered "+ distcovered+"\n");
             		
             		if(distcovered > dmax/2)
             			continue;
@@ -20204,7 +20205,7 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 
 	}
 	
-	private static void writeInFile(String expno, int finalsize, double avgsol, long contracttime,
+	public static void writeInFile(String expno, int finalsize, double avgsol, long contracttime,
 			long solvingtime, long slavetime, long totaltime ) 
 	{
 
@@ -34861,7 +34862,7 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 		return res;
 	}
 
-	private static ArrayList<TargetNode> selectDominatedNodes(
+	public static ArrayList<TargetNode> selectDominatedNodes(
 			int[][] targetssorted, int start, ArrayList<TargetNode> tmpgraph) {
 
 

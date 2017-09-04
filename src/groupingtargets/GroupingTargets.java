@@ -2774,7 +2774,7 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 			//TODO generate paths where there will be at least one target
 			//ArrayList<TargetNode> goals = generatePathsGreedy2(dmax, gamedata, tmpgraph, currenttargets, nRes);
 			//pathseq =  buildGreedyPathMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes);
-			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, targetstocluster, nRes, dstravel);
+			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, nRes, dstravel);
 			map = new HashMap<Integer, Integer>();
 			mapback = new HashMap<Integer, Integer>();
 			int icount = 0;
@@ -3342,7 +3342,7 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 			//TODO generate paths where there will be at least one target
 			//ArrayList<TargetNode> goals = generatePathsGreedy2(dmax, gamedata, tmpgraph, currenttargets, nRes);
 			//pathseq =  buildGreedyPathMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes);
-			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, targetstocluster, nRes, dstravel);
+			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, currentst, targetmaps, nRes, dstravel);
 			map = new HashMap<Integer, Integer>();
 			mapback = new HashMap<Integer, Integer>();
 			int icount = 0;
