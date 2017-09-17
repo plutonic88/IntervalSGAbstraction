@@ -2162,7 +2162,7 @@ public class SecurityGameContraction
 		ArrayList<Integer> domint = new ArrayList<Integer>();
 		
 		
-		System.out.println("Dominated nodes : ");
+		//System.out.println("Dominated nodes : ");
 		
 		for(TargetNode dn: domindatednodes)
 		{
@@ -2218,8 +2218,8 @@ public class SecurityGameContraction
 					//if(pathnodes.size()>0)
 					if(pathnodes.size()>0 && shortestdist<dmax)
 					{
-						System.out.println("Pathnodes from node "+ nodei.getTargetid() + " to node "+ nodej.getTargetid()+ ", dist "+ shortestdist);
-						System.out.print(neighbornodes.get(i).getTargetid()+"->");
+						//System.out.println("Pathnodes from node "+ nodei.getTargetid() + " to node "+ nodej.getTargetid()+ ", dist "+ shortestdist);
+						//System.out.print(neighbornodes.get(i).getTargetid()+"->");
 						ArrayList<TargetNode> path = new ArrayList<TargetNode>();
 						/*for(Integer x: pathnodes)
 						{
@@ -2230,9 +2230,9 @@ public class SecurityGameContraction
 						for(int k=0; k<pathnodes.size(); k++)
 						{
 							path.add(getTargetNode(pathnodes.get(pathnodes.size()-k-1),targets));
-							System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
+							//System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
 						}
-						System.out.println(neighbornodes.get(j).getTargetid());
+						//System.out.println(neighbornodes.get(j).getTargetid());
 						/**
 						 * add nodes as neighbor
 						 * 
@@ -2286,7 +2286,7 @@ public class SecurityGameContraction
 				}
 				else if(/*(nodei.getDistance(nodej)>1) */ (nodei.getPath(nodej).size()>0)) // if they are neighbors
 				{
-					System.out.println(" Considering neighbors:  node "+ nodei.getTargetid() + " and node  "+ nodej.getTargetid());
+					//System.out.println(" Considering neighbors:  node "+ nodei.getTargetid() + " and node  "+ nodej.getTargetid());
 
 
 
@@ -2306,8 +2306,8 @@ public class SecurityGameContraction
 					//if(pathnodes.size()>0)
 					if(pathnodes.size()>0 && shortestdist<dmax && nodei.getDistance(nodej)>shortestdist)  // sgortest than the current path
 					{
-						System.out.println("Pathnodes from node "+ nodei.getTargetid() + " to node "+ nodej.getTargetid()+ ", dist "+ shortestdist);
-						System.out.print(neighbornodes.get(i).getTargetid()+"->");
+						//System.out.println("Pathnodes from node "+ nodei.getTargetid() + " to node "+ nodej.getTargetid()+ ", dist "+ shortestdist);
+						//System.out.print(neighbornodes.get(i).getTargetid()+"->");
 						ArrayList<TargetNode> path = new ArrayList<TargetNode>();
 						/*for(Integer x: pathnodes)
 						{
@@ -2318,9 +2318,9 @@ public class SecurityGameContraction
 						for(int k=0; k<pathnodes.size(); k++)
 						{
 							path.add(getTargetNode(pathnodes.get(pathnodes.size()-k-1),targets));
-							System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
+							//System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
 						}
-						System.out.println(neighbornodes.get(j).getTargetid());
+						//System.out.println(neighbornodes.get(j).getTargetid());
 						/**
 						 * update the current path because they are already neighbor
 						 * 
@@ -8779,7 +8779,7 @@ public class SecurityGameContraction
 
 	}
 
-	private static void printJointSchedule(List<ArrayList<Integer>> jset) {
+	public static void printJointSchedule(List<ArrayList<Integer>> jset) {
 
 		System.out.println();
 		for(int i=0; i<jset.size(); i++)
@@ -11000,7 +11000,7 @@ public class SecurityGameContraction
 
 
 					distcovered = apsp[map.get(src)][map.get(des)];
-					System.out.print("dist covered "+ distcovered+"\n");
+					//System.out.print("dist covered "+ distcovered+"\n");
 
 					if(distcovered<=dmax/2)
 					{
@@ -11026,7 +11026,7 @@ public class SecurityGameContraction
 				}
 			//	System.out.print(dest.getTargetid()+"\n");
 				tmppath.add(dest.getTargetid());
-				System.out.print("\n");
+				//System.out.print("\n");
 				/**
 				 * make rev path
 				 */
@@ -11034,14 +11034,14 @@ public class SecurityGameContraction
 				{
 					tmppath.add(tmppath.get(j));
 				}
-				System.out.print("complete path : \n");
-				for(int k=0; k<tmppath.size(); k++)
+				//System.out.print("complete path : \n");
+				/*for(int k=0; k<tmppath.size(); k++)
 				{
 
-					System.out.print(tmppath.get(k)+"->");
-				}
+					//System.out.print(tmppath.get(k)+"->");
+				}*/
 				paths.add(tmppath);
-				System.out.print("\n");
+				//System.out.print("\n");
 			}
 
 
@@ -11101,7 +11101,7 @@ public class SecurityGameContraction
         	if(dest.stid!=0)
         	{
 
-        		System.out.println("FInding shortest dist for target "+ dest.stid);
+        		//System.out.println("FInding shortest dist for target "+ dest.stid);
         		ArrayList<Integer>  pathnodes = new ArrayList<Integer>();
         		ArrayList<SuperTarget>  pnodes = new ArrayList<SuperTarget>();
         		if(base.neighbors.containsKey(dest.stid))
@@ -11116,7 +11116,7 @@ public class SecurityGameContraction
             		
             		
             		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
-            		System.out.print("dist covered "+ distcovered+"\n");
+            		//System.out.print("dist covered "+ distcovered+"\n");
             		
             		if(distcovered > dmax/2)
             			continue;
@@ -11150,7 +11150,7 @@ public class SecurityGameContraction
         		
         		
         		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
-        		System.out.print("dist covered "+ distcovered+"\n");
+        		//System.out.print("dist covered "+ distcovered+"\n");
 
         		if(distcovered<=dmax/2)
         		{
@@ -11179,7 +11179,7 @@ public class SecurityGameContraction
         		}
         		//	System.out.print(dest.getTargetid()+"\n");
         		tmppath.add(dest.stid);
-        		System.out.print("\n");
+        		//System.out.print("\n");
         		/**
         		 * make rev path
         		 */
@@ -11187,14 +11187,14 @@ public class SecurityGameContraction
         		{
         			tmppath.add(tmppath.get(j));
         		}
-        		System.out.print("complete path : \n");
-        		for(int k=0; k<tmppath.size(); k++)
+        		//System.out.print("complete path : \n");
+        		/*for(int k=0; k<tmppath.size(); k++)
         		{
 
-        			System.out.print(tmppath.get(k)+"->");
-        		}
+        			//System.out.print(tmppath.get(k)+"->");
+        		}*/
         		paths.add(tmppath);
-        		System.out.print("\n");
+        		//System.out.print("\n");
         	}
 
 
@@ -19304,7 +19304,7 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 	
 	
 	public static void DOTest(double[][] density,
-			int ITER, int nrow, int ncol, int[] percentages, int[] thresholds,
+			int ITER, int nrow, int ncol,
 			double dmax, int nRes, HashMap<Integer,ArrayList<TargetNode>> alltargets, HashMap<Integer,HashMap<Integer,TargetNode>> alltargetmaps) throws Exception {
 		// TODO Auto-generated method stub
 
@@ -19354,6 +19354,9 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 			sumfinaltargetsize += res[3];
 			sumthreshold += res[4];
 			sumslavetime += res[5];
+			
+			SecurityGameContraction.writeRes("DO", iter, (int)sumfinaltargetsize/ITER, res[0], sumcontractiontime/ITER, sumsolvtime/ITER, totaltime/ITER);
+
 			//writeInFile(Integer.toString(iter),  (int)res[3], res[0], sumcontractiontime/iter, sumsolvtime/iter, sumslavetime/10, totaltime/10);
 
 			//writeInFile(sumthreshold/ITER, sumfinaltargetsize/ITER, res[0], sumcontractiontime/ITER, sumsolvtime/ITER, 0);
@@ -20199,11 +20202,32 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 
 		}
 
+	}
+	
+	
 
 
+	public static void writeRes(String expno, int itr, int finalsize, double avgsol, long contracttime,
+			long solvingtime, long totaltime) 
+	{
 
+
+		try
+		{
+			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("itr-result.csv"),true));
+			//PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/fake/Documents/workspace/IntervalSGAbstraction/"+"result.csv"),true));
+			pw.append(expno+","+itr+","+finalsize+ ","+ avgsol+ ","+contracttime+"," + solvingtime+"," + totaltime+"\n");
+			pw.close();
+
+		}
+		catch(Exception e)
+		{
+
+		}
 
 	}
+	
+	
 	
 	public static void writeInFile(String expno, int finalsize, double avgsol, long contracttime,
 			long solvingtime, long slavetime, long totaltime ) 

@@ -4074,7 +4074,7 @@ public class MIPSolver4 {
 		int[][] A = new int[nTargets][nTargets];
 		int nJointSchedule= p[0].length;
 		/**
-		 * include targetid when using contraction
+		 * include targetid when using contraction mmmmm
 		 */
 		int icount = 0;
 		//HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();

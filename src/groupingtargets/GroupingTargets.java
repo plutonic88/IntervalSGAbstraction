@@ -1560,6 +1560,181 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 	
 	
 	
+	public static ArrayList<Integer>[] makeClusterWithRange(int k, int nTargets, int utility_l, 
+			int utility_h, ArrayList<TargetNode> targets, HashMap<Integer,TargetNode> targetmaps,
+			double[][] density, int iter, int[][] ranges, int[] percforranges)
+	{
+		//ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
+		//HashMap<Integer, TargetNode> targetmaps = new HashMap<Integer, TargetNode>();
+		// create targets
+
+
+		//targetmaps.clear();
+		//targets.clear();
+
+		
+
+		ArrayList<Integer>[] cluster = (ArrayList<Integer>[])new ArrayList[k];
+		for(int i=0; i<k; i++)
+		{
+			cluster[i] = new ArrayList<Integer>();
+		}
+		cluster[0].add(0); // base
+
+		int curindex = 0;
+		int tleft = nTargets-1;
+
+		int[] nodes = new int[nTargets-1];
+		for(int i=0; i<nodes.length; i++)
+		{
+			nodes[i] = i+1;
+		}
+		shuffleArray(nodes);
+
+		int nodepercluster = (nTargets-1)/(k);
+		int remainder = (nTargets-1)%(k);
+		if(remainder>0)
+		{
+			nodepercluster+=1;
+		}
+
+		
+		ArrayList<Integer> done = new ArrayList<Integer>();
+		done.add(0);
+		
+		
+		int cid = 1;
+		while(true)
+		{
+			// pick how many targets to include in cluster cid
+
+			int count = 0;
+			if(cid==k-1 && remainder>0)
+				nodepercluster += (nTargets - ((k-1)*nodepercluster + 1));
+			
+			if(done.size()==targetmaps.size())
+			{
+				break;
+			}
+			while(true)
+			{
+				//pick a node to add in cluster
+				
+				
+				
+				int nodeid = pickNode(targetmaps, done, nodepercluster, cluster[cid]);
+				if((nodeid == -1) || (done.size()==targetmaps.size()))
+				{
+					break;
+				}
+				cluster[cid].add(nodeid);
+				if(nodeid==0)
+				{
+					System.out.println("fffff count  "+ count + ", nodeperclus "+ nodepercluster);
+
+				}
+				done.add(nodeid);
+				
+				count++;
+				if(count == nodepercluster)
+				{
+					System.out.println("count  "+ count + ", nodeperclus "+ nodepercluster);
+					break;
+				}
+			}
+			//curindex += nodepercluster;
+			if(done.size()<targetmaps.size())
+			{
+				cid ++;
+				if(cid == k)
+				{
+					cid =1;
+				}
+			}
+
+		}
+
+		printClusters(cluster);
+		
+		//Random rand = new Random();
+		
+		
+		int nlclus = (int)Math.floor(k*(percforranges[0]/100.0))-1;
+		int nmidclus = (int)Math.ceil(k*(percforranges[1]/100.0));
+		int nhighclus = k - nlclus - nmidclus;
+		
+		System.out.println("low clus: "+ nlclus + ", mid clus "+ nmidclus + ", high clus "+ nhighclus);
+		
+		int[] counter = new int[3];
+		
+		for(int clusid=0; clusid<k; clusid++)
+		{
+			if(counter[2]<nhighclus)
+			{
+				counter[2]++;
+				for(Integer n: cluster[clusid])
+				{
+					int utility = randInt(ranges[2][0], ranges[2][1]);
+					density[iter][n] = utility;
+					
+				}
+			}
+			else if(counter[1]<nmidclus)
+			{
+				counter[1]++;
+				for(Integer n: cluster[clusid])
+				{
+					int utility = randInt(ranges[1][0], ranges[1][1]);
+					density[iter][n] = utility;
+					
+				}
+			}
+			else
+			{
+				counter[0]++;
+				for(Integer n: cluster[clusid])
+				{
+					int utility = randInt(ranges[0][0], ranges[0][1]);
+					density[iter][n] = utility;
+					
+				}
+			}
+		}
+
+		
+		
+		
+		
+		
+		
+		/*for(int i=0; i<nTargets; i++)
+		{
+			
+			for(ArrayList<Integer> clus: cluster)
+			{
+				if(clus.get(0) == 0)
+				{
+					density[iter][0] = utility_h;
+					
+				}
+				else
+				{
+					int utility = randInt(utility_l, utility_h);
+					for(Integer n: clus)
+					{
+						density[iter][n] = Math.abs(utility - randInt(0,2));
+					}
+				}
+				
+			}
+
+		}*/
+
+		return cluster;
+
+	}
+	
+	
 	
 
 	private static int pickNode(HashMap<Integer, TargetNode> targetmaps, ArrayList<Integer> done, int nodepercluster,
