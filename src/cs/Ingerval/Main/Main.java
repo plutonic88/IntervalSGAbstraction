@@ -80,7 +80,7 @@ public class Main {
 		int nrow = 5;
 		int ncol = 5;
 		int nTargets = nrow*ncol;
-		int dmax = 9;
+		int dmax = 14;
 		int RADIUS = 2;
 		
 		
@@ -93,7 +93,7 @@ public class Main {
 		int nRes=2;
 		int dlim = 5;
 		
-		int ITER = 2;
+		int ITER = 5;
 		int ap = 4; // should be </= than cluster size
 		int utiliy_l=0;
 		int utility_h=10;

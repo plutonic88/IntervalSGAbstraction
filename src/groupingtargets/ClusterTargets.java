@@ -1062,7 +1062,7 @@ private static boolean areBothNei(SuperTarget s1, SuperTarget s2, SuperTarget te
 												if(dista1a2 == 0)
 												{
 													//throw new Exception("No path found to compute AP for st "+ tempst.stid);
-													System.out.println("Disjpint cluster need longer path "+ tempst.stid);
+													//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
 
 													dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
 												}
@@ -2958,6 +2958,11 @@ private static double[] DOWithClus(int[][] gamedata,
 	
 	
 	
+	// current attacked Super targets in defender oracle
+	ArrayList<Integer> currentattackedsupertargets = new ArrayList<Integer>();
+	
+	
+	
 	
 	while(true)
 	{
@@ -3057,6 +3062,7 @@ private static double[] DOWithClus(int[][] gamedata,
 
 		int itr=0;
 		currentattackedtargets.clear();
+		currentattackedsupertargets.clear();
 		while(true)
 		{
 			
@@ -3414,8 +3420,19 @@ private static double[] DOWithClus(int[][] gamedata,
 
 
 					attackedtarget = SecurityGameContraction.findAttackSuperTargetWMapping(p, probdistribution, sts, map, mapback);
+					//System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" slaveitr "+itr +" attack target before rev map "+ attackedtarget);
 					attackedtarget = mapback.get(attackedtarget);
-					System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" slaveitr "+itr +" attack target before rev map "+ attackedtarget);
+					
+					int attackedclsuter = attackedtarget;
+					
+					if(!currentattackedsupertargets.contains(attackedclsuter))
+					{
+						currentattackedsupertargets.add(attackedclsuter);
+					}
+					
+					
+					
+					System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" slaveitr "+itr +" attack ST before rev map "+ attackedtarget);
 					
 					
 					//int u = getTargetNode(MIPSolver4.attackedtarget, tmpgraph).getTargetid();
@@ -3443,6 +3460,28 @@ private static double[] DOWithClus(int[][] gamedata,
 					{
 						currentattackedtargets.add(attackedtarget);
 					}
+					
+					
+					
+					// find the attacked cluster
+					// add it to the attackedsupertarget
+					
+					int hiddenattackedclsuter = findAttackedCluster(sts,attackedtarget);
+					
+					// might attack target which are dominated
+					
+					if(hiddenattackedclsuter != -1)
+					{
+						hiddenattackedclsuter = mapback.get(hiddenattackedclsuter);
+						System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" slaveitr "+itr +" hidden attack ST "+ hiddenattackedclsuter);
+						if(!currentattackedsupertargets.contains(hiddenattackedclsuter))
+						{
+							currentattackedsupertargets.add(hiddenattackedclsuter);
+						}
+					}
+					
+					
+					
 					
 					
 					
@@ -3489,9 +3528,22 @@ private static double[] DOWithClus(int[][] gamedata,
 					
 					start = new Date();
 					l1 = start.getTime();
-
+					
+					
 					ArrayList<ArrayList<Integer>> newpathseq = SecurityGameContraction.buildSuperGreedyCoverMultRes2(tmpgraphmaps, 
 							dmax, sts.size(), 0, nRes, attackerstrategy, sts, dstravel);
+					
+					
+					
+					//////////// ADD Attacked clusters in the path////////
+					
+					SecurityGameContraction.addSuperTargetsAPSP(dmax, sts, tmpgraphmaps, nRes, dstravel, newpathseq, currentattackedsupertargets);
+					
+					//////////////////////////////////////
+					
+					
+
+					
 					
 					stop = new Date();
 					l2 = stop.getTime();
@@ -3675,6 +3727,26 @@ private static double[] DOWithClus(int[][] gamedata,
 
 
 	
+	private static int findAttackedCluster(HashMap<Integer, SuperTarget> sts, int attackedtarget) {
+	
+		
+		for(SuperTarget st: sts.values())
+		{
+			for(TargetNode t: st.nodes.values())
+			{
+				if(t.getTargetid()  == attackedtarget)
+				{
+					return st.stid;
+				}
+			}
+		}
+		
+		
+		
+	return -1;
+}
+
+
 	private static void preparePaths(HashMap<Integer, Double> dstravel, HashMap<Integer, ArrayList<Integer>> stpaths,
 		HashMap<Integer, SuperTarget> sts) {
 		
@@ -4562,7 +4634,7 @@ private static double[] DOWithClus(int[][] gamedata,
 												if(dista1a2 == 0)
 												{
 													//throw new Exception("No path found to compute AP for st "+ tempst.stid);
-													System.out.println("Disjpint cluster need longer path "+ tempst.stid);
+													//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
 
 													dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
 												}
@@ -4772,9 +4844,9 @@ private static double[] DOWithClus(int[][] gamedata,
 			ArrayList<TargetNode> targets = alltargets.get(iter);//new ArrayList<TargetNode>();
 			HashMap<Integer,TargetNode> targetmaps = alltargetmaps.get(iter); //new HashMap<Integer, TargetNode>();
 			
-			if(iter==6)
+			if(iter==4)
 			{
-				System.out.println("x");
+				System.out.println("xx");
 			}
 			
 			

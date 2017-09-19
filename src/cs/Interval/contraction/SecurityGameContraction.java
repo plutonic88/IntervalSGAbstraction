@@ -11207,6 +11207,165 @@ public class SecurityGameContraction
 	
 	
 	
+	public static void addSuperTargetsAPSP(double dmax, HashMap<Integer, SuperTarget> sts,
+			HashMap<Integer,TargetNode> targetmaps, int nRes, HashMap<Integer,Double> dstravel,
+			ArrayList<ArrayList<Integer>> newpathseq, ArrayList<Integer> currentattackedsupertargets) throws Exception
+			{
+
+
+		SuperTarget base = sts.get(0);
+		ArrayList<ArrayList<Integer>> paths = new ArrayList<ArrayList<Integer>>();
+		
+		
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+		//ArrayList<Integer> graphint = new ArrayList<Integer>();
+		
+		
+		int i = 1;
+		for(Integer stid: sts.keySet())
+		{
+			map.put(stid, i);
+			mapback.put(i, stid);
+			//graphint.add(map.get(targets.get(i-1).getTargetid()));
+			i++;
+		}
+		
+		
+		
+		int[][] adjacencymatrix = new int[sts.size()+1][sts.size()+1];
+		makeAdjacencyMatrixST(adjacencymatrix , sts, sts.size(), map, mapback);
+		
+		
+		AllPairShortestPath allPairShortestPath= new AllPairShortestPath(sts.size());
+		int[][] apsp = allPairShortestPath.allPairShortestPath(adjacencymatrix);
+        //ArrayList<Integer> path = AllPairShortestPath.getPath(1, 2, allPairShortestPath.next);
+        
+        
+        purifyAPSPSTMatrixZero(apsp, sts, sts.size(), map, mapback);
+		
+       // System.out.println("FInding  "+ apsp[map.get(11)][map.get(82)]);
+     //   System.out.println("FInding  "+ apsp[map.get(82)][map.get(11)]);
+		
+		
+		
+
+
+        for(Integer supertarget: currentattackedsupertargets)
+        {
+        	
+        	SuperTarget dest = sts.get(supertarget);
+        	
+        	if(dest.stid!=0)
+        	{
+
+        		//System.out.println("FInding shortest dist for target "+ dest.stid);
+        		ArrayList<Integer>  pathnodes = new ArrayList<Integer>();
+        		ArrayList<SuperTarget>  pnodes = new ArrayList<SuperTarget>();
+        		if(base.neighbors.containsKey(dest.stid))
+				{
+					//pnodes = base.getPath(dest);
+        			int src = base.stid;
+            		int des = dest.stid;
+
+
+            		//TODO consider distance, intra cluster
+            		
+            		
+            		
+            		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
+            		//System.out.print("dist covered "+ distcovered+"\n");
+            		
+            		if(distcovered > dmax/2)
+            			continue;
+					/*for(int k=0; k<pnodes.size(); k++)
+					{
+
+						//System.out.print(pnodes.get(pnodes.size()-k-1).getTargetid()+"->");
+						//pathnodes.add(pnodes.get(pnodes.size()-k-1).getTargetid());
+
+					}*/
+
+				}
+        		else
+        		{
+
+        			
+        		//double distcovered1 = findShortestPathThrougGraphWDlimit(base, dest, targets, pathnodes, dmax/2);
+        		//System.out.print("dist covered "+ distcovered1+"\n");
+
+
+        		int src = base.stid;
+        		int des = dest.stid;
+
+
+        		//TODO consider distance, intra cluster
+        		
+        		if(!dstravel.containsKey(dest.stid)) // no path exists
+        		{
+        			continue;
+        		}
+        		
+        		
+        		double distcovered = apsp[map.get(src)][map.get(des)]+dstravel.get(dest.stid);
+        		//System.out.print("dist covered "+ distcovered+"\n");
+
+        		if(distcovered<=dmax/2)
+        		{
+        			ArrayList<Integer>	tmppathnodes = allPairShortestPath.getPath(src, des, map, mapback);
+
+        			for(int k=0; k<tmppathnodes.size(); k++)
+        			{
+        				pathnodes.add(tmppathnodes.get(tmppathnodes.size()-k-1));
+        			}
+        		}
+        		else
+        			continue;
+        		
+        		
+        		//throw new Exception("Base to not neighbor for initial set of paths **********8");
+
+        		}
+
+        		ArrayList<Integer> tmppath = new ArrayList<Integer>();
+        		//System.out.print("\n0->");
+        		tmppath.add(base.stid);
+        		for(int k=0; k<pathnodes.size(); k++)
+        		{
+        			tmppath.add(pathnodes.get(pathnodes.size()-k-1));
+        			//System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
+        		}
+        		//	System.out.print(dest.getTargetid()+"\n");
+        		tmppath.add(dest.stid);
+        		//System.out.print("\n");
+        		/**
+        		 * make rev path
+        		 */
+        		for(int j=tmppath.size()-2; j>=0; j--)
+        		{
+        			tmppath.add(tmppath.get(j));
+        		}
+        		//System.out.print("complete path : \n");
+        		/*for(int k=0; k<tmppath.size(); k++)
+        		{
+
+        			//System.out.print(tmppath.get(k)+"->");
+        		}*/
+        		newpathseq.add(tmppath);
+        		//System.out.print("\n");
+        	}
+
+
+
+        }
+		//return paths;
+			}
+	
+	
+	
+	
+	
 	
 	public static boolean getPathNodess(ArrayList<Integer> pathnodes, ArrayList<TargetNode> targets, int srcid, int destid, 
 			double dmax, HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback, AllPairShortestPath allPairShortestPath, int[][] apsp)
@@ -17525,7 +17684,7 @@ public class SecurityGameContraction
 						s = map.get(greedypath.get(j-1));
 						//d = map.get(targetssorted[i][0]);
 						d = map.get(tmptsrt.get(i));
-						System.out.println(" s : "+ greedypath.get(j-1) + " , d : "+tmptsrt.get(i) + " j-1 "+ (j-1) + " i "+ i +  " gs "+ greedypath.size());
+						//System.out.println(" s : "+ greedypath.get(j-1) + " , d : "+tmptsrt.get(i) + " j-1 "+ (j-1) + " i "+ i +  " gs "+ greedypath.size());
 						totaldisttemp +=  apspmat[s][d];
 						
 						
@@ -17563,7 +17722,7 @@ public class SecurityGameContraction
 						greedypath = insertTsrt(greedypath, 0, bestj-1, tmptsrt.get(i) , bestj, greedypath.size()-1);
 						if(greedypath.size()>dmax)
 						{
-							printGreedyPath(greedypath);
+							//printGreedyPath(greedypath);
 						}
 						//printGreedyPath(greedypath);
 						totaldist = besttotaldisttemp;
