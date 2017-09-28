@@ -1674,8 +1674,14 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 				counter[2]++;
 				for(Integer n: cluster[clusid])
 				{
+					
 					int utility = randInt(ranges[2][0], ranges[2][1]);
 					density[iter][n] = utility;
+					if(n==0)
+					{
+						density[iter][n] = ranges[2][1];
+					}
+					
 					
 				}
 			}
@@ -1686,6 +1692,10 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 				{
 					int utility = randInt(ranges[1][0], ranges[1][1]);
 					density[iter][n] = utility;
+					if(n==0)
+					{
+						density[iter][n] = ranges[2][1];
+					}
 					
 				}
 			}
@@ -1696,6 +1706,10 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 				{
 					int utility = randInt(ranges[0][0], ranges[0][1]);
 					density[iter][n] = utility;
+					if(n==0)
+					{
+						density[iter][n] = ranges[2][1];
+					}
 					
 				}
 			}

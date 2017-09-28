@@ -9,12 +9,14 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 
@@ -391,16 +393,20 @@ public class ClusterTargets {
 		totaltime /= LIMIT; 
 		finalsize /= LIMIT;
 		clusteringtime /= LIMIT;
+		slavetime /= LIMIT;
 		
 		//System.out.println("Defender exp "+ (double)sumdefexp/LIMIT + ", time : "+ (long)totaltime/LIMIT);
-		writeInFileST("DOWithWeka",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime);
+		//writeInFileST("DOWithWeka",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime, nTargets);
+		
+		SecurityGameContraction.writeInFile("DOWithWeka",(int)finalsize, sumdefexp, clusteringtime,solvingtime, slavetime,totaltime, nTargets);
+		
 		
 
 	}
 	
 	
 
-	private static void writeInFileST(String algo, int finalsize, double defexp, long solvingtime, long revmaptime, long clusteringtime, long totaltime) 
+	private static void writeInFileST(String algo, int finalsize, double defexp, long solvingtime, long revmaptime, long clusteringtime, long totaltime, int nTargets) 
 	{
 		
 		//ClusteringWithDO",finalsize,sumdefexp, solvingtime, revmaptime, clusteringtime ,totaltime
@@ -408,7 +414,7 @@ public class ClusterTargets {
 		try
 		{
 			PrintWriter pw = new PrintWriter(new FileOutputStream(new File("/Users/anjonsunny/Documents/workspace/IntervalSGAbstraction/"+"grp-result.csv"),true));
-			pw.append(algo+ ","+finalsize+","+defexp+"," + clusteringtime+ ","+solvingtime+ ","+revmaptime+","+totaltime+"\n");
+			pw.append(algo+ ","+nTargets+","+finalsize+","+defexp+"," + clusteringtime+ ","+solvingtime+ ","+revmaptime+","+totaltime+"\n");
 			pw.close();
 
 		}
@@ -520,6 +526,55 @@ public class ClusterTargets {
 
 
 	}
+	
+	
+	
+	private static void makeAdjacencyMatrixST(int[][] adjacencymatrix,
+			ArrayList<TargetNode> targetmaps, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback, HashMap<Integer,TargetNode> nodes) {
+
+
+		int i=1; 
+		for(TargetNode n: targetmaps)
+		{
+			//int j=1;
+			for(TargetNode nei: n.getNeighbors())
+			{
+				//System.out.print("["+n.getTargetid()+"]["+nei.getTargetid()+"] ---> ");
+				//System.out.println("["+map.get(n.getTargetid())+"]["+map.get(nei.getTargetid())+"]=1");
+
+
+				if(nodes.keySet().contains(nei.getTargetid()))
+				{
+					adjacencymatrix[map.get(n.getTargetid())][map.get(nei.getTargetid())]=  n.getDistance(nei).intValue();
+				}
+			}
+			i++;
+		}
+
+
+		for (int source = 1; source <=nTargets; source++)
+		{
+			for (int destination = 1; destination <= nTargets; destination++)
+			{
+				//adjacencymatrix[source][destination] = scan.nextInt();
+				if (source == destination)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+					continue;
+				}
+				if (adjacencymatrix[source][destination] == 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+			}
+		}
+
+
+
+
+
+	}
+
 
 	
 	
@@ -928,7 +983,7 @@ private static boolean areBothNei(SuperTarget s1, SuperTarget s2, SuperTarget te
 												//throw new Exception("No path found to compute AP for st "+ tempst.stid);
 												//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
 
-												dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
+												dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, (int)dmax); 
 											}
 
 											//System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
@@ -1064,7 +1119,7 @@ private static boolean areBothNei(SuperTarget s1, SuperTarget s2, SuperTarget te
 													//throw new Exception("No path found to compute AP for st "+ tempst.stid);
 													//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
 
-													dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
+													dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, (int)dmax); 
 												}
 
 												//System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
@@ -1212,9 +1267,12 @@ private static boolean areBothNei(SuperTarget s1, SuperTarget s2, SuperTarget te
 	private static void addNei(int aid1, int aid2, double sda1a2, ArrayList<Integer> a1a2path, SuperTarget tempst, HashMap<Integer,TargetNode> targetmaps) {
 		
 		
+		//printSuperTarget(tempst);
+		
+		
 		TargetNode srcnode = tempst.nodes.get(aid1);
 		TargetNode destnode = tempst.nodes.get(aid2);
-		
+		//3, 11, 4, 13, 5, 12, 21, 20, 19
 		
 		if(!srcnode.getNeighbors().contains(destnode))
 		{
@@ -1245,9 +1303,9 @@ private static boolean areBothNei(SuperTarget s1, SuperTarget s2, SuperTarget te
 				
 				ArrayList<TargetNode> revpathnodes = new ArrayList<TargetNode>();
 				
-				for(int i=0; i<a1a2path.size(); i++)
+				for(int i=0; i<pathnodes.size(); i++)
 				{
-					revpathnodes.add(pathnodes.get(a1a2path.size()-i-1));
+					revpathnodes.add(pathnodes.get(pathnodes.size()-i-1));
 				}
 				
 				destnode.setPath(srcnode, revpathnodes);
@@ -1460,12 +1518,12 @@ private static boolean isPotentialNeighbor(SuperTarget newst, SuperTarget st) {
 	
 	private static double shortestdist(TargetNode a1, TargetNode a2, 
 			HashMap<Integer,Integer> apspmap, int[][] apspmat, ArrayList<Integer> tmpa1path, 
-			AllPairShortestPath apsp, HashMap<Integer,Integer> apspmapback, SuperTarget tempst) {
+			AllPairShortestPath apsp, HashMap<Integer,Integer> apspmapback, SuperTarget tempst, int dmax) {
 		// TODO Auto-generated method stub
 
 
 
-		double dmin = Double.MAX_VALUE;
+		double dmin = 0;
 		//boolean isnei = false;
 		ArrayList<Integer> minpath = new ArrayList<Integer>();
 		
@@ -1518,7 +1576,7 @@ private static boolean isPotentialNeighbor(SuperTarget newst, SuperTarget st) {
 			}
 			
 			
-			if(dmin>distcovered)
+			if(dmin<distcovered && (distcovered<=dmax))
 			{
 
 				dmin = distcovered;
@@ -1575,16 +1633,35 @@ private static boolean isPotentialNeighbor(SuperTarget newst, SuperTarget st) {
 private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tempst, double dmax, ArrayList<Integer> spath) {
 		
 		
+	
+	
+	
+	
+	
 		
 		int nTargets = tempst.nodes.size(); 
 		TargetNode start = new TargetNode(a1);
-		Queue<TargetNode> fringequeue = new LinkedList<TargetNode>();
+		//Queue<TargetNode> fringequeue = new LinkedList<TargetNode>();
 		ArrayList<TargetNode> goals = new ArrayList<TargetNode>();
 		ArrayList<TargetNode> closed = new ArrayList<TargetNode>();
+		ArrayList<Integer> donetargets = new ArrayList<Integer>();
 		
-		fringequeue.add(start);
+		
 		int pathcounter = 0;
 		int nodestocover = tempst.nodes.size();
+		
+		
+		PriorityQueue<TargetNode> fringequeue = new PriorityQueue<TargetNode>(1000, new Comparator<TargetNode>() {  
+		    
+            public int compare(TargetNode w1, TargetNode w2) {                         
+                return (int)(w1.distancecoveredyet - w2.distancecoveredyet);
+            }      
+        }); 
+		
+		fringequeue.add(start);
+		
+		
+		
 		while(fringequeue.size()>0)
 		{
 			//System.out.println("Polling from queue ");
@@ -1597,13 +1674,23 @@ private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tem
 			{
 				//System.out.println("Adding node "+ node.getTargetid() +" to goals..."+ node.distancecoveredyet+ ", pcount:  "+ pathcounter);
 				//System.out.println();
-				//printPath(node);
+				//SecurityGameContraction.printPath(node);
+				
+				
+				
 				pathcounter++;
 				//System.out.println();
-				
+				goals.clear();
 				goals.add(node);
+				spath.clear();
 				SecurityGameContraction.makeClusterPathSeq(goals, spath);
-				return node.distancecoveredyet;
+				
+				int count = coveredCount(spath);
+				
+				if(count == tempst.nodes.size())
+				{
+					return node.distancecoveredyet;
+				}
 				//break;
 
 				/*if(pathcounter>5000)
@@ -1616,20 +1703,23 @@ private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tem
 				 */
 				//System.out.println("Expanding node "+ node.getTargetid());
 				//Logger.logit("Expanding node "+ node.getTargetid()+"\n");
-				closed.add(node);
-				ArrayList<TargetNode> succs = ExpandTarget(node, tempst.nodes, dmax);
-				/**
-				 * add nodes to queue
-				 */
-				for(TargetNode suc: succs)
+				//if(!isInclosed(closed,node))
 				{
-					//System.out.println("Adding node "+ suc.getTargetid() +", distance covered  "+suc.distancecoveredyet+", to queue");
-					//Logger.logit("Adding node "+ suc.getTargetid() +", distance covered  "+suc.distancecoveredyet+", to queue"+"\n");
-					if(!isInclosed(closed,node))
+					closed.add(node);
+					ArrayList<TargetNode> succs = ExpandTarget(node, tempst.nodes, dmax);
+					/**
+					 * add nodes to queue
+					 */
+					for(TargetNode suc: succs)
 					{
-						fringequeue.add(suc);
-					}
+						//System.out.println("Adding node "+ suc.getTargetid() +", distance covered  "+suc.distancecoveredyet+", to queue");
+						//Logger.logit("Adding node "+ suc.getTargetid() +", distance covered  "+suc.distancecoveredyet+", to queue"+"\n");
+						//if(!isInclosed(closed,node))
+						{
+							fringequeue.add(suc);
+						}
 
+					}
 				}
 				
 				//System.out.println("Queue size after adding "+ fringequeue.size());
@@ -1645,6 +1735,27 @@ private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tem
 	
 	
 	
+	private static int coveredCount(ArrayList<Integer> spath) {
+	
+		int count = 0;
+		
+		ArrayList<Integer> done = new ArrayList<Integer>();
+		
+		for(Integer n: spath)
+		{
+			if(!done.contains(n))
+			{
+				done.add(n);
+				count++;
+			}
+		}
+		
+		
+		
+	return count;
+}
+
+
 	public static boolean isInclosed(ArrayList<TargetNode> closed, TargetNode node) {
 
 		
@@ -1673,6 +1784,7 @@ private static double shortestdist(TargetNode a1, TargetNode a2, SuperTarget tem
 			{
 				TargetNode newnei = new TargetNode(nei);
 				newnei.distancecoveredyet = node.distancecoveredyet + tmpnode.getDistance(nei);
+				
 				newnei.parent = node;
 				if(newnei.distancecoveredyet<=dmax)
 				{
@@ -2826,11 +2938,11 @@ public static ArrayList<ArrayList<Integer>>  generatePaths(ArrayList<TargetNode>
 
 	}
 	//makePathSeq(pathseq, goals, goals.size(), tmpgraph.size(), map, mapback, tmpgraph);
-	SecurityGameContraction.printPaths(pathseq);
+	//SecurityGameContraction.printPaths(pathseq);
 	System.out.println("Total path with duplicates "+pathseq.size());
 	pathseq =SecurityGameContraction.removeDuplicatePathSimple(pathseq);
 	System.out.println("Total path without duplicates "+pathseq.size()+"\n");
-	SecurityGameContraction.printPaths(pathseq);
+	//SecurityGameContraction.printPaths(pathseq);
 	
 	
 
@@ -2853,6 +2965,74 @@ public static ArrayList<ArrayList<Integer>>  generatePaths(ArrayList<TargetNode>
 
 	
 	}
+
+
+
+
+public static double pathAPForST( HashMap<Integer,TargetNode> nodes, double dmax, int nTargets, int base, int dest, int nRes, ArrayList<Integer> tmpa1a2spath) {
+
+
+
+	int[][] adjacencymatrix = new int[nTargets+1][nTargets+1];
+	ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
+	
+	for(TargetNode t: nodes.values())
+	{
+		targets.add(t);
+	}
+	
+
+	/**
+	 * make mapping
+	 */
+
+	HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+	HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+	int icount =1;
+	for(int i=0; i<targets.size(); i++)
+	{
+		map.put(targets.get(i).getTargetid(), icount);
+		//System.out.println("Target "+ targets.get(i).getTargetid() +" --> "+icount);
+		mapback.put(icount, targets.get(i).getTargetid());
+		icount++;
+	}
+	//makeAdjacencyMatrix(adjacencymatrix,targets,nTargets,map, mapback);
+
+	makeAdjacencyMatrixST(adjacencymatrix, targets, nTargets, map, mapback, nodes);
+
+
+	AllPairShortestPath apsp = new AllPairShortestPath(nTargets);
+	int[][] apspmat =  apsp.allPairShortestPath(adjacencymatrix);
+	
+	
+	SecurityGameContraction.purifyAPSPMatrixZero(apspmat, targets, nTargets, map, mapback);
+	
+
+
+
+	ArrayList<Integer> tcur = new ArrayList<Integer>(); //greedyFirstRoute(dmax,gamedata, targets);
+
+	int[][] targetssorted = SecurityGameContraction.sortTargets(targets);
+	
+	
+	int s = map.get(base);
+	int d = map.get(dest);
+	dmax = apspmat[s][d];
+	//disallocation[0] = (int)dmax;
+
+	tcur = SecurityGameContraction.greedyOnePathWithSrcDest(base, dest, targets, dmax, targetssorted, apspmat, map,mapback, nRes);
+	
+	/*for(Integer n: tcur)
+	{
+		tmpa1a2spath.add(n);
+	}*/
+
+	return tcur.size();
+}
+
+
+
+
 
 	
 
@@ -2997,6 +3177,8 @@ private static double[] DOWithClus(int[][] gamedata,
 		
 		generateGraph(tmpgraph, currentPlace, domindatednodes, targetssorted, dmax, targets, tmpgraphmaps);
 		
+		//printNodesWithNeighborsAndPath(tmpgraphmaps);
+		
 		
 		Date stop = new Date();
 		long l2 = stop.getTime();
@@ -3024,20 +3206,20 @@ private static double[] DOWithClus(int[][] gamedata,
 			dstravel.clear();
 			stpaths.clear();
 			sts = constructSuperTargets(tmpgraphmaps, attackhistory, apsp, apspmat, apspmap,apspmapback, dstravel, stpaths, (int) dmax, attackclustershisotry,
-					clusteredtargets, clustercenters, currentattackedtargets, domindatednodes, RADIUS);
+					clusteredtargets, clustercenters, currentattackedtargets, domindatednodes, RADIUS, tmpgraph);
 			
 
-			printSuperTargets(sts);
+			//printSuperTargets(sts);
 			preparePaths(dstravel, stpaths, sts);
 			assignSTValues(sts, tmpgraphmaps);
 			
 			pathseq = SecurityGameContraction.generatePathsForSuperTargetsAPSP(dmax, sts, tmpgraphmaps, nRes, dstravel);
 			
 			System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" Paths before removing duplicate : ");
-			SecurityGameContraction.printPaths(pathseq);
+			//SecurityGameContraction.printPaths(pathseq);
 			SecurityGameContraction.removeDuplicatePathSimple(pathseq);
 			System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" Paths after removing duplicate : ");
-			SecurityGameContraction.printPaths(pathseq);
+			//SecurityGameContraction.printPaths(pathseq);
 			map = new HashMap<Integer, Integer>();
 			mapback = new HashMap<Integer, Integer>();
 			int icount = 0;
@@ -3276,7 +3458,7 @@ private static double[] DOWithClus(int[][] gamedata,
 					}
 					System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+ ", slaveitr "+itr+" New path seq ");
 
-					SecurityGameContraction.printPaths(newpathseq);
+				//	SecurityGameContraction.printPaths(newpathseq);
 
 
 
@@ -3337,7 +3519,7 @@ private static double[] DOWithClus(int[][] gamedata,
 
 					System.out.println("\n clusteringactivated "+clusteringactivated +"  masteritr "+masteritr+ ", slaveitr "+itr+" New full path seq after adding new paths");
 
-					SecurityGameContraction.printPaths(pathseq);
+					//SecurityGameContraction.printPaths(pathseq);
 
 
 				} // end if else
@@ -3529,7 +3711,7 @@ private static double[] DOWithClus(int[][] gamedata,
 					start = new Date();
 					l1 = start.getTime();
 					
-					
+					printSuperTargets(sts);
 					ArrayList<ArrayList<Integer>> newpathseq = SecurityGameContraction.buildSuperGreedyCoverMultRes2(tmpgraphmaps, 
 							dmax, sts.size(), 0, nRes, attackerstrategy, sts, dstravel);
 					
@@ -3579,7 +3761,7 @@ private static double[] DOWithClus(int[][] gamedata,
 						//System.out.println("tcur: ");
 						//printGreedyPath(currenttargets);
 						System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" slaveitr "+itr +" newpathseq: ");
-						SecurityGameContraction.printPaths(newpathseq);
+						//SecurityGameContraction.printPaths(newpathseq);
 
 						System.out.println("\n clusteringactivated "+clusteringactivated +" masteritr "+masteritr+" slaveitr "+itr +" Old path seq size "+ pathseq.size());
 
@@ -3602,8 +3784,8 @@ private static double[] DOWithClus(int[][] gamedata,
 						{
 							canaddpath = false;
 							System.out.println("\n clusteringactivated "+clusteringactivated +" Slave can't add any new path ############### or iteration>10");
-							printSuperTargets(sts);
-							SecurityGameContraction.printPaths(pathseq);
+							//printSuperTargets(sts);
+						//	SecurityGameContraction.printPaths(pathseq);
 							break;
 						}
 
@@ -3887,7 +4069,8 @@ private static double[] DOWithClus(int[][] gamedata,
 			HashMap<Integer,Integer> apspmap, HashMap<Integer,Integer> apspmapback,
 			HashMap<Integer,Double> dstravel, HashMap<Integer,ArrayList<Integer>> stpaths, int dmax,
 			HashMap<Integer, ArrayList<Integer>> attackclustershisotry, ArrayList<Integer> clusteredtargets, 
-			HashMap<Integer,Integer> clustercenters, ArrayList<Integer> currentattackedtargets, ArrayList<TargetNode> domindatednodes, int RADIUS) {
+			HashMap<Integer,Integer> clustercenters, ArrayList<Integer> currentattackedtargets, ArrayList<TargetNode> domindatednodes, 
+			int RADIUS, ArrayList<TargetNode> tmpgraph) {
 		
 			
 			// for now build a cluster
@@ -3901,19 +4084,19 @@ private static double[] DOWithClus(int[][] gamedata,
 		
 		
 
-		System.out.println("Current attack clusters ");
+		//System.out.println("Current attack clusters ");
 
 
-		printClusters(attackclustershisotry);
+		//printClusters(attackclustershisotry);
 
-		System.out.println("Current attacked targets ");
+		//System.out.println("Current attacked targets ");
 
-		printTargets(currentattackedtargets);
+		//printTargets(currentattackedtargets);
 
 
-		System.out.println("Clustered targets ");
+		//System.out.println("Clustered targets ");
 
-		printTargets(clusteredtargets);
+		//printTargets(clusteredtargets);
 
 
 
@@ -3924,7 +4107,7 @@ private static double[] DOWithClus(int[][] gamedata,
 		
 		
 
-		updateAttackClusters(attackclustershisotry, clusteredtargets, clustercenters, currentattackedtargets, tmpgraphmaps, RADIUS);
+		updateAttackClusters(attackclustershisotry, clusteredtargets, clustercenters, currentattackedtargets, tmpgraphmaps, RADIUS, domindatednodes, tmpgraph);
 
 
 
@@ -3973,7 +4156,7 @@ private static double[] DOWithClus(int[][] gamedata,
 			
 			
 			
-			printClusters(clusters);
+			//printClusters(clusters);
 			
 			
 			
@@ -3982,7 +4165,7 @@ private static double[] DOWithClus(int[][] gamedata,
 			
 			HashMap<Integer, SuperTarget> sts = SuperTarget.buildSuperTargets(clusters,tmpgraphmaps);
 			
-			printSuperTargets(sts);
+			//printSuperTargets(sts);
 			
 			
 			System.out.println("\n \n \n After choosing AP \n \n \n");
@@ -4016,7 +4199,7 @@ private static double[] DOWithClus(int[][] gamedata,
 
 	private static boolean updateAttackClusters(HashMap<Integer, ArrayList<Integer>> attackclustershisotry,
 			ArrayList<Integer> clusteredtargets, HashMap<Integer, Integer> clustercenters,
-			ArrayList<Integer> currentattackedtargets, HashMap<Integer,TargetNode> tmpgraphmaps, int RADIUS) {
+			ArrayList<Integer> currentattackedtargets, HashMap<Integer,TargetNode> tmpgraphmaps, int RADIUS, ArrayList<TargetNode> domindatednodes, ArrayList<TargetNode> tmpgraph) {
 		
 		
 		boolean clusterhappened = false;
@@ -4040,23 +4223,34 @@ private static double[] DOWithClus(int[][] gamedata,
 			// check if the cluster history is empty
 			if(attackclustershisotry.size()==0)
 			{
-				//create one cluster with one target from current attacked targets, and that will be the center
-				ArrayList<Integer> tmpclus = new ArrayList<Integer>();
 
-				int tid = currentattackedtargets.get(0);
-
-				tmpclus.add(tid);
-				int clusid = attackclustershisotry.size();
-
-				// try to add more targets in the cluster which are not already clustered and not base
-
-				//addMoreToCluster(tmpclus,tid, clusteredtargets, tmpgraphmaps);
+				for(int tid: currentattackedtargets)
+				{
+					TargetNode t = tmpgraphmaps.get(tid);
 
 
-				attackclustershisotry.put(clusid, tmpclus);
-				clustercenters.put(clusid, tid);
-				clusteredtargets.add(tid);
-				clusterhappened = true;
+					if(tmpgraph.contains(t))
+					{
+						//create one cluster with one target from current attacked targets, and that will be the center
+						ArrayList<Integer> tmpclus = new ArrayList<Integer>();
+
+						//int tid = currentattackedtargets.get(0);
+
+						tmpclus.add(tid);
+						int clusid = attackclustershisotry.size();
+
+						// try to add more targets in the cluster which are not already clustered and not base
+
+						//addMoreToCluster(tmpclus,tid, clusteredtargets, tmpgraphmaps);
+
+
+						attackclustershisotry.put(clusid, tmpclus);
+						clustercenters.put(clusid, tid);
+						clusteredtargets.add(tid);
+						clusterhappened = true;
+						break;
+					}
+				}
 			}
 
 
@@ -4065,7 +4259,9 @@ private static double[] DOWithClus(int[][] gamedata,
 			for(Integer at: currentattackedtargets)
 			{
 				// if its not clustered already
-				if(!clusteredtargets.contains(at))
+				TargetNode t = tmpgraphmaps.get(at);
+				
+				if(!clusteredtargets.contains(at) && tmpgraph.contains(t))
 				{
 					clusterhappened = true;
 					// try to insert it in a cluster with min dist from center
@@ -4074,7 +4270,7 @@ private static double[] DOWithClus(int[][] gamedata,
 					if(assignedcluster != -1)
 					{
 						// append at to the assigned cluster
-						System.out.println("at "+ at + " is assigned to cluster "+ assignedcluster);
+						//System.out.println("at "+ at + " is assigned to cluster "+ assignedcluster);
 						ArrayList<Integer> tmpclus = attackclustershisotry.get(assignedcluster);
 						//attackclustershisotry.remove(assignedcluster);
 						tmpclus.add(at);
@@ -4102,7 +4298,7 @@ private static double[] DOWithClus(int[][] gamedata,
 						clustercenters.put(clusid, at);
 						clusteredtargets.add(at);
 
-						System.out.println("at "+ at + " is creating a new cluster with id "+ clusid);
+						//System.out.println("at "+ at + " is creating a new cluster with id "+ clusid);
 
 
 					}
@@ -4112,7 +4308,7 @@ private static double[] DOWithClus(int[][] gamedata,
 		}
 
 		
-		System.out.println("trying to add more targets in the clusters");
+		//System.out.println("trying to add more targets in the clusters");
 		
 		int nclus = attackclustershisotry.size();
 		
@@ -4128,7 +4324,7 @@ private static double[] DOWithClus(int[][] gamedata,
 			
 			int centerid = clustercenters.get(clusid);
 
-			addMoreToCluster(tmpclus, centerid, clusteredtargets, tmpgraphmaps, clusid,RADIUS);
+			addMoreToCluster(tmpclus, centerid, clusteredtargets, tmpgraphmaps, clusid,RADIUS, tmpgraph);
 			
 			//attackclustershisotry.remove(clusid);
 			
@@ -4162,17 +4358,17 @@ private static double[] DOWithClus(int[][] gamedata,
 
 
 	private static void addMoreToCluster(ArrayList<Integer> tmpclus, int targetid, ArrayList<Integer> clusteredtargets,
-			HashMap<Integer, TargetNode> tmpgraphmaps, int clusid, int RADIUS) {
+			HashMap<Integer, TargetNode> tmpgraphmaps, int clusid, int RADIUS, ArrayList<TargetNode> tmpgraph) {
 		
 		
 		TargetNode centernode = tmpgraphmaps.get(targetid);
 		
 		for(TargetNode nei: centernode.getNeighbors())
 		{
-			if( (nei.getTargetid() != 0) && (!clusteredtargets.contains(nei.getTargetid()))  && (centernode.getDistance(nei) < RADIUS)  )
+			if( (nei.getTargetid() != 0) && (!clusteredtargets.contains(nei.getTargetid()))  && (centernode.getDistance(nei) < RADIUS) && tmpgraph.contains(nei) )
 			{
 				
-				System.out.println("adding target "+ nei.getTargetid() + " to cluster "+ clusid);
+				//System.out.println("adding target "+ nei.getTargetid() + " to cluster "+ clusid);
 				tmpclus.add(nei.getTargetid());
 				clusteredtargets.add(nei.getTargetid());
 			}
@@ -4253,6 +4449,9 @@ private static double[] DOWithClus(int[][] gamedata,
 			
 			double mindist = 500000;
 			
+			ArrayList<int[]> doneappair = new ArrayList<int[]>();
+			ArrayList<int[]> donestpair = new ArrayList<int[]>();
+			
 			
 			
 			
@@ -4298,16 +4497,39 @@ private static double[] DOWithClus(int[][] gamedata,
 							 * 		find the min d = d1 + dist(a1,a2) + d2
 							 */
 							// should the ap be same for entry and exit ?
-							if(a1.getTargetid() != a2.getTargetid())
+							if((a1.getTargetid() != a2.getTargetid()) && (notDone(a1.getTargetid(), a2.getTargetid(), doneappair)))
 							{
+								
+								int[] appair = {a1.getTargetid(), a2.getTargetid()};
+								doneappair.add(appair);
+								
+								// next measure the intra cluster shortest traveling path using a1 and a2
+								ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
+								//double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+								double dista1a2 = travelingGreedyPathAP(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), tmpa1a2spath);
+								//double dddd = pathAPForST(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), 1, tmpa1a2spath);
+								//shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+								if(dista1a2 == 0)
+								{
+									//throw new Exception("No path found to compute AP for st "+ tempst.stid);
+									//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
+
+									dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, dmax); 
+								}
+								
+								
 								// for every pair of supertargets which are not st1 or st2
+								
 								SuperTarget s1 = sts.get(0); // get base, s1 always will be base
 
 								for(SuperTarget s2: tempst.neighbors.values()) // need neighbor cluster  of a2?
 								{
 
-									if(s1.stid != s2.stid)
+									if((s1.stid != s2.stid) && (notDone(s1.stid, s2.stid, donestpair)))
 									{
+										
+										int[] stpair = {s1.stid, s2.stid};
+										donestpair.add(stpair);
 
 
 										boolean arebothnei = areBothNei(s1,s2,tempst);
@@ -4323,7 +4545,7 @@ private static double[] DOWithClus(int[][] gamedata,
 													"\n tempst "+ tempst.stid);*/
 
 
-											ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
+											
 											ArrayList<Integer> tmpa1path = new ArrayList<Integer>();
 											ArrayList<Integer> tmpa2path = new ArrayList<Integer>();
 
@@ -4337,24 +4559,7 @@ private static double[] DOWithClus(int[][] gamedata,
 											//TODO
 											//System.out.println("shortestdist(a2,s2) "+ d2);
 
-											// next measure the intra cluster shortest traveling path using a1 and a2
-
-
-											double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
-
-
-
-
-
-											//shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
-
-											if(dista1a2 == 0)
-											{
-												//throw new Exception("No path found to compute AP for st "+ tempst.stid);
-												//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
-
-												dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
-											}
+											
 
 											//System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
 
@@ -4446,16 +4651,40 @@ private static double[] DOWithClus(int[][] gamedata,
 							 * 		find the min d = d1 + dist(a1,a2) + d2
 							 */
 							// should the ap be same for entry and exit ?
-							if(a1.getTargetid() != a2.getTargetid())
+							if((a1.getTargetid() != a2.getTargetid()) && (notDone(a1.getTargetid(), a2.getTargetid(), doneappair)))
 							{
+								
+								int[] appair = {a1.getTargetid(), a2.getTargetid()};
+								doneappair.add(appair);
+								
+								// next measure the intra cluster shortest traveling path using a1 and a2
+								ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
+								//double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+								double dista1a2 = travelingGreedyPathAP(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), tmpa1a2spath);
+								//double dddd = pathAPForST(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), 1, tmpa1a2spath);
+								//shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+								if(dista1a2 == 0)
+								{
+									//throw new Exception("No path found to compute AP for st "+ tempst.stid);
+									//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
+
+									dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, dmax); 
+								}
+								
+								
+								
 								// for every pair of supertargets which are not st1 or st2
 								SuperTarget s1 = sts.get(0); // get base, s1 always will be base
 
 								for(SuperTarget s2: tempst.neighbors.values()) // need neighbor cluster  of a2?
 								{
 
-									//if(s1.stid != s2.stid)
+									if(/*(s1.stid != s2.stid) && */(notDone(s1.stid, s2.stid, donestpair)))
 									{
+										
+										int[] stpair = {s1.stid, s2.stid};
+										donestpair.add(stpair);
+									
 
 
 										boolean arebothnei = areBothNei(s1,s2,tempst);
@@ -4471,7 +4700,7 @@ private static double[] DOWithClus(int[][] gamedata,
 													"\n tempst "+ tempst.stid);*/
 
 
-											ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
+											//ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
 											ArrayList<Integer> tmpa1path = new ArrayList<Integer>();
 											ArrayList<Integer> tmpa2path = new ArrayList<Integer>();
 
@@ -4488,21 +4717,23 @@ private static double[] DOWithClus(int[][] gamedata,
 											// next measure the intra cluster shortest traveling path using a1 and a2
 
 
-											double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+											//double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+											//double dista1a2 = travelingGreedyPathAP(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), tmpa1a2spath);
+											
 
-
+											//double dddd = pathAPForST(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), 1, tmpa1a2spath);
 
 
 
 											//shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
 
-											if(dista1a2 == 0)
+											/*if(dista1a2 == 0)
 											{
 												//throw new Exception("No path found to compute AP for st "+ tempst.stid);
 												//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
 
-												dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
-											}
+												dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, (int)dmax); 
+											}*/
 
 											//System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
 
@@ -4581,16 +4812,40 @@ private static double[] DOWithClus(int[][] gamedata,
 							 * 		find the min d = d1 + dist(a1,a2) + d2
 							 */
 							// should the ap be same for entry and exit ?
-							if(a1.getTargetid() != a2.getTargetid())
+							boolean notd = notDone(a1.getTargetid(), a2.getTargetid(), doneappair);
+							if((a1.getTargetid() != a2.getTargetid()) && (notd))
 							{
+								
+								int[] appair = {a1.getTargetid(), a2.getTargetid()};
+								doneappair.add(appair);
+								
+								// next measure the intra cluster shortest traveling path using a1 and a2
+								ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
+								//double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+								double dista1a2 = travelingGreedyPathAP(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), tmpa1a2spath);
+								//double dddd = pathAPForST(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), 1, tmpa1a2spath);
+								//shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+								if(dista1a2 == 0)
+								{
+									//throw new Exception("No path found to compute AP for st "+ tempst.stid);
+									//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
+
+									dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, dmax); 
+								}
+								
+								
 								// for every pair of supertargets which are not st1 or st2
 								for(SuperTarget s1: tempst.neighbors.values()) // need neighbor cluster of a1
 								{
 									for(SuperTarget s2: tempst.neighbors.values()) // need neighbor cluster  of a2?
 									{
 
-										//if(s1.stid != s2.stid)
+										if(/*(s1.stid != s2.stid) && */(notDone(s1.stid, s2.stid, donestpair)))
 										{
+											
+											int[] stpair = {s1.stid, s2.stid};
+											donestpair.add(stpair);
+										
 
 
 											boolean arebothnei = areBothNei(s1,s2,tempst);
@@ -4606,7 +4861,7 @@ private static double[] DOWithClus(int[][] gamedata,
 													"\n tempst "+ tempst.stid);*/
 
 
-												ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
+												//ArrayList<Integer> tmpa1a2spath = new ArrayList<Integer>();
 												ArrayList<Integer> tmpa1path = new ArrayList<Integer>();
 												ArrayList<Integer> tmpa2path = new ArrayList<Integer>();
 
@@ -4623,9 +4878,13 @@ private static double[] DOWithClus(int[][] gamedata,
 												// next measure the intra cluster shortest traveling path using a1 and a2
 
 
-												double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
-
-
+												//double dista1a2 = shortestdist(a1,a2, tempst, dmax, tmpa1a2spath);
+												
+												/*double dista1a2 = travelingGreedyPathAP(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), tmpa1a2spath);
+												
+												
+												
+												//double dddd = pathAPForST(tempst.nodes, dmax, tempst.nodes.size(), a1.getTargetid(), a2.getTargetid(), 1, tmpa1a2spath);
 
 
 
@@ -4636,9 +4895,9 @@ private static double[] DOWithClus(int[][] gamedata,
 													//throw new Exception("No path found to compute AP for st "+ tempst.stid);
 													//System.out.println("Disjpint cluster need longer path "+ tempst.stid);
 
-													dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst); 
+													dista1a2 = shortestdist(a1,a2, apspmap, apspmat, tmpa1a2spath, apsp, apspmapback, tempst, (int)dmax); 
 												}
-
+*/
 												//System.out.println("shortestdist(a1,a2, tempst, dmax) "+ dista1a2);
 
 												// if any of the dist is <0 we know that it's not possible to have a path
@@ -4758,6 +5017,7 @@ private static double[] DOWithClus(int[][] gamedata,
 				
 				addNei(tempst.stid, aid1, s1id, sd1, a1path, sts, targetmaps, s1ap);
 				addNei(tempst.stid, aid2, s2id, sd2, a2path, sts, targetmaps, s2ap);
+				//System.out.println("stid "+ tempst.stid);
 				addNei(aid1,aid2,sda1a2, a1a2path, tempst, targetmaps);
 				
 				
@@ -4779,6 +5039,328 @@ private static double[] DOWithClus(int[][] gamedata,
 		
 		
 	}
+	
+	
+	private static boolean notDone(int targetid, int targetid2, ArrayList<int[]> doneappair) {
+		
+		
+		for(int[] pair: doneappair)
+		{
+
+			if((pair[0] == targetid && pair[1] == targetid2) || (pair[0] == targetid2 && pair[1] == targetid) )
+			{
+				return false;
+			}
+		}
+		
+		
+		return true;
+	}
+
+
+	public static double travelingGreedyPathAP(HashMap<Integer, TargetNode> targetmaps, double dmax, int nTargets, int base, int dest, ArrayList<Integer> path) {
+
+
+
+		int[][] adjacencymatrix = new int[nTargets+1][nTargets+1];
+
+		/**
+		 * make mapping
+		 */
+		
+		ArrayList<TargetNode> targets = new ArrayList<TargetNode>();
+		
+		for(TargetNode t: targetmaps.values())
+		{
+			targets.add(t);
+		}
+
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+		int icount =1;
+		for(int i=0; i<targets.size(); i++)
+		{
+			map.put(targets.get(i).getTargetid(), icount);
+			//System.out.println("Target "+ targets.get(i).getTargetid() +" --> "+icount);
+			mapback.put(icount, targets.get(i).getTargetid());
+			icount++;
+		}
+		//makeAdjacencyMatrix(adjacencymatrix,targets,nTargets,map, mapback);
+
+		makeAdjacencyMatrixSuperT(adjacencymatrix, targets, nTargets, map, mapback);
+
+
+		AllPairShortestPath apsp = new AllPairShortestPath(nTargets);
+		int[][] apspmat =  apsp.allPairShortestPath(adjacencymatrix);
+		
+		
+		SecurityGameContraction.purifyAPSPMatrixZero(apspmat, targets, nTargets, map, mapback);
+		
+
+
+
+		ArrayList<Integer> tcur = new ArrayList<Integer>(); //greedyFirstRoute(dmax,gamedata, targets);
+
+		int[][] targetssorted = SecurityGameContraction.sortTargets(targets);
+		 
+		
+		int s = map.get(base);
+		int d = map.get(dest);
+		
+
+		double dist = travelingPathAP(base, dest, targets, dmax, targetssorted, apspmat, map,mapback, path);
+		
+		/*for(Integer n: tcur)
+		{
+			path.add(n);
+		}*/
+
+		return dist;
+	}
+	
+	
+	public static void makeAdjacencyMatrixSuperT(int[][] adjacencymatrix,
+			ArrayList<TargetNode> targets, int nTargets, HashMap<Integer,Integer> map, HashMap<Integer,Integer> mapback) {
+
+
+		int i=1; 
+		for(TargetNode n: targets)
+		{
+			//int j=1;
+			for(TargetNode nei: n.getNeighbors())
+			{
+				//System.out.print("["+n.getTargetid()+"]["+nei.getTargetid()+"] ---> ");
+				//System.out.println("["+map.get(n.getTargetid())+"]["+map.get(nei.getTargetid())+"]=1");
+
+
+				if(targets.contains(nei))
+				{
+					adjacencymatrix[map.get(n.getTargetid())][map.get(nei.getTargetid())]=  n.getDistance(nei).intValue();
+				}
+			}
+			i++;
+		}
+
+
+		for (int source = 1; source <=nTargets; source++)
+		{
+			for (int destination = 1; destination <= nTargets; destination++)
+			{
+				//adjacencymatrix[source][destination] = scan.nextInt();
+				if (source == destination)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+					continue;
+				}
+				if (adjacencymatrix[source][destination] == 0)
+				{
+					adjacencymatrix[source][destination] = INFINITY;
+				}
+			}
+		}
+
+
+
+
+
+	}
+	
+	
+	
+	public static double travelingPathAP(int base, int dest, ArrayList<TargetNode> targets,
+			double dmax, int[][] targetssorted, int[][] apspmat,
+			HashMap<Integer, Integer> map, HashMap<Integer, Integer> mapback, ArrayList<Integer> path) 
+			{
+		
+		
+		
+		
+		
+		
+		
+
+
+		int i=0; 
+
+		ArrayList<Integer> tcur = new ArrayList<Integer>();
+		ArrayList<Integer> greedypath = new ArrayList<Integer>();
+
+		if(targetssorted[0][0]==base)
+			i=1;
+		else 
+			i=0;
+
+
+		int totaldist = 0;
+		//for(int res = 0; res<nRes; res++)
+		{
+			/*System.out.println("res = "+res);
+			System.out.println("Adding base to greedy path : ");*/
+			greedypath.clear();
+			greedypath.add(base);
+			greedypath.add(dest);
+			//printGreedyPath(greedypath);
+
+			
+			if(base!=dest)
+			{
+				totaldist = apspmat[map.get(base)][map.get(dest)];
+			}
+			boolean continueFlag= false;
+			while ( i<targetssorted.length && continueFlag==false)
+			{
+				
+				int besttotaldisttemp = -1;
+				int bestj = -1;
+				/*System.out.println("i = "+i);
+				System.out.println("continueFlag : "+continueFlag);
+				System.out.println("besttotaldisttemp = "+besttotaldisttemp);
+				System.out.println("bestj : "+bestj);*/
+				
+				//System.out.println("trying to insert  : "+targetssorted[i][0]);
+
+				for(int j=1; j< greedypath.size(); j++ )
+				{
+					int s = map.get(greedypath.get(j-1));
+					int d = map.get(greedypath.get(j));
+					int totaldisttemp = totaldist - apspmat[s][d];
+
+					s = map.get(greedypath.get(j-1));
+					d = map.get(targetssorted[i][0]);
+					totaldisttemp +=  apspmat[s][d];
+
+
+					s = map.get(targetssorted[i][0]);
+					d = map.get(greedypath.get(j));
+					totaldisttemp +=  apspmat[s][d];
+
+					/*System.out.println("totaldisttemp = "+totaldisttemp);
+					System.out.println("bestj : "+bestj);*/
+
+					if (totaldisttemp>0 &&  (totaldisttemp<=dmax) && 
+							((besttotaldisttemp==-1) || (totaldisttemp<besttotaldisttemp)) )
+					{
+						bestj = j;
+						besttotaldisttemp = totaldisttemp;
+						/*System.out.println("updating besttotaldisttemp = "+besttotaldisttemp);
+						System.out.println("updating bestj : "+bestj);*/
+					}
+				}
+				if(bestj!=-1)
+				{
+					//System.out.println("could not insert, bestj : "+bestj);
+					//continueFlag = true;
+					//break;
+					//System.out.println("inserting : "+targetssorted[i][0]+" , greedy path : ");
+					greedypath = insertTsrt(greedypath, 0, bestj-1, targetssorted[i][0], bestj, greedypath.size()-1);
+					//printGreedyPath(greedypath);
+					totaldist = besttotaldisttemp;
+				}
+				
+				i=i+1;
+			}//while loop
+			
+			
+			
+			
+			
+
+			/*if(i==targetssorted.length)
+			{
+				System.out.println("i= "+i+"=targetssorted.length");
+				System.out.println("All targets can be added to tcur: ");
+				for(int k=0; k<targetssorted.length; k++)
+				{
+					tcur.add(targetssorted[k][0]);
+				}
+				//printGreedyPath(tcur);
+				return tcur;
+			}*/
+			//System.out.println("res= "+res+", greedypath : ");
+			//printGreedyPath(greedypath);
+		}//end of for loop
+		
+	//	path = greedypath;
+		
+		for(Integer n: greedypath)
+		{
+			path.add(n);
+		}
+
+
+		return totaldist;
+		
+		
+
+		/*int ulimit = targetssorted[i][1];
+		System.out.println("ulimit "+ulimit);
+		System.out.println("tcur : ");
+
+		
+		//if(greedypath.size()==2)
+		
+			//fidn the min
+			// set the ulimit
+			
+		
+			double min = getTargetNode(base, targets).attackerreward;
+			for(int p=0; p<greedypath.size(); p++)
+			{
+			
+			if(getTargetNode(greedypath.get(p), targets).attackerreward<min)
+				min = (int)getTargetNode(greedypath.get(p), targets).attackerreward;
+			
+		
+			}
+		ulimit=(int)min;
+		
+		for(int k=0; k<targetssorted.length; k++)
+		{
+			if(targetssorted[k][1]>=ulimit)
+			{
+				tcur.add(targetssorted[k][0]);
+			}
+		}
+		//printGreedyPath(tcur);
+		return tcur;*/
+
+
+			}
+
+	public static ArrayList<Integer> insertTsrt(ArrayList<Integer> greedypath, int i, int j,
+			int k, int l, int m) {
+
+
+		
+		
+		
+		for(int p=0; p<greedypath.size(); p++)
+		{
+			if(k==greedypath.get(p))
+				return greedypath;
+		}
+		
+
+		ArrayList<Integer> tmp = new ArrayList<Integer>();
+
+		for(int p = i; p<=j; p++)
+		{
+			tmp.add(greedypath.get(p));
+		}
+
+		tmp.add(k);
+
+
+		for(int p = l; p<=m; p++)
+		{
+			tmp.add(greedypath.get(p));
+		}
+		return tmp;
+
+
+	}
+	
+	
 
 
 	private static ArrayList<Integer> createAttackCluster(HashMap<Integer, TargetNode> tmpgraphmaps,
@@ -4836,7 +5418,7 @@ private static double[] DOWithClus(int[][] gamedata,
 		long totaltime = 0;
 
 
-		for(int iter=0; iter<ITER; iter++)
+		for(int iter=1; iter<ITER; iter++)
 		{
 
 			
@@ -4844,11 +5426,11 @@ private static double[] DOWithClus(int[][] gamedata,
 			ArrayList<TargetNode> targets = alltargets.get(iter);//new ArrayList<TargetNode>();
 			HashMap<Integer,TargetNode> targetmaps = alltargetmaps.get(iter); //new HashMap<Integer, TargetNode>();
 			
-			if(iter==4)
+			/*if(iter==4)
 			{
 				System.out.println("xx");
 			}
-			
+			*/
 			
 			//printNodesWithNeighborsAndPath(targetmaps);
 
@@ -4877,13 +5459,13 @@ private static double[] DOWithClus(int[][] gamedata,
 			sumslavetime += res[5];
 			//writeInFile(Integer.toString(iter),  (int)res[3], res[0], sumcontractiontime/iter, sumsolvtime/iter, sumslavetime/10, totaltime/10);
 
-			SecurityGameContraction.writeRes("DOClus", iter, (int)sumfinaltargetsize/ITER, res[0], sumcontractiontime/ITER, sumsolvtime/ITER, totaltime/ITER);
+			//SecurityGameContraction.writeRes("DOClus", iter, (int)sumfinaltargetsize/ITER, res[0], sumcontractiontime/ITER, sumsolvtime/ITER, totaltime/ITER);
 
 		}
 
 		System.out.println("\nDef avg exp utility : "+ sumsol/ITER);
 
-		SecurityGameContraction.writeInFile("DOWithClusteing",(int)sumfinaltargetsize/ITER, sumsol/ITER, sumcontractiontime/ITER, sumsolvtime/ITER, sumslavetime/ITER,totaltime/ITER);
+		SecurityGameContraction.writeInFile("DOWithClusteing",(int)sumfinaltargetsize/ITER, sumsol/ITER, sumcontractiontime/ITER, sumsolvtime/ITER, sumslavetime/ITER,totaltime/ITER, nTargets);
 		//writeInFile("4",(int)sumfinaltargetsize/10, sumsol/10, sumcontractiontime/10, sumsolvtime/10, sumslavetime/10, totaltime/10);
 		//(int)sumfinaltargetsize/10, sumsol/10, sumcontractiontime/10, sumsolvtime/10, sumslavetime/10, totaltime/10
 

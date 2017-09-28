@@ -77,26 +77,43 @@ public class Main {
 	
 		
 		
-		int nrow = 5;
-		int ncol = 5;
-		int nTargets = nrow*ncol;
-		int dmax = 14;
+		int nrow = 10;
+		int ncol = 10;
+		int dmax = 40;
+		int k = 20;
 		int RADIUS = 2;
 		
+		/*int nrow =Integer.parseInt(args[0]);
+		int ncol = Integer.parseInt(args[1]);
+		int dmax = Integer.parseInt(args[2]);
+		int k = Integer.parseInt(args[3]);
+		int RADIUS = Integer.parseInt(args[4]);*/
+		
+		
+		int ITER = 5;
+		int nRes=2;
+		int utiliy_l=0;
+		int utility_h=10;
+		int nTargets = nrow*ncol;
+		
+		int ncat = 3;
+		int ranges[][] = {{0,2},{3,8},{9, 10}};
+		int[] percforranges = {90, 0, 10};
+		int[] targetsincat = getTargetsInCats(nTargets, percforranges);
+		double[][] density=SecurityGameContraction.generateRandomDensityV2(ncat, ITER, ranges, nTargets, targetsincat);
 		
 		
 		int base = 0;
 		int dest = 0;
-		int k = 5;
+		
 		int radius = 3;
 		
-		int nRes=2;
+		
 		int dlim = 5;
 		
-		int ITER = 5;
+		
 		int ap = 4; // should be </= than cluster size
-		int utiliy_l=0;
-		int utility_h=10;
+		
 		/*int dmaxsuper = 30;
 		int dminsuper = 5;*/
 		
@@ -146,11 +163,7 @@ public class Main {
 		//double[][] density=SecurityGameContraction.generateRandomDensity( perc, ITER, lstart, lend,  hstart, hend, nTargets, false);
 		
 		//double[][] density = new double[ITER][nTargets];
-		int ncat = 3;
-		int ranges[][] = {{0,1},{2,8},{9, 10}};
-		int[] percforranges = {80, 10, 10};
-		int[] targetsincat = getTargetsInCats(nTargets, percforranges);
-		double[][] density=SecurityGameContraction.generateRandomDensityV2(ncat, ITER, ranges, nTargets, targetsincat);
+		
 		
 		
 		for(int iter = 0; iter<ITER; iter++)
@@ -177,18 +190,22 @@ public class Main {
 		}
 		
 		
-		//ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
+		
 		
 		//4 DO + GC multi + GP 3 + LP + GC multi 
 		SecurityGameContraction.DOTest(density,ITER,nrow, ncol, dmax, nRes, alltargets, alltargetmaps);
 		SecurityGameContraction.targets.clear();
 		
-		
+		// DO + Incremental clustering
 		ClusterTargets.DOWithClusteringTest(density,ITER,nrow, ncol, dmax, nRes, alltargets, alltargetmaps, RADIUS);
 		SecurityGameContraction.targets.clear();
 		
-		//14
-		//SecurityGameContraction.noContractionNoColumnGenerationTest(density, ITER, nrow, ncol, percentages, dmax, nRes, alltargets, alltargetmaps );
+		
+		// DO + weka
+		//ClusterTargets.wekaClusteringWithDOExp(nrow,ncol,base, dest, k, radius, dmax, nRes, nTargets, ITER, ap, alltargets, alltargetmaps);
+		
+		//14 baseline
+		//SecurityGameContraction.noContractionNoColumnGenerationTest(density, ITER, nrow, ncol, dmax, nRes, alltargets, alltargetmaps );
 		SecurityGameContraction.targets.clear();
 		
 		
