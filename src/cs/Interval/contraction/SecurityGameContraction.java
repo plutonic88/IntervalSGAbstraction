@@ -11052,6 +11052,141 @@ public class SecurityGameContraction
 	
 	
 	
+	public static ArrayList<Integer> pathForAT(double dmax, ArrayList<TargetNode> targets,
+			ArrayList<Integer> currenttargets, int nRes, int attackedtarget) throws Exception
+			{
+
+
+		TargetNode base = getTargetNode(0, targets);
+		ArrayList<ArrayList<Integer>> paths = new ArrayList<ArrayList<Integer>>();
+		
+		
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> mapback = new HashMap<Integer, Integer>();
+		ArrayList<Integer> graphint = new ArrayList<Integer>();
+		
+		for(int i=1; i<=targets.size(); i++)
+		{
+			map.put(targets.get(i-1).getTargetid(), i);
+			mapback.put(i, targets.get(i-1).getTargetid());
+			graphint.add(map.get(targets.get(i-1).getTargetid()));
+		}
+		
+		
+		
+		int[][] adjacencymatrix = new int[targets.size()+1][targets.size()+1];
+		makeAdjacencyMatrix(adjacencymatrix , targets, targets.size(), map, mapback);
+		
+		
+		AllPairShortestPath allPairShortestPath= new AllPairShortestPath(targets.size());
+		int[][] apsp = allPairShortestPath.allPairShortestPath(adjacencymatrix);
+        //ArrayList<Integer> path = AllPairShortestPath.getPath(1, 2, allPairShortestPath.next);
+        
+        
+        purifyAPSPMatrixZero(apsp, targets, targets.size(), map, mapback);
+		
+       // System.out.println("FInding  "+ apsp[map.get(11)][map.get(82)]);
+     //   System.out.println("FInding  "+ apsp[map.get(82)][map.get(11)]);
+		
+		
+		TargetNode dest = getTargetNode(attackedtarget, targets);
+
+
+		//for(TargetNode dest: targets)
+		{
+			if(dest.getTargetid()!=0)
+			{
+
+				//System.out.println("FInding shortest dist for target "+ dest.getTargetid());
+				ArrayList<Integer>  pathnodes = new ArrayList<Integer>();
+				ArrayList<TargetNode>  pnodes = new ArrayList<TargetNode>();
+				
+				
+				int src = base.getTargetid();
+				int des = dest.getTargetid();
+
+
+
+				double distcovered = apsp[map.get(src)][map.get(des)];
+				if(base.getNeighbors().contains(dest) && distcovered<=dmax/2)
+				{
+					
+					
+					
+					pnodes = base.getPath(dest);
+					for(int k=0; k<pnodes.size(); k++)
+					{
+
+						//System.out.print(pnodes.get(pnodes.size()-k-1).getTargetid()+"->");
+						//pathnodes.add(pnodes.get(pnodes.size()-k-1).getTargetid());
+
+					}
+
+				}
+				else
+				{
+					//double distcovered1 = findShortestPathThrougGraphWDlimit(base, dest, targets, pathnodes, dmax/2);
+					//System.out.print("dist covered "+ distcovered1+"\n");
+
+
+					src = base.getTargetid();
+					des = dest.getTargetid();
+
+
+
+					distcovered = apsp[map.get(src)][map.get(des)];
+					//System.out.print("dist covered "+ distcovered+"\n");
+
+					if(distcovered<=dmax/2)
+					{
+						ArrayList<Integer>	tmppathnodes = allPairShortestPath.getPath(src, des, map, mapback);
+
+						for(int k=0; k<tmppathnodes.size(); k++)
+						{
+							pathnodes.add(tmppathnodes.get(tmppathnodes.size()-k-1));
+						}
+					}
+					
+
+
+				}
+				ArrayList<Integer> tmppath = new ArrayList<Integer>();
+				//System.out.print("\n0->");
+				tmppath.add(base.getTargetid());
+				for(int k=0; k<pathnodes.size(); k++)
+				{
+					tmppath.add(pathnodes.get(pathnodes.size()-k-1));
+					//System.out.print(pathnodes.get(pathnodes.size()-k-1)+"->");
+				}
+			//	System.out.print(dest.getTargetid()+"\n");
+				tmppath.add(dest.getTargetid());
+				//System.out.print("\n");
+				/**
+				 * make rev path
+				 */
+				for(int j=tmppath.size()-2; j>=0; j--)
+				{
+					tmppath.add(tmppath.get(j));
+				}
+				//System.out.print("complete path : \n");
+				/*for(int k=0; k<tmppath.size(); k++)
+				{
+
+					//System.out.print(tmppath.get(k)+"->");
+				}*/
+				paths.add(tmppath);
+				//System.out.print("\n");
+			}
+
+
+
+		}
+		return paths.get(0);
+			}
+	
+	
+	
 	public static ArrayList<ArrayList<Integer>> generatePathsForSuperTargetsAPSP(double dmax, HashMap<Integer, SuperTarget> sts,
 			HashMap<Integer,TargetNode> targetmaps, int nRes, HashMap<Integer,Double> dstravel) throws Exception
 			{
@@ -29138,7 +29273,9 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 					solvingtime += diff;
 
 					attackedtarget = findAttackTargetWMapping(p, probdistribution, gamedata, map, mapback);
+					
 					attackedtarget = mapback.get(attackedtarget);
+					int attackedtargetrestrgraph = attackedtarget;
 					System.out.println("attack target before rev map "+ attackedtarget);
 					//int u = getTargetNode(MIPSolver4.attackedtarget, tmpgraph).getTargetid();
 					attackeru = expectedAttackerPayoff(attackedtarget, p, probdistribution, gamedata, map);
@@ -29194,6 +29331,12 @@ public static int[][] constructGameData(ArrayList<TargetNode> u) {
 
 
 					ArrayList<ArrayList<Integer>> newpathseq = buildGreedyCoverMultRes2(tmpgraph, dmax, tmpgraph.size(), 0, nRes, attackerstrategy);
+					
+					
+					ArrayList<Integer> attackpath = pathForAT(dmax, tmpgraph, currenttargets, nRes, attackedtargetrestrgraph);
+					
+					newpathseq.add(attackpath);
+					
 					
 					stop = new Date();
 					l2 = stop.getTime();
