@@ -80,7 +80,7 @@ public class Main {
 		int nrow = 10;
 		int ncol = 10;
 		int dmax = 40;
-		int k = 20;
+		int k = 10;
 		int RADIUS = 2;
 		
 		/*int nrow =Integer.parseInt(args[0]);
@@ -97,7 +97,7 @@ public class Main {
 		int nTargets = nrow*ncol;
 		
 		int ncat = 3;
-		int ranges[][] = {{0,2},{3,8},{9, 10}};
+		int ranges[][] = {{0,1},{3,8},{9, 10}};
 		int[] percforranges = {90, 0, 10};
 		int[] targetsincat = getTargetsInCats(nTargets, percforranges);
 		double[][] density=SecurityGameContraction.generateRandomDensityV2(ncat, ITER, ranges, nTargets, targetsincat);
@@ -193,7 +193,7 @@ public class Main {
 		
 		
 		//4 DO + GC multi + GP 3 + LP + GC multi 
-		SecurityGameContraction.DOTest(density,ITER,nrow, ncol, dmax, nRes, alltargets, alltargetmaps);
+		//SecurityGameContraction.DOTest(density,ITER,nrow, ncol, dmax, nRes, alltargets, alltargetmaps);
 		SecurityGameContraction.targets.clear();
 		
 		// DO + Incremental clustering

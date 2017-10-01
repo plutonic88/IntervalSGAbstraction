@@ -578,6 +578,70 @@ public class ClusterTargets {
 
 	
 	
+	private static void printSuperTargets(HashMap<Integer, SuperTarget> sts, HashMap<Integer,ArrayList<Integer>> stpaths, HashMap<Integer,Double> dstravel) {
+
+
+
+		Iterator<SuperTarget> itr = sts.values().iterator();
+
+		//for(SuperTarget st : itr)
+		while(itr.hasNext())
+		{
+			SuperTarget node = itr.next();
+			System.out.println("\n\n******Super target node " + node.stid+"******");
+			//Logger.logit("\n\n****** target node " + node.getTargetid()+", utility : "+node.getAnimaldensity() +"******\n");
+			//if(!domindatednodes.contains(node))
+			{
+
+				// print the nodes
+				System.out.print("---Nodes : ");
+				for(TargetNode n: node.nodes.values())
+				{
+					System.out.print( n.getTargetid()+ " ");
+
+				}
+				if(node.nodes.size()>1)
+				{
+					System.out.print("\n---Travelpath : ");
+					for(Integer n: stpaths.get(node.stid))
+					{
+						System.out.print(n+"->");
+					}
+					System.out.print("\n---TravelDist : " + dstravel.get(node.stid));
+					
+				}
+				System.out.print("\n---Neighbors : ");
+				for(SuperTarget neighbor: node.neighbors.values())
+				{
+					System.out.print(neighbor.stid+ " ");
+
+				}
+				ArrayList<TargetNode> already = new ArrayList<TargetNode>();
+				System.out.print("\n---Neighbor Targets : ");
+				for(TargetNode neighbor: node.ap.values())
+				{
+					for(TargetNode nei: neighbor.getNeighbors())
+					{
+						if(!already.contains(nei) && !node.nodes.values().contains(nei))
+						{
+							System.out.print(nei.getTargetid()+ " ");
+							already.add(nei);
+						}
+					}
+
+				}
+				System.out.print("\n---AP : ");
+				for(TargetNode a: node.ap.values())
+				{
+					System.out.print(a.getTargetid()+ " ");
+
+				}
+			}
+		}
+
+	}
+	
+	
 	private static void printSuperTargets(HashMap<Integer, SuperTarget> sts) {
 
 
@@ -3209,7 +3273,7 @@ private static double[] DOWithClus(int[][] gamedata,
 					clusteredtargets, clustercenters, currentattackedtargets, domindatednodes, RADIUS, tmpgraph);
 			
 
-			//printSuperTargets(sts);
+			printSuperTargets(sts, stpaths, dstravel);
 			preparePaths(dstravel, stpaths, sts);
 			assignSTValues(sts, tmpgraphmaps);
 			

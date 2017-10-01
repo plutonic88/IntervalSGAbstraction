@@ -1659,9 +1659,10 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 		//Random rand = new Random();
 		
 		
-		int nlclus = (int)Math.floor(k*(percforranges[0]/100.0))-1;
-		int nmidclus = (int)Math.ceil(k*(percforranges[1]/100.0));
-		int nhighclus = k - nlclus - nmidclus;
+		int nlclus = (int)Math.floor(nTargets*(percforranges[0]/100.0))-1;
+		int nmidclus = (int)Math.ceil(nTargets*(percforranges[1]/100.0));
+		int nhighclus = nTargets - nlclus - nmidclus;
+		int limit[] = {nlclus, nmidclus, nhighclus};
 		
 		System.out.println("low clus: "+ nlclus + ", mid clus "+ nmidclus + ", high clus "+ nhighclus);
 		
@@ -1669,7 +1670,37 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 		
 		for(int clusid=0; clusid<k; clusid++)
 		{
-			if(counter[2]<nhighclus)
+			
+			if(clusid==0)
+			{
+				density[iter][0] = ranges[2][1];
+			}
+			else
+			{
+				int cls = 1;
+				
+				while(true)
+				{
+					cls = randInt(0, 2);
+					if(counter[cls]<limit[cls])
+					{
+						break;
+					}
+				}
+				
+				for(Integer n: cluster[clusid])
+				{
+					
+					int utility = randInt(ranges[cls][0], ranges[cls][1]);
+					density[iter][n] = utility;
+					counter[cls]++;
+					
+				}
+				
+			}
+			
+			
+			/*if(counter[2]<nhighclus)
 			{
 				counter[2]++;
 				for(Integer n: cluster[clusid])
@@ -1712,7 +1743,7 @@ private static void updateNeighbors(HashMap<Integer, SuperTarget> sts) {
 					}
 					
 				}
-			}
+			}*/
 		}
 
 		
